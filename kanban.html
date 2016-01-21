@@ -1,0 +1,205 @@
+<!doctype html>
+
+<html ng-app="taskboardApp">
+<head>
+    <title>Outlook Task Board</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/taskboard.css">
+
+    <!-- scripts -->
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/jquery-ui.min.js"></script>
+    <script src="lib/angular.js"></script>
+    <script src="lib/sortable.min.js"></script>
+    <script src="js/app.js"></script>
+
+</head>
+
+<body ng-controller="taskboardController" ng-init="init()" >
+
+    <div class="taskboard container-fluid">
+
+        <!-- filter bar -->
+        <section id="filterbar" class="row">
+            <div class="col-md-12">
+                <div class="input-group">
+                    <div class="input-group-addon"><strong>Outlook Taskboard</strong></div>
+                    <div class="input-group-addon">
+                        <button class="btn btn-default btn-xs" aria-label="Refresh" type="button" onclick="window.location.reload();"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                    </div>
+
+                    <!--<div class="input-group-addon"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></div>-->
+                    <div ng-show="(search != undefined)" class="input-group-addon">
+                        <button class="btn btn-default btn-xs" aria-label="Clear" type="button" ng-click="search = undefined"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                    </div>
+                    <input type="text" name="search" ng-model="search" class="form-control" placeholder="Filter" />
+                </div>
+            </div>
+        </section>
+
+        <!-- tasklanes section -->
+        <section class="row">
+
+            <!-- left lane -->
+            <div class="tasklane col-md-4 col-xs-4">
+                <header>
+                    <h4>{{ backlogTitle }}
+                        <span class="pull-right">
+                            <button class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('backlog');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                            <span class="badge">{{ backlogTasks.length }}</span>
+                        </span>
+                    </h4>
+                </header>
+                <ul id="backlogList" ui-sortable="sortableOptions" ng-model="backlogTasks" class="tasklist list-unstyled">
+                    <li ng-repeat="task in backlogTasks | filter:search" class="task" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
+                        <header>
+                            {{ task.subject }}
+                            <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
+                        </header>
+                        <div class="content"> {{ task.notes }} </div>
+                        <footer class="text-right">
+                            <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
+                            <span class="btn-group btn-group-xs">
+                                <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                                <button class="btn btn-default btn-xs" aria-label="Complete" type="button" ng-click="completeTask(task,backlogTasks)"><span class="glyphicon glyphicon-check" aria-hidden="true"></span></button>
+                                <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,backlogTasks)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                <button ng-if="(task.oneNoteURL != '')"  class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button>
+                            </span>
+                        </footer>
+
+                    </li>
+                </ul>
+            </div>
+
+
+            <!-- middle task lane -->
+            <div class="tasklane col-md-4 col-xs-4">
+                <header>
+                    <h4>{{ inprogressTitle }}
+                        <span class="pull-right">
+                            <button ng-if="( inprogressTasks.length < inprogressHardLimit )" class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('inprogress');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                            <span class="badge">{{ inprogressTasks.length }}</span>
+                        </span>
+                    </h4>
+                </header>
+                <ul id="inprogressList" ui-sortable="sortableOptions" ng-model="inprogressTasks" class="tasklist list-unstyled">
+                    <li ng-repeat="task in inprogressTasks | filter:search" class="task" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
+                        <header>
+                            {{ task.subject }}
+                            <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
+                        </header>
+                        <div class="content"> {{ task.notes }} </div>
+                        <footer class="text-right">
+                            <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
+                            <span class="btn-group btn-group-xs">
+                                <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                                <button class="btn btn-default btn-xs" aria-label="Complete" type="button" ng-click="completeTask(task,inprogressTasks)"><span class="glyphicon glyphicon-check" aria-hidden="true"></span></button>
+                                <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,inprogressTasks)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                <button ng-if="(task.oneNoteURL != '')"  class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button>
+                            </span>
+                        </footer>
+
+                    </li>
+                </ul>
+
+                <header>
+                    <h4>{{ nextTitle }}
+                        <span class="pull-right">
+                            <button class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('next');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                            <span class="badge">{{ nextTasks.length }}</span>
+                        </span>
+                    </h4>
+                </header>
+                <ul id="nextList" ui-sortable="sortableOptions" ng-model="nextTasks" class="tasklist list-unstyled">
+                    <li ng-repeat="task in nextTasks | filter:search" class="task" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
+                        <header>
+                            {{ task.subject }}
+                            <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
+                        </header>
+                        <div class="content"> {{ task.notes }} </div>
+                        <footer class="text-right">
+                            <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
+                            <span class="btn-group btn-group-xs">
+                                <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                                <button class="btn btn-default btn-xs" aria-label="Complete" type="button" ng-click="completeTask(task,nextTasks)"><span class="glyphicon glyphicon-check" aria-hidden="true"></span></button>
+                                <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,nextTasks)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                <button ng-if="(task.oneNoteURL != '')"  class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button>
+                            </span>
+                        </footer>
+
+                    </li>
+                </ul>
+            </div>
+
+            <!-- right task lane -->
+            <div class="tasklane col-md-4 col-xs-4">
+                <header>
+                    <h4>{{ focusTitle }}
+                        <span class="pull-right">
+                            <button class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('focus');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                            <span class="badge">{{ focusTasks.length }}</span>
+                        </span>
+                    </h4>
+                </header>
+                <ul id="focusList" ui-sortable="sortableOptions" ng-model="focusTasks" class="tasklist list-unstyled">
+                    <li ng-repeat="task in focusTasks | filter:search" class="task" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
+                        <header>
+                            {{ task.subject }}
+                            <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
+                        </header>
+                        <div class="content"> {{ task.notes }} </div>
+                        <footer class="text-right">
+                            <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
+                            <span class="btn-group btn-group-xs">
+                                <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                                <button class="btn btn-default btn-xs" aria-label="Complete" type="button" ng-click="completeTask(task,focusTasks)"><span class="glyphicon glyphicon-check" aria-hidden="true"></span></button>
+                                <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,focusTasks)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                <button ng-if="(task.oneNoteURL != '')"  class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button>
+                            </span>
+                        </footer>
+
+                    </li>
+                </ul>
+
+                <header>
+                    <h4>{{ waitingTitle }}
+                        <span class="pull-right">
+                            <button class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('waiting');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                            <span class="badge label-success">{{ waitingTasks.length }}</span>
+
+                        </span>
+                    </h4>
+                </header>
+                <ul id="waitingList" ui-sortable="sortableOptions" ng-model="waitingTasks" class="tasklist list-unstyled">
+                    <li ng-repeat="task in waitingTasks | filter:search" class="task" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
+                        <header>
+                            {{ task.subject }}
+                            <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
+                        </header>
+                        <div class="content"> {{ task.notes }} </div>
+                        <footer class="text-right">
+                            <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
+                            <span class="btn-group btn-group-xs">
+                                <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                                <button class="btn btn-default btn-xs" aria-label="Complete" type="button" ng-click="completeTask(task,waitingTasks)"><span class="glyphicon glyphicon-check" aria-hidden="true"></span></button>
+                                <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,waitingTasks)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                <button ng-if="(task.oneNoteURL != '')"  class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button>
+                            </span>
+                        </footer>
+
+                    </li>
+                </ul>
+            </div>
+
+        </section>
+
+    </div>
+
+
+
+
+</body>
+
+</html>
