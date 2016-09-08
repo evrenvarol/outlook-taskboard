@@ -1,6 +1,6 @@
 'use strict';
 
-var tbApp = angular.module('taskboardApp', ['ui.sortable']);
+var tbApp = angular.module('taskboardApp', ['taskboardApp.config', 'ui.sortable']);
 
 try {
         // check whether the page is opened in outlook app
@@ -17,38 +17,18 @@ try {
     }
 catch(e) { console.log(e); }
 
-tbApp.controller('taskboardController', function ($scope) {
-
-    // outlook tasks folders
-    var backlogFolder = null;
-    var inprogressFolder = "InProgress";
-    var nextFolder = "Next";
-    var focusFolder = "Focus";
-    var waitingFolder = "Waiting";
-
-    // titles for task lanes
-    $scope.backlogTitle = "BACKLOG";
-    $scope.inprogressTitle = "IN PROGRESS";
-    $scope.nextTitle = "NEXT";
-    $scope.focusTitle = "FOCUS";
-    $scope.waitingTitle = "WAITING";
-
-    // hard limit for work in progress task lane
-    $scope.inprogressHardLimit = 5;
-
-    // number of chars for each task note
-    // 0 = makes no notes appear on the each task card
-    var tasknoteLimit = 200;
-
+tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
 
     $scope.init = function() {
 
+        $scope.general_config = GENERAL_CONFIG;
+
         // get tasks from each outlook folder and populate model data
-        $scope.backlogTasks = getTasksFromOutlook(backlogFolder);
-        $scope.inprogressTasks = getTasksFromOutlook(inprogressFolder);
-        $scope.nextTasks = getTasksFromOutlook(nextFolder);
-        $scope.focusTasks = getTasksFromOutlook(focusFolder);
-        $scope.waitingTasks = getTasksFromOutlook(waitingFolder);
+        $scope.backlogTasks = getTasksFromOutlook(null);
+        $scope.inprogressTasks = getTasksFromOutlook(GENERAL_CONFIG.INPROGRESS_FOLDER);
+        $scope.nextTasks = getTasksFromOutlook(GENERAL_CONFIG.NEXT_FOLDER);
+        $scope.focusTasks = getTasksFromOutlook(GENERAL_CONFIG.FOCUS_FOLDER);
+        $scope.waitingTasks = getTasksFromOutlook(GENERAL_CONFIG.WAITING_FOLDER);
 
         // ui-sortable options and events
         $scope.sortableOptions = {
@@ -59,9 +39,12 @@ tbApp.controller('taskboardController', function ($scope) {
 
                 // start event is called when dragging starts
                 update: function(e, ui) {
-                        // cancels dropping to inprogress lane if it exceeds the limit
+                        // cancels dropping to the lane if it exceeds the limit
                         // but allows sorting within the lane
-                        if (e.target.id !== 'inprogressList' && ui.item.sortable.droptarget.attr('id') === 'inprogressList' && $scope.inprogressTasks.length >= $scope.inprogressHardLimit) {
+                        if ( (GENERAL_CONFIG.INPROGRESS_LIMIT !== 0 && e.target.id !== 'inprogressList' && ui.item.sortable.droptarget.attr('id') === 'inprogressList' && $scope.inprogressTasks.length >= GENERAL_CONFIG.INPROGRESS_LIMIT) ||
+                             (GENERAL_CONFIG.NEXT_LIMIT !== 0 && e.target.id !== 'nextList' && ui.item.sortable.droptarget.attr('id') === 'nextList' && $scope.nextTasks.length >= GENERAL_CONFIG.NEXT_LIMIT) ||
+                             (GENERAL_CONFIG.FOCUS_LIMIT !== 0 && e.target.id !== 'focusList' && ui.item.sortable.droptarget.attr('id') === 'focusList' && $scope.focusTasks.length >= GENERAL_CONFIG.FOCUS_LIMIT) ||
+                             (GENERAL_CONFIG.WAITING_LIMIT !== 0 && e.target.id !== 'waitingList' && ui.item.sortable.droptarget.attr('id') === 'waitingList' && $scope.waitingTasks.length >= GENERAL_CONFIG.WAITING_LIMIT) ) {
                                 ui.item.sortable.cancel();
                         }
                 },
@@ -79,16 +62,16 @@ tbApp.controller('taskboardController', function ($scope) {
                                                     var tasksfolder = outlookNS.GetDefaultFolder(13);
                                                     break;
                                             case 'inprogressList':
-                                                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(inprogressFolder);
+                                                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.INPROGRESS_FOLDER);
                                                     break;
                                             case 'nextList':
-                                                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(nextFolder);
+                                                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.NEXT_FOLDER);
                                                     break;
                                             case 'waitingList':
-                                                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(waitingFolder);
+                                                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.WAITING_FOLDER);
                                                     break;
                                             case 'focusList':
-                                                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(focusFolder);
+                                                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.FOCUS_FOLDER);
                                                     break;
                                         };
 
@@ -131,7 +114,7 @@ tbApp.controller('taskboardController', function ($scope) {
                     duedate: new Date(tasks(i).DueDate),
                     sensitivity: tasks(i).Sensitivity,
                     categories: tasks(i).Categories,
-                    notes: shortString(tasks(i).Body, tasknoteLimit),
+                    notes: shortString(tasks(i).Body, GENERAL_CONFIG.TASKNOTE_EXCERPT),
                     oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
                     oneNoteURL: getUserProp(tasks(i), "OneNoteURL")
                 });
@@ -171,16 +154,16 @@ tbApp.controller('taskboardController', function ($scope) {
                     var tasksfolder = outlookNS.GetDefaultFolder(13);
                     break;
             case 'inprogress':
-                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(inprogressFolder);
+                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.INPROGRESS_FOLDER);
                     break;
             case 'next':
-                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(nextFolder);
+                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.NEXT_FOLDER);
                     break;
             case 'waiting':
-                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(waitingFolder);
+                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.WAITING_FOLDER);
                     break;
             case 'focus':
-                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(focusFolder);
+                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.FOCUS_FOLDER);
                     break;
         };
         //taskitem.Parent = tasksfolder;
