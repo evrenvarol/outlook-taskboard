@@ -13,6 +13,7 @@
     <script src="lib/jquery-ui.min.js"></script>
     <script src="lib/angular.js"></script>
     <script src="lib/sortable.min.js"></script>
+    <script src="js/config.js"></script>
     <script src="js/app.js"></script>
 
 </head>
@@ -45,10 +46,10 @@
             <!-- left lane -->
             <div class="tasklane col-md-4 col-xs-4">
                 <header>
-                    <h4>{{ backlogTitle }}
+                    <h4>{{ general_config.BACKLOG_TITLE  }}
                         <span class="pull-right">
                             <button class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('backlog');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-                            <span class="badge">{{ backlogTasks.length }}</span>
+                            <span class="label label-info">{{ backlogTasks.length }}</span>
                         </span>
                     </h4>
                 </header>
@@ -77,10 +78,10 @@
             <!-- middle task lane -->
             <div class="tasklane col-md-4 col-xs-4">
                 <header>
-                    <h4>{{ inprogressTitle }}
+                    <h4>{{ general_config.INPROGRESS_TITLE }}
                         <span class="pull-right">
-                            <button ng-if="( inprogressTasks.length < inprogressHardLimit )" class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('inprogress');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-                            <span class="badge">{{ inprogressTasks.length }}</span>
+                            <button ng-if="( inprogressTasks.length < general_config.INPROGRESS_LIMIT )" class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('inprogress');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                            <span class="label label-info">{{ inprogressTasks.length }}</span> <span ng-if="( general_config.INPROGRESS_LIMIT > 0 )" class="label label-primary">{{ general_config.INPROGRESS_LIMIT }}</span>
                         </span>
                     </h4>
                 </header>
@@ -105,10 +106,10 @@
                 </ul>
 
                 <header>
-                    <h4>{{ nextTitle }}
+                    <h4>{{ general_config.NEXT_TITLE  }}
                         <span class="pull-right">
-                            <button class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('next');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-                            <span class="badge">{{ nextTasks.length }}</span>
+                            <button ng-if="( nextTasks.length < general_config.NEXT_LIMIT )" class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('next');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                            <span class="label label-info">{{ nextTasks.length }}</span> <span ng-if="( general_config.NEXT_LIMIT > 0 )" class="label label-primary">{{ general_config.NEXT_LIMIT }}</span>
                         </span>
                     </h4>
                 </header>
@@ -136,10 +137,10 @@
             <!-- right task lane -->
             <div class="tasklane col-md-4 col-xs-4">
                 <header>
-                    <h4>{{ focusTitle }}
+                    <h4>{{ general_config.FOCUS_TITLE  }}
                         <span class="pull-right">
-                            <button class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('focus');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-                            <span class="badge">{{ focusTasks.length }}</span>
+                            <button ng-if="( focusTasks.length < general_config.FOCUS_LIMIT )" class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('focus');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                            <span class="label label-info">{{ focusTasks.length }}</span> <span ng-if="( general_config.FOCUS_LIMIT > 0 )" class="label label-primary">{{ general_config.FOCUS_LIMIT }}</span>
                         </span>
                     </h4>
                 </header>
@@ -164,10 +165,10 @@
                 </ul>
 
                 <header>
-                    <h4>{{ waitingTitle }}
+                    <h4>{{ general_config.WAITING_TITLE }}
                         <span class="pull-right">
-                            <button class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('waiting');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-                            <span class="badge label-success">{{ waitingTasks.length }}</span>
+                            <button ng-if="( waitingTasks.length < general_config.WAITING_LIMIT )" class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('waiting');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                            <span class="label label-info">{{ waitingTasks.length }}</span> <span ng-if="( general_config.WAITING_LIMIT > 0 )" class="label label-primary">{{ general_config.WAITING_LIMIT }}</span>
 
                         </span>
                     </h4>
