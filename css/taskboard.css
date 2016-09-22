@@ -4,21 +4,43 @@ body {
     font: 400 12px/1.6 "Segoe UI", Tahoma, Arial, sans-serif;
 }
 
+.container-fluid {
+    padding-left: 15px;
+    padding-right: 20px;
+    overflow-y: scroll;
+}
+
+.row > [class*='col-'] {
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.panel-heading, .panel-footer {
+    padding: 5px 10px;
+}
+
+.panel-body {
+    padding: 10px;
+    word-wrap: break-word;
+}
+
 #filterbar {
     margin-top: 20px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 #filterbar .btn-default, .task .btn-default  { background: transparent; border: none;}
 
-.tasklane {
-    border-right: 1px dashed #dedede;
+.tasklane header h5 {
+    margin-top:  5px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: #555;
 }
 
 .tasklist {
-    min-height: 300px;
-    border-bottom: 1px dashed #dedede;
-    padding-bottom: 10px;
+    background-color: #f5f5f5;
+    margin-bottom: 0px;
 }
 
 li.task {
@@ -27,14 +49,8 @@ li.task {
 }
 
 li.task header {
-    padding: 3px 7px;
-    color: #444;
-    font-size: 14px;
+    cursor: move;
     font-weight: bold;
-}
-
-li.task .content {
-    padding: 3px 7px;
 }
 
 li.task footer {
@@ -44,41 +60,37 @@ li.task footer {
 .task-overdue { color: #dd3333; }
 .task-today { color: #6f8eb3; }
 
-li.task.task-medium header {
-    background-color: #FFECAF;
+li.task.task-medium {
+    background-color: #fff;
+    border: 1px solid #ccc;
 }
 
-li.task.task-medium {
+li.task.task-private {
     background-color: #FFFFE2;
     border: 1px solid #e6d396;
 }
 
-li.task.task-high header {
-    background-color: #FFA8A8;
-}
-
 li.task.task-high {
-    background-color: #FFBBBB;
-    border: 1px solid #FF9797;
-}
-
-li.task.task-low header {
-    background-color: #ddd;
+    background-color: #FFDDDD;
+    border: 1px solid #FFA8A8;
 }
 
 li.task.task-low {
-    background-color: #eee;
+    background-color: #f5f5f5;
     border: 1px solid #ccc;
 }
 
-li.task.task-private header {
-    background-color: #BBDAFF;
+li.task.task-completed {
+    background-color: #ddd;
+    border: 1px solid #bbb;
 }
 
-li.task.task-private {
-    background-color: #DBEBFF;
-    border: 1px solid #A8CFFF;
-}
+/* blue
+header: #BBDAFF;
+body: #DBEBFF;
+border: #A8CFFF;
+*/
+
 
 /* cyan
 header: #A5D3CA;
