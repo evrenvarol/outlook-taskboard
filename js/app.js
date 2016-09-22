@@ -225,9 +225,9 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
 
     // checks whether the task date is overdue or today
     // returns class based on the result
-    $scope.isOverdue = function(date){
-        var dateobj = new Date(date).getDate();
-        var today = new Date().getDate();
+    $scope.isOverdue = function(strdate){
+        var dateobj = new Date(strdate).setHours(0,0,0,0);
+        var today = new Date().setHours(0,0,0,0);
         return {'task-overdue': dateobj < today, 'task-today': dateobj == today };
     };
 
