@@ -9,6 +9,7 @@ var config_data = {
     'NEXT_FOLDER': 			'Next',
     'FOCUS_FOLDER': 		'Focus',
     'WAITING_FOLDER': 		'Waiting',
+    'COMPLETED_FOLDER':     'Completed',
 
     // Task Lane Titles
     'BACKLOG_TITLE': 		'BACK LOG',
@@ -16,6 +17,7 @@ var config_data = {
     'NEXT_TITLE': 			'NEXT',
     'FOCUS_TITLE': 			'FOCUS',
     'WAITING_TITLE':		'WAITING',
+    'COMPLETED_TITLE':      'COMPLETED',
 
     // Task Lane Hard Limits
     // 0 = no limit

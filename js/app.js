@@ -29,6 +29,7 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
         $scope.nextTasks = getTasksFromOutlook(GENERAL_CONFIG.NEXT_FOLDER);
         $scope.focusTasks = getTasksFromOutlook(GENERAL_CONFIG.FOCUS_FOLDER);
         $scope.waitingTasks = getTasksFromOutlook(GENERAL_CONFIG.WAITING_FOLDER);
+        $scope.completedTasks = getTasksFromOutlook(GENERAL_CONFIG.COMPLETED_FOLDER);
 
         // ui-sortable options and events
         $scope.sortableOptions = {
@@ -72,6 +73,9 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                                                     break;
                                             case 'focusList':
                                                     var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.FOCUS_FOLDER);
+                                                    break;
+                                            case 'completedList':
+                                                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.COMPLETED_FOLDER);
                                                     break;
                                         };
 
@@ -201,7 +205,7 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
 
     // moves the task item back to tasks folder and marks it as complete
     // also removes it from the model data
-    $scope.completeTask = function(item, sourceArray){
+    $scope.archiveTask = function(item, sourceArray){
         // locate the task in outlook namespace by using unique entry id
         var taskitem = outlookNS.GetItemFromID(item.entryID);
 
