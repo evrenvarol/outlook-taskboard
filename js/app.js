@@ -118,7 +118,7 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                     duedate: new Date(tasks(i).DueDate),
                     sensitivity: tasks(i).Sensitivity,
                     categories: tasks(i).Categories,
-                    notes: shortString(tasks(i).Body, GENERAL_CONFIG.TASKNOTE_EXCERPT),
+                    notes: taskExcerpt(tasks(i).Body, GENERAL_CONFIG.TASKNOTE_EXCERPT),
                     oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
                     oneNoteURL: getUserProp(tasks(i), "OneNoteURL")
                 });
@@ -127,12 +127,15 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
             return array;
     };
 
+    // grabs the summary part of the task until the first '###' text
     // shortens the string by number of chars
     // tries not to split words and adds ... at the end to give excerpt effect
-    var shortString = function (str, limit) {
+    var taskExcerpt = function (str, limit) {
             if (str.length > limit) {
+                str = str.substring( 0, str.indexOf('###'));
                 str = str.substring( 0, str.lastIndexOf( ' ', limit ) );
-                if (limit != 0) { str = str + "..." }
+                str = str.replace ('\r\n', '<br>');
+                //if (limit != 0) { str = str + "..." }
             };
             return str;
     };
@@ -173,6 +176,9 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
         //taskitem.Parent = tasksfolder;
         //
         var taskitem = tasksfolder.Items.Add();
+
+        // add default task template to the task body
+        taskitem.Body = GENERAL_CONFIG.TASK_TEMPLATE;
 
         // display outlook task item window
         taskitem.Display();
