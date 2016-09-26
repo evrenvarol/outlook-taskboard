@@ -127,12 +127,21 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
             return array;
     };
 
+    /*var createReport = function () {
+            var i, array = [];
+
+            var tasks = outlookNS.GetDefaultFolder(13).Items.Restrict("[Complete] = false Or Not [Sensitivity] = 2");
+            tasks.Sort("[Importance][Status]", true);
+
+
+    }*/
+
     // grabs the summary part of the task until the first '###' text
     // shortens the string by number of chars
     // tries not to split words and adds ... at the end to give excerpt effect
     var taskExcerpt = function (str, limit) {
+            str = str.substring( 0, str.indexOf('\r\n###'));
             if (str.length > limit) {
-                str = str.substring( 0, str.indexOf('###'));
                 str = str.substring( 0, str.lastIndexOf( ' ', limit ) );
                 str = str.replace ('\r\n', '<br>');
                 //if (limit != 0) { str = str + "..." }
