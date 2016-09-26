@@ -32,7 +32,7 @@ var config_data = {
     'TASKNOTE_EXCERPT':		200,
 
     // Default task template
-    'TASK_TEMPLATE':        '\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n'
+    'TASK_TEMPLATE':        '\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### ISSUES:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n'
 
   }
 };
