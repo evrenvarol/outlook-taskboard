@@ -127,14 +127,80 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
             return array;
     };
 
-    /*var createReport = function () {
+
+    // this is only a proof-of-concept single page report in a draft email for weekly report
+    // it will be improved later on
+    $scope.createReport = function () {
             var i, array = [];
+            var mailItem, mailBody;
 
-            var tasks = outlookNS.GetDefaultFolder(13).Items.Restrict("[Complete] = false Or Not [Sensitivity] = 2");
+            var mailItem = outlookApp.CreateItem(0);
+
+            mailBody = "<h1>Outlook Taskboard</h1>"
+
+            // BACKLOG ITEMS
+            var tasks = outlookNS.GetDefaultFolder(13).Items.Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
             tasks.Sort("[Importance][Status]", true);
+            mailBody = mailBody + "<h2>" + GENERAL_CONFIG.BACKLOG_TITLE + "</h2>"
+            mailBody = mailBody + "<ul>"
+            var count = tasks.Count;
+            for (i = 1; i <= count; i++) {
+                mailBody = mailBody + "<li>" + tasks(i).Subject + "</li>"
+            };
+            mailBody = mailBody + "</ul>"
+
+            // FOCUS ITEMS
+            var tasks = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.FOCUS_FOLDER).Items.Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
+            tasks.Sort("[Importance][Status]", true);
+            mailBody = mailBody + "<h2>" + GENERAL_CONFIG.FOCUS_TITLE + "</h2>"
+            mailBody = mailBody + "<ul>"
+            var count = tasks.Count;
+            for (i = 1; i <= count; i++) {
+                mailBody = mailBody + "<li>" + tasks(i).Subject + "</li>"
+            };
+            mailBody = mailBody + "</ul>"
+
+            // INPROGRESS ITEMS
+            var tasks = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.INPROGRESS_FOLDER).Items.Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
+            tasks.Sort("[Importance][Status]", true);
+            mailBody = mailBody + "<h2>" + GENERAL_CONFIG.INPROGRESS_TITLE + "</h2>"
+            mailBody = mailBody + "<ul>"
+            var count = tasks.Count;
+            for (i = 1; i <= count; i++) {
+                mailBody = mailBody + "<li>" + tasks(i).Subject + "</li>"
+            };
+            mailBody = mailBody + "</ul>"
+
+            // COMPLETED ITEMS
+            var tasks = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.COMPLETED_FOLDER).Items.Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
+            tasks.Sort("[Importance][Status]", true);
+            mailBody = mailBody + "<h2>" + GENERAL_CONFIG.COMPLETED_TITLE + "</h2>"
+            mailBody = mailBody + "<ul>"
+            var count = tasks.Count;
+            for (i = 1; i <= count; i++) {
+                mailBody = mailBody + "<li>" + tasks(i).Subject + "</li>"
+            };
+            mailBody = mailBody + "</ul>"
+
+            // WAITING ITEMS
+            var tasks = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.WAITING_FOLDER).Items.Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
+            tasks.Sort("[Importance][Status]", true);
+            mailBody = mailBody + "<h2>" + GENERAL_CONFIG.WAITING_TITLE + "</h2>"
+            mailBody = mailBody + "<ul>"
+            var count = tasks.Count;
+            for (i = 1; i <= count; i++) {
+                mailBody = mailBody + "<li>" + tasks(i).Subject + "</li>"
+            };
+            mailBody = mailBody + "</ul>"
 
 
-    }*/
+            // include report content to the mail body
+            mailItem.HTMLBody = mailBody;
+
+            // only display the draft email
+            mailItem.Display();
+
+    }
 
     // grabs the summary part of the task until the first '###' text
     // shortens the string by number of chars
