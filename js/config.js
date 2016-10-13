@@ -5,26 +5,18 @@ var config_data = {
   'GENERAL_CONFIG': {
 
   	// Outlook Task folders
-    'INPROGRESS_FOLDER': 	'InProgress',
-    'NEXT_FOLDER': 			'Next',
-    'FOCUS_FOLDER': 		'Focus',
-    'WAITING_FOLDER': 		'Waiting',
-    'COMPLETED_FOLDER':     'Completed',
-
-    // Task Lane Titles
-    'BACKLOG_TITLE': 		'BACK LOG',
-    'INPROGRESS_TITLE': 	'IN PROGRESS',
-    'NEXT_TITLE': 			'NEXT',
-    'FOCUS_TITLE': 			'FOCUS',
-    'WAITING_TITLE':		'WAITING',
-    'COMPLETED_TITLE':      'COMPLETED',
-
-    // Task Lane Hard Limits
-    // 0 = no limit
-    'INPROGRESS_LIMIT': 	5,
-    'NEXT_LIMIT': 			0,
-    'FOCUS_LIMIT': 			0,
-    'WAITING_LIMIT': 		0,
+    // Name: Name of the task folder
+    // Title: Task lane title
+    // Limit: hard limits for each task lane. 0 = no limit
+    // Sort: Sort order for tasks (default = priority)
+    // Restrict: Restrict certain tasks (default = only show incomplete tasks) (More info = https://msdn.microsoft.com/en-us/library/office/ff869597.aspx)
+    // Owner: If the task folder is shared by someone else, enter the name of the owner. (i.e. Evren Varol)
+    'BACKLOG_FOLDER':       { Name: '', Title: 'BACKLOG', Limit: 0, Sort: "[Importance]", Restrict: "[Complete] = false", Owner: '' },
+    'INPROGRESS_FOLDER': 	{ Name: 'InProgress', Title: 'IN PROGRESS', Limit: 5, Sort: "[Importance]", Restrict: "[Complete] = false", Owner: ''},
+    'NEXT_FOLDER': 			{ Name: 'Next', Title: 'NEXT', Limit: 0, Sort: "[DueDate][Importance]", Restrict: "[Complete] = false", Owner: ''},
+    'FOCUS_FOLDER': 		{ Name: 'Focus', Title: 'FOCUS', Limit: 0, Sort: "[Importance]", Restrict: "[Complete] = false", Owner: '' },
+    'WAITING_FOLDER': 		{ Name: 'Waiting', Title: 'WAITING', Limit: 0, Sort: "[Importance]", Restrict: "[Complete] = false", Owner: '' },
+    'COMPLETED_FOLDER':     { Name: 'Completed', Title: 'COMPLETED', Limit: 0, Sort: "[Importance]", Restrict: "[Complete] = false", Owner: '' },
 
     // Task Note Excerpt Size
     // number of chars for each task note

@@ -24,12 +24,12 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
         $scope.general_config = GENERAL_CONFIG;
 
         // get tasks from each outlook folder and populate model data
-        $scope.backlogTasks = getTasksFromOutlook(null);
-        $scope.inprogressTasks = getTasksFromOutlook(GENERAL_CONFIG.INPROGRESS_FOLDER);
-        $scope.nextTasks = getTasksFromOutlook(GENERAL_CONFIG.NEXT_FOLDER);
-        $scope.focusTasks = getTasksFromOutlook(GENERAL_CONFIG.FOCUS_FOLDER);
-        $scope.waitingTasks = getTasksFromOutlook(GENERAL_CONFIG.WAITING_FOLDER);
-        $scope.completedTasks = getTasksFromOutlook(GENERAL_CONFIG.COMPLETED_FOLDER);
+        $scope.backlogTasks = getTasksFromOutlook(GENERAL_CONFIG.BACKLOG_FOLDER.Name, GENERAL_CONFIG.BACKLOG_FOLDER.Restrict, GENERAL_CONFIG.BACKLOG_FOLDER.Sort, GENERAL_CONFIG.BACKLOG_FOLDER.Owner);
+        $scope.inprogressTasks = getTasksFromOutlook(GENERAL_CONFIG.INPROGRESS_FOLDER.Name, GENERAL_CONFIG.INPROGRESS_FOLDER.Restrict, GENERAL_CONFIG.INPROGRESS_FOLDER.Sort, GENERAL_CONFIG.INPROGRESS_FOLDER.Owner);
+        $scope.nextTasks = getTasksFromOutlook(GENERAL_CONFIG.NEXT_FOLDER.Name, GENERAL_CONFIG.NEXT_FOLDER.Restrict, GENERAL_CONFIG.NEXT_FOLDER.Sort, GENERAL_CONFIG.NEXT_FOLDER.Owner);
+        $scope.focusTasks = getTasksFromOutlook(GENERAL_CONFIG.FOCUS_FOLDER.Name, GENERAL_CONFIG.FOCUS_FOLDER.Restrict, GENERAL_CONFIG.FOCUS_FOLDER.Sort, GENERAL_CONFIG.FOCUS_FOLDER.Owner);
+        $scope.waitingTasks = getTasksFromOutlook(GENERAL_CONFIG.WAITING_FOLDER.Name, GENERAL_CONFIG.WAITING_FOLDER.Restrict, GENERAL_CONFIG.WAITING_FOLDER.Sort, GENERAL_CONFIG.WAITING_FOLDER.Owner);
+        $scope.completedTasks = getTasksFromOutlook(GENERAL_CONFIG.COMPLETED_FOLDER.Name, GENERAL_CONFIG.COMPLETED_FOLDER.Restrict, GENERAL_CONFIG.COMPLETED_FOLDER.Sort, GENERAL_CONFIG.COMPLETED_FOLDER.Owner);
 
         // ui-sortable options and events
         $scope.sortableOptions = {
@@ -42,10 +42,10 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                 update: function(e, ui) {
                         // cancels dropping to the lane if it exceeds the limit
                         // but allows sorting within the lane
-                        if ( (GENERAL_CONFIG.INPROGRESS_LIMIT !== 0 && e.target.id !== 'inprogressList' && ui.item.sortable.droptarget.attr('id') === 'inprogressList' && $scope.inprogressTasks.length >= GENERAL_CONFIG.INPROGRESS_LIMIT) ||
-                             (GENERAL_CONFIG.NEXT_LIMIT !== 0 && e.target.id !== 'nextList' && ui.item.sortable.droptarget.attr('id') === 'nextList' && $scope.nextTasks.length >= GENERAL_CONFIG.NEXT_LIMIT) ||
-                             (GENERAL_CONFIG.FOCUS_LIMIT !== 0 && e.target.id !== 'focusList' && ui.item.sortable.droptarget.attr('id') === 'focusList' && $scope.focusTasks.length >= GENERAL_CONFIG.FOCUS_LIMIT) ||
-                             (GENERAL_CONFIG.WAITING_LIMIT !== 0 && e.target.id !== 'waitingList' && ui.item.sortable.droptarget.attr('id') === 'waitingList' && $scope.waitingTasks.length >= GENERAL_CONFIG.WAITING_LIMIT) ) {
+                        if ( (GENERAL_CONFIG.INPROGRESS_FOLDER.Limit !== 0 && e.target.id !== 'inprogressList' && ui.item.sortable.droptarget.attr('id') === 'inprogressList' && $scope.inprogressTasks.length >= GENERAL_CONFIG.INPROGRESS_FOLDER.Limit) ||
+                             (GENERAL_CONFIG.NEXT_FOLDER.Limit !== 0 && e.target.id !== 'nextList' && ui.item.sortable.droptarget.attr('id') === 'nextList' && $scope.nextTasks.length >= GENERAL_CONFIG.NEXT_FOLDER.Limit) ||
+                             (GENERAL_CONFIG.FOCUS_FOLDER.Limit !== 0 && e.target.id !== 'focusList' && ui.item.sortable.droptarget.attr('id') === 'focusList' && $scope.focusTasks.length >= GENERAL_CONFIG.FOCUS_FOLDER.Limit) ||
+                             (GENERAL_CONFIG.WAITING_FOLDER.Limit !== 0 && e.target.id !== 'waitingList' && ui.item.sortable.droptarget.attr('id') === 'waitingList' && $scope.waitingTasks.length >= GENERAL_CONFIG.WAITING_FOLDER.Limit) ) {
                                 ui.item.sortable.cancel();
                         }
                 },
@@ -60,22 +60,23 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                                         // ui.item.sortable.droptarget[0].id represents the id of the target list
                                         switch (ui.item.sortable.droptarget[0].id) {
                                             case 'backlogList':
-                                                    var tasksfolder = outlookNS.GetDefaultFolder(13);
+                                                    //var tasksfolder = outlookNS.GetDefaultFolder(13);
+                                                    var tasksfolder = getOutlookFolder(GENERAL_CONFIG.BACKLOG_FOLDER.Name, GENERAL_CONFIG.BACKLOG_FOLDER.Owner);
                                                     break;
                                             case 'inprogressList':
-                                                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.INPROGRESS_FOLDER);
+                                                    var tasksfolder = getOutlookFolder(GENERAL_CONFIG.INPROGRESS_FOLDER.Name, GENERAL_CONFIG.INPROGRESS_FOLDER.Owner);
                                                     break;
                                             case 'nextList':
-                                                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.NEXT_FOLDER);
+                                                    var tasksfolder = getOutlookFolder(GENERAL_CONFIG.NEXT_FOLDER.Name, GENERAL_CONFIG.NEXT_FOLDER.Owner);
                                                     break;
                                             case 'waitingList':
-                                                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.WAITING_FOLDER);
+                                                    var tasksfolder = getOutlookFolder(GENERAL_CONFIG.WAITING_FOLDER.Name, GENERAL_CONFIG.WAITING_FOLDER.Owner);
                                                     break;
                                             case 'focusList':
-                                                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.FOCUS_FOLDER);
+                                                    var tasksfolder = getOutlookFolder(GENERAL_CONFIG.FOCUS_FOLDER.Name, GENERAL_CONFIG.FOCUS_FOLDER.Owner);
                                                     break;
                                             case 'completedList':
-                                                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.COMPLETED_FOLDER);
+                                                    var tasksfolder = getOutlookFolder(GENERAL_CONFIG.COMPLETED_FOLDER.Name, GENERAL_CONFIG.COMPLETED_FOLDER.Owner);
                                                     break;
                                         };
 
@@ -98,15 +99,39 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
         };
     };
 
-    var getTasksFromOutlook = function (path) {
-            var i, array = [];
-            if (path == undefined) {
-                var tasks = outlookNS.GetDefaultFolder(13).Items.Restrict("[Complete] = false");
+    var getOutlookFolder = function (folderpath, owner) {
+        if ( folderpath === undefined || folderpath === '' ) {
+            // if folder path is not defined, return main Tasks folder
+            var folder = outlookNS.GetDefaultFolder(13);
+        } else {
+            // if folder path is defined
+            if ( owner === undefined || owner === '' ) {
+                // if owner is not defined, return defined sub folder of main Tasks folder
+                var folder = outlookNS.GetDefaultFolder(13).Folders(folderpath);
             } else {
-                var tasks = outlookNS.GetDefaultFolder(13).Folders(path).Items.Restrict("[Complete] = false");
+                // if owner is defined, try to resolve owner
+                var recipient = outlookNS.CreateRecipient(owner);
+                recipient.Resolve;
+                if ( recipient.Resolved ) {
+                    var folder = outlookNS.GetSharedDefaultFolder(recipient, 13).Folders(path);
+                } else {
+                    return null;
+                }
             }
+        }
+        return folder;
+    }
 
-            tasks.Sort("Importance", true);
+    var getTasksFromOutlook = function (path, restrict, sort, owner) {
+            var i, array = [];
+            // default restriction is to get only incomplete tasks
+            if (restrict === undefined) { restrict = "[Complete] = false"; }
+
+            var tasks = getOutlookFolder(path, owner).Items.Restrict(restrict);
+
+            // sort tasks
+            if (sort === undefined) { sort = "[Importance]"; }
+            tasks.Sort(sort, true);
 
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
@@ -119,6 +144,7 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                     sensitivity: tasks(i).Sensitivity,
                     categories: tasks(i).Categories,
                     notes: taskExcerpt(tasks(i).Body, GENERAL_CONFIG.TASKNOTE_EXCERPT),
+                    status: taskStatus(tasks(i).Body),
                     oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
                     oneNoteURL: getUserProp(tasks(i), "OneNoteURL")
                 });
@@ -127,72 +153,87 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
             return array;
     };
 
-
     // this is only a proof-of-concept single page report in a draft email for weekly report
     // it will be improved later on
     $scope.createReport = function () {
             var i, array = [];
             var mailItem, mailBody;
+            mailItem = outlookApp.CreateItem(0);
+            mailItem.BodyFormat = 2;
 
-            var mailItem = outlookApp.CreateItem(0);
-
-            mailBody = "<h1>Outlook Taskboard</h1>"
+            mailBody = "<style>";
+            mailBody += "body { font-family: Calibri; } ";
+            mailBody += " h1, h3 { text-decoration: underline; } ";
+            mailBody += " </style>";
+            mailBody += "<body><h1>Outlook Taskboard</h1>";
 
             // BACKLOG ITEMS
-            var tasks = outlookNS.GetDefaultFolder(13).Items.Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
+            var tasks = getOutlookFolder(GENERAL_CONFIG.BACKLOG_FOLDER.Name, GENERAL_CONFIG.BACKLOG_FOLDER.Owner).Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
             tasks.Sort("[Importance][Status]", true);
-            mailBody = mailBody + "<h2>" + GENERAL_CONFIG.BACKLOG_TITLE + "</h2>"
-            mailBody = mailBody + "<ul>"
+            mailBody += "<h3>" + GENERAL_CONFIG.BACKLOG_FOLDER.Title + "</h3>";
+            mailBody += "<ul>";
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
-                mailBody = mailBody + "<li>" + tasks(i).Subject + "</li>"
-            };
-            mailBody = mailBody + "</ul>"
+                mailBody += "<li>" + tasks(i).Subject;
+                mailBody += "<font color=gray><i>" + taskStatus(tasks(i).Body) + "</i></font>";
+                mailBody += "</li>";
+            }
+            mailBody += "</ul>";
 
             // FOCUS ITEMS
-            var tasks = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.FOCUS_FOLDER).Items.Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
+            var tasks = getOutlookFolder(GENERAL_CONFIG.FOCUS_FOLDER.Name, GENERAL_CONFIG.FOCUS_FOLDER.Owner).Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
             tasks.Sort("[Importance][Status]", true);
-            mailBody = mailBody + "<h2>" + GENERAL_CONFIG.FOCUS_TITLE + "</h2>"
-            mailBody = mailBody + "<ul>"
+            mailBody += "<h3>" + GENERAL_CONFIG.FOCUS_FOLDER.Title + "</h3>";
+            mailBody += "<ul>";
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
-                mailBody = mailBody + "<li>" + tasks(i).Subject + "</li>"
-            };
-            mailBody = mailBody + "</ul>"
+                mailBody += "<li>" + tasks(i).Subject;
+                mailBody += "<font color=gray><i>" + taskStatus(tasks(i).Body) + "</i></font>";
+                mailBody += "</li>";
+            }
+            mailBody += "</ul>";
 
             // INPROGRESS ITEMS
-            var tasks = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.INPROGRESS_FOLDER).Items.Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
+            var tasks = getOutlookFolder(GENERAL_CONFIG.INPROGRESS_FOLDER.Name, GENERAL_CONFIG.INPROGRESS_FOLDER.Owner).Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
             tasks.Sort("[Importance][Status]", true);
-            mailBody = mailBody + "<h2>" + GENERAL_CONFIG.INPROGRESS_TITLE + "</h2>"
-            mailBody = mailBody + "<ul>"
+            mailBody += "<h3>" + GENERAL_CONFIG.INPROGRESS_FOLDER.Title + "</h3>";
+            mailBody += "<ul>";
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
-                mailBody = mailBody + "<li>" + tasks(i).Subject + "</li>"
-            };
-            mailBody = mailBody + "</ul>"
+                mailBody += "<li>" + tasks(i).Subject;
+                mailBody += "<font color=gray><i>" + taskStatus(tasks(i).Body) + "</i></font>";
+                mailBody += "</li>";
+            }
+            mailBody += "</ul>";
 
             // COMPLETED ITEMS
-            var tasks = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.COMPLETED_FOLDER).Items.Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
+            var tasks = getOutlookFolder(GENERAL_CONFIG.COMPLETED_FOLDER.Name, GENERAL_CONFIG.COMPLETED_FOLDER.Owner).Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
             tasks.Sort("[Importance][Status]", true);
-            mailBody = mailBody + "<h2>" + GENERAL_CONFIG.COMPLETED_TITLE + "</h2>"
-            mailBody = mailBody + "<ul>"
+            mailBody += "<h3>" + COMPLETED_CONFIG.BACKLOG_FOLDER.Title + "</h3>";
+            mailBody += "<ul>";
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
-                mailBody = mailBody + "<li>" + tasks(i).Subject + "</li>"
-            };
-            mailBody = mailBody + "</ul>"
+                mailBody += "<li>" + tasks(i).Subject;
+                mailBody += "<font color=gray><i>" + taskStatus(tasks(i).Body) + "</i></font>";
+                mailBody += "</li>";
+            }
+            mailBody += "</ul>";
 
             // WAITING ITEMS
-            var tasks = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.WAITING_FOLDER).Items.Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
+            var tasks = getOutlookFolder(GENERAL_CONFIG.WAITING_FOLDER.Name, GENERAL_CONFIG.WAITING_FOLDER.Owner).Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
             tasks.Sort("[Importance][Status]", true);
-            mailBody = mailBody + "<h2>" + GENERAL_CONFIG.WAITING_TITLE + "</h2>"
-            mailBody = mailBody + "<ul>"
+            mailBody += "<h3>" + GENERAL_CONFIG.WAITING_FOLDER.Title + "</h3>";
+            mailBody += "<ul>";
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
-                mailBody = mailBody + "<li>" + tasks(i).Subject + "</li>"
-            };
-            mailBody = mailBody + "</ul>"
+                mailBody += "<li>" + tasks(i).Subject;
+                mailBody += "<font color=gray><i>" + taskStatus(tasks(i).Body) + "</i></font>";
+                mailBody += "</li>";
+            }
+            mailBody += "</ul>";
 
+
+            mailBody += "</body>"
 
             // include report content to the mail body
             mailItem.HTMLBody = mailBody;
@@ -206,12 +247,24 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
     // shortens the string by number of chars
     // tries not to split words and adds ... at the end to give excerpt effect
     var taskExcerpt = function (str, limit) {
-            str = str.substring( 0, str.indexOf('\r\n###'));
+            if ( str.indexOf('\r\n### ') > 0 ) {
+                str = str.substring( 0, str.indexOf('\r\n###'));
+            }
             if (str.length > limit) {
                 str = str.substring( 0, str.lastIndexOf( ' ', limit ) );
                 str = str.replace ('\r\n', '<br>');
                 //if (limit != 0) { str = str + "..." }
             };
+            return str;
+    };
+
+    var taskStatus = function (str) {
+            //str = str.replace(/(?:\r\n|\r|\n)/g, '<br>');
+            if ( str.match(/### STATUS:([\s\S]*?)###/) ) {
+                var statmatch = str.match(/### STATUS:([\s\S]*?)###/);
+                str = statmatch[1].replace(/(?:\r\n|\r|\n)/g, '<br>');
+                str = str.replace('<br><br>', '<br>');
+            } else { str = ''; }
             return str;
     };
 
@@ -226,30 +279,27 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
         return value;
     };
 
+    // create a new task under target folder
     $scope.addTask = function(target) {
-        // create a new task item object in outlook
-        //var taskitem = outlookApp.CreateItem(3);
-
         // set the parent folder to target defined
         switch (target) {
             case 'backlog':
-                    var tasksfolder = outlookNS.GetDefaultFolder(13);
+                    var tasksfolder = getOutlookFolder(GENERAL_CONFIG.BACKLOG_FOLDER.Name, GENERAL_CONFIG.BACKLOG_FOLDER.Owner);
                     break;
             case 'inprogress':
-                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.INPROGRESS_FOLDER);
+                    var tasksfolder = getOutlookFolder(GENERAL_CONFIG.INPROGRESS_FOLDER.Name, GENERAL_CONFIG.INPROGRESS_FOLDER.Owner);
                     break;
             case 'next':
-                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.NEXT_FOLDER);
+                    var tasksfolder = getOutlookFolder(GENERAL_CONFIG.NEXT_FOLDER.Name, GENERAL_CONFIG.NEXT_FOLDER.Owner);
                     break;
             case 'waiting':
-                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.WAITING_FOLDER);
+                    var tasksfolder = getOutlookFolder(GENERAL_CONFIG.WAITING_FOLDER.Name, GENERAL_CONFIG.WAITING_FOLDER.Owner);
                     break;
             case 'focus':
-                    var tasksfolder = outlookNS.GetDefaultFolder(13).Folders(GENERAL_CONFIG.FOCUS_FOLDER);
+                    var tasksfolder = getOutlookFolder(GENERAL_CONFIG.FOCUS_FOLDER.Name, GENERAL_CONFIG.FOCUS_FOLDER.Owner);
                     break;
         };
-        //taskitem.Parent = tasksfolder;
-        //
+        // create a new task item object in outlook
         var taskitem = tasksfolder.Items.Add();
 
         // add default task template to the task body
