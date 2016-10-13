@@ -8,17 +8,13 @@ There are 2 ways to use the taskboard.
   1. Outlook Folder Home Page (recommended)
   2. Directly from Internet Explorer
 
-### Screenshots
-
 ![Outlook Taskboard] (http://evrenvarol.github.io/outlook-taskboard/img/outlook-taskboard.png)
 
+### Moving Tasks between task lanes
 ![Moving Tasks] (http://evrenvarol.github.io/outlook-taskboard/img/task-drag.gif)
 
-  <sub>Moving Tasks between task lanes</sub>
-
+### Filtering Tasks
 ![Filtering] (http://evrenvarol.github.io/outlook-taskboard/img/task-filter.gif)
-
-  <sub>Filtering Tasks</sub>
 
 ### Platforms supported
 Only tested with Outlook 2013 and 2016 running on Windows 8.1/10.
@@ -108,10 +104,10 @@ By default, the tasks are sorted by *priority*.
 
 When a task created using the **Add** button on task lanes, a new task created with a default template.
 
-    ```javascript
-        // Default task template
-        'TASK_TEMPLATE':        '\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### ISSUES:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n'
-    ```
+```javascript
+    // Default task template
+    'TASK_TEMPLATE':        '\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### ISSUES:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n'
+```
 
 This template can be customised by changing the `TASK_TEMPLATE` setting.
 
@@ -119,12 +115,13 @@ This template can be customised by changing the `TASK_TEMPLATE` setting.
 
 If there are some notes entered in the task, only first 200 chars are visible by default configuration.
 
-    ```javascript
-    // Task Note Excerpt Size
-    // number of chars for each task note
-    // 0 = makes no notes appear on the each task card
-    'TASKNOTE_EXCERPT':    200,
-    ```
+```javascript
+// Task Note Excerpt Size
+// number of chars for each task note
+// 0 = makes no notes appear on the each task card
+'TASKNOTE_EXCERPT':    200,
+```
+
 The `TASKNOTE_EXCERPT` value can be updated to change the number of characters shown in the task board view.
 
 Note: If the default task template used to create the task, only the first part of the task notes are visible. (until first the '###'' section).
