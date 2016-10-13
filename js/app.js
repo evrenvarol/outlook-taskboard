@@ -319,6 +319,8 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
         taskitem.Display();
         // bind to taskitem write event on outlook and reload the page after the task is saved
         eval("function taskitem::Write (bStat) {window.location.reload(); return true;}");
+        // bind to taskitem beforedelete event on outlook and reload the page after the task is deleted
+        eval("function taskitem::BeforeDelete (bStat) {window.location.reload(); return true;}");
     };
 
     // deletes the task item in both outlook and model data
