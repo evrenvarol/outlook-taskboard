@@ -113,7 +113,7 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                 var recipient = outlookNS.CreateRecipient(owner);
                 recipient.Resolve;
                 if ( recipient.Resolved ) {
-                    var folder = outlookNS.GetSharedDefaultFolder(recipient, 13).Folders(path);
+                    var folder = outlookNS.GetSharedDefaultFolder(recipient, 13).Folders(folderpath);
                 } else {
                     return null;
                 }
@@ -159,75 +159,107 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
             var i, array = [];
             var mailItem, mailBody;
             mailItem = outlookApp.CreateItem(0);
+            mailItem.Subject = "Status Report";
             mailItem.BodyFormat = 2;
 
             mailBody = "<style>";
-            mailBody += "body { font-family: Calibri; } ";
-            mailBody += " h1, h3 { text-decoration: underline; } ";
+            mailBody += "body { font-family: Calibri; font-size:11.0pt; } ";
+            //mailBody += " h3 { font-size: 11pt; text-decoration: underline; } ";
             mailBody += " </style>";
-            mailBody += "<body><h1>Outlook Taskboard</h1>";
-
-            // BACKLOG ITEMS
-            var tasks = getOutlookFolder(GENERAL_CONFIG.BACKLOG_FOLDER.Name, GENERAL_CONFIG.BACKLOG_FOLDER.Owner).Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
-            tasks.Sort("[Importance][Status]", true);
-            mailBody += "<h3>" + GENERAL_CONFIG.BACKLOG_FOLDER.Title + "</h3>";
-            mailBody += "<ul>";
-            var count = tasks.Count;
-            for (i = 1; i <= count; i++) {
-                mailBody += "<li>" + tasks(i).Subject;
-                mailBody += "<font color=gray><i>" + taskStatus(tasks(i).Body) + "</i></font>";
-                mailBody += "</li>";
-            }
-            mailBody += "</ul>";
-
-            // FOCUS ITEMS
-            var tasks = getOutlookFolder(GENERAL_CONFIG.FOCUS_FOLDER.Name, GENERAL_CONFIG.FOCUS_FOLDER.Owner).Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
-            tasks.Sort("[Importance][Status]", true);
-            mailBody += "<h3>" + GENERAL_CONFIG.FOCUS_FOLDER.Title + "</h3>";
-            mailBody += "<ul>";
-            var count = tasks.Count;
-            for (i = 1; i <= count; i++) {
-                mailBody += "<li>" + tasks(i).Subject;
-                mailBody += "<font color=gray><i>" + taskStatus(tasks(i).Body) + "</i></font>";
-                mailBody += "</li>";
-            }
-            mailBody += "</ul>";
+            mailBody += "<body>";
 
             // INPROGRESS ITEMS
-            var tasks = getOutlookFolder(GENERAL_CONFIG.INPROGRESS_FOLDER.Name, GENERAL_CONFIG.INPROGRESS_FOLDER.Owner).Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
+            var tasks = getOutlookFolder(GENERAL_CONFIG.INPROGRESS_FOLDER.Name, GENERAL_CONFIG.INPROGRESS_FOLDER.Owner).Items.Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
             tasks.Sort("[Importance][Status]", true);
             mailBody += "<h3>" + GENERAL_CONFIG.INPROGRESS_FOLDER.Title + "</h3>";
             mailBody += "<ul>";
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
-                mailBody += "<li>" + tasks(i).Subject;
-                mailBody += "<font color=gray><i>" + taskStatus(tasks(i).Body) + "</i></font>";
+                mailBody += "<li>"
+                mailBody += "<strong>" + tasks(i).Subject + "</strong>";
+                if ( tasks(i).Importance == 2) { mailBody += "<font color=red> [H]</font>"; }
+                if ( tasks(i).Importance == 0) { mailBody += "<font color=gray> [L]</font>"; }
+                var dueDate = new Date(tasks(i).DueDate);
+                if ( moment(dueDate).isValid && moment(dueDate).year() != 4501 ) { mailBody += " [Due: " + moment(dueDate).format("DD-MMM") + "]"; }
+                if ( taskExcerpt(tasks(i).Body, 10000) ) { mailBody += " - <font color=gray><i>" + taskExcerpt(tasks(i).Body, 10000) + "</i></font>";}
+                mailBody += "<br>" + taskStatus(tasks(i).Body) + "";
                 mailBody += "</li>";
             }
             mailBody += "</ul>";
 
-            // COMPLETED ITEMS
-            var tasks = getOutlookFolder(GENERAL_CONFIG.COMPLETED_FOLDER.Name, GENERAL_CONFIG.COMPLETED_FOLDER.Owner).Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
+            // FOCUS ITEMS
+             var tasks = getOutlookFolder(GENERAL_CONFIG.FOCUS_FOLDER.Name, GENERAL_CONFIG.FOCUS_FOLDER.Owner).Items.Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
             tasks.Sort("[Importance][Status]", true);
-            mailBody += "<h3>" + COMPLETED_CONFIG.BACKLOG_FOLDER.Title + "</h3>";
+            mailBody += "<h3>" + GENERAL_CONFIG.FOCUS_FOLDER.Title + "</h3>";
             mailBody += "<ul>";
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
-                mailBody += "<li>" + tasks(i).Subject;
-                mailBody += "<font color=gray><i>" + taskStatus(tasks(i).Body) + "</i></font>";
+                mailBody += "<li>"
+                mailBody += "<strong>" + tasks(i).Subject + "</strong>";
+                if ( tasks(i).Importance == 2) { mailBody += "<font color=red> [H]</font>"; }
+                if ( tasks(i).Importance == 0) { mailBody += "<font color=gray> [L]</font>"; }
+                var dueDate = new Date(tasks(i).DueDate);
+                if ( moment(dueDate).isValid && moment(dueDate).year() != 4501 ) { mailBody += " [Due: " + moment(dueDate).format("DD-MMM") + "]"; }
+                if ( taskExcerpt(tasks(i).Body, 10000) ) { mailBody += " - <font color=gray><i>" + taskExcerpt(tasks(i).Body, 10000) + "</i></font>";}
+                mailBody += "<br>" + taskStatus(tasks(i).Body) + "";
+                mailBody += "</li>";
+            }
+            mailBody += "</ul>";
+
+
+            // COMPLETED ITEMS
+            var tasks = getOutlookFolder(GENERAL_CONFIG.COMPLETED_FOLDER.Name, GENERAL_CONFIG.COMPLETED_FOLDER.Owner).Items.Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
+            tasks.Sort("[Importance][Status]", true);
+            mailBody += "<h3>" + GENERAL_CONFIG.COMPLETED_FOLDER.Title + "</h3>";
+            mailBody += "<ul>";
+            var count = tasks.Count;
+            for (i = 1; i <= count; i++) {
+                mailBody += "<li>"
+                mailBody += "<strong>" + tasks(i).Subject + "</strong>";
+                if ( tasks(i).Importance == 2) { mailBody += "<font color=red> [H]</font>"; }
+                if ( tasks(i).Importance == 0) { mailBody += "<font color=gray> [L]</font>"; }
+                var dueDate = new Date(tasks(i).DueDate);
+                if ( moment(dueDate).isValid && moment(dueDate).year() != 4501 ) { mailBody += " [Due: " + moment(dueDate).format("DD-MMM") + "]"; }
+                if ( taskExcerpt(tasks(i).Body, 10000) ) { mailBody += " - <font color=gray><i>" + taskExcerpt(tasks(i).Body, 10000) + "</i></font>";}
+                mailBody += "<br>" + taskStatus(tasks(i).Body) + "";
                 mailBody += "</li>";
             }
             mailBody += "</ul>";
 
             // WAITING ITEMS
-            var tasks = getOutlookFolder(GENERAL_CONFIG.WAITING_FOLDER.Name, GENERAL_CONFIG.WAITING_FOLDER.Owner).Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
+            var tasks = getOutlookFolder(GENERAL_CONFIG.WAITING_FOLDER.Name, GENERAL_CONFIG.WAITING_FOLDER.Owner).Items.Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
             tasks.Sort("[Importance][Status]", true);
             mailBody += "<h3>" + GENERAL_CONFIG.WAITING_FOLDER.Title + "</h3>";
             mailBody += "<ul>";
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
-                mailBody += "<li>" + tasks(i).Subject;
-                mailBody += "<font color=gray><i>" + taskStatus(tasks(i).Body) + "</i></font>";
+                mailBody += "<li>"
+                mailBody += "<strong>" + tasks(i).Subject + "</strong>";
+                if ( tasks(i).Importance == 2) { mailBody += "<font color=red> [H]</font>"; }
+                if ( tasks(i).Importance == 0) { mailBody += "<font color=gray> [L]</font>"; }
+                var dueDate = new Date(tasks(i).DueDate);
+                if ( moment(dueDate).isValid && moment(dueDate).year() != 4501 ) { mailBody += " [Due: " + moment(dueDate).format("DD-MMM") + "]"; }
+                if ( taskExcerpt(tasks(i).Body, 10000) ) { mailBody += " - <font color=gray><i>" + taskExcerpt(tasks(i).Body, 10000) + "</i></font>";}
+                mailBody += "<br>" + taskStatus(tasks(i).Body) + "";
+                mailBody += "</li>";
+            }
+            mailBody += "</ul>";
+
+            // BACKLOG ITEMS
+            var tasks = getOutlookFolder(GENERAL_CONFIG.BACKLOG_FOLDER.Name, GENERAL_CONFIG.BACKLOG_FOLDER.Owner).Items.Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
+            tasks.Sort("[Importance][Status]", true);
+            mailBody += "<h3>" + GENERAL_CONFIG.BACKLOG_FOLDER.Title + "</h3>";
+            mailBody += "<ul>";
+            var count = tasks.Count;
+            for (i = 1; i <= count; i++) {
+                mailBody += "<li>"
+                mailBody += "<strong>" + tasks(i).Subject + "</strong>";
+                if ( tasks(i).Importance == 2) { mailBody += "<font color=red> [H]</font>"; }
+                if ( tasks(i).Importance == 0) { mailBody += "<font color=gray> [L]</font>"; }
+                var dueDate = new Date(tasks(i).DueDate);
+                if ( moment(dueDate).isValid && moment(dueDate).year() != 4501 ) { mailBody += " [Due: " + moment(dueDate).format("DD-MMM") + "]"; }
+                if ( taskExcerpt(tasks(i).Body, 10000) ) { mailBody += " - <font color=gray><i>" + taskExcerpt(tasks(i).Body, 10000) + "</i></font>";}
+                mailBody += "<br>" + taskStatus(tasks(i).Body) + "";
                 mailBody += "</li>";
             }
             mailBody += "</ul>";
@@ -250,6 +282,8 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
             if ( str.indexOf('\r\n### ') > 0 ) {
                 str = str.substring( 0, str.indexOf('\r\n###'));
             }
+            // remove empty lines
+            str = str.replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm, '');
             if (str.length > limit) {
                 str = str.substring( 0, str.lastIndexOf( ' ', limit ) );
                 str = str.replace ('\r\n', '<br>');
@@ -262,7 +296,11 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
             //str = str.replace(/(?:\r\n|\r|\n)/g, '<br>');
             if ( str.match(/### STATUS:([\s\S]*?)###/) ) {
                 var statmatch = str.match(/### STATUS:([\s\S]*?)###/);
-                str = statmatch[1].replace(/(?:\r\n|\r|\n)/g, '<br>');
+                // remove empty lines
+                str = statmatch[1].replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm, '');
+                // replace line breaks with html breaks
+                str = str.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                // remove multiple html breaks
                 str = str.replace('<br><br>', '<br>');
             } else { str = ''; }
             return str;
