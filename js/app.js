@@ -122,16 +122,42 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
         return folder;
     }
 
+    // borrowed from http://stackoverflow.com/a/30446887/942100
+    var fieldSorter = function(fields) {
+        return function (a, b) {
+            return fields
+            .map(function (o) {
+                var dir = 1;
+                if (o[0] === '-') {
+                   dir = -1;
+                   o=o.substring(1);
+                }
+                var propOfA = a[o];
+                var propOfB = b[o];
+
+                //string comparisons shall be case insensitive
+                if (typeof propOfA === "string") {
+                    propOfA = propOfA.toUpperCase();
+                    propOfB = propOfB.toUpperCase();
+                }
+
+                if (propOfA > propOfB) return dir;
+                if (propOfA < propOfB) return -(dir);
+                return 0;
+                }
+            ).reduce(function firstNonZeroValue (p,n) {
+                    return p ? p : n;
+                }, 0
+            );
+        };
+    };
+
     var getTasksFromOutlook = function (path, restrict, sort, owner) {
             var i, array = [];
             // default restriction is to get only incomplete tasks
             if (restrict === undefined) { restrict = "[Complete] = false"; }
 
             var tasks = getOutlookFolder(path, owner).Items.Restrict(restrict);
-
-            // sort tasks
-            if (sort === undefined) { sort = "[Importance]"; }
-            tasks.Sort(sort, true);
 
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
@@ -150,7 +176,14 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                 });
             };
 
-            return array;
+            // sort tasks
+            var sortKeys;
+            if (sort === undefined) { sortKeys = ["-priority"]; }
+            else { sortKeys = sort.split(","); }
+
+            var sortedTasks = array.sort(fieldSorter(sortKeys));
+
+            return sortedTasks;
     };
 
     // this is only a proof-of-concept single page report in a draft email for weekly report
