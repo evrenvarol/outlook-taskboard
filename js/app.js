@@ -1,5 +1,6 @@
 'use strict';
 
+
 var tbApp = angular.module('taskboardApp', ['taskboardApp.config', 'ui.sortable']);
 
 try {
