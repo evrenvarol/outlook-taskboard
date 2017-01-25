@@ -183,7 +183,7 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                     entryID: tasks(i).EntryID,
                     subject: tasks(i).Subject,
                     priority: tasks(i).Importance,
-                    startdate: tasks(i).StartDate,
+                    startdate: new Date(tasks(i).StartDate),
                     duedate: new Date(tasks(i).DueDate),
                     sensitivity: tasks(i).Sensitivity,
                     categories: tasks(i).Categories,
