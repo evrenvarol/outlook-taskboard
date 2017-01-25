@@ -23,6 +23,10 @@ body {
     padding: 5px 10px 10px 10px;
 }
 
+.lbl {
+	padding: 4px;
+}
+
 /*
 .panel-heading, .panel-footer {
     padding: 10px
