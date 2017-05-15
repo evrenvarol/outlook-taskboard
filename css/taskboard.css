@@ -85,6 +85,58 @@ li.task.task-completed {
     border: 1px solid #bbb;
 }
 
+.panel-default>.panel-heading-completed {
+  color: #333;
+  background-color: #E7D4EA;
+  border-color: #ddd;
+  padding-top: 5px;
+  Padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.panel-default>.panel-heading-waiting {
+  color: #333;
+  background-color: #EBDD82;
+  border-color: #ddd;
+  padding-top: 5px;
+  Padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.panel-default>.panel-heading-progress {
+  color: #333;
+  background-color: #AFCAD5;
+  border-color: #ddd;
+  padding-top: 5px;
+  Padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.panel-default>.panel-heading-next {
+  color: #333;
+  background-color: #D9E6CA;
+  border-color: #ddd;
+  padding-top: 5px;
+  Padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.panel-default>.panel-heading-todo {
+  color: #333;
+  background-color: #D0D4DC;
+  border-color: #ddd;
+  padding-top: 5px;
+  Padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+  .col-lg-2 {
+    width: 20%
+  }
 /* blue
 header: #BBDAFF;
 body: #DBEBFF;
