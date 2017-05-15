@@ -50,7 +50,7 @@
             <!-- lane #1 -->
             <div class="tasklane col-lg-2 col-md-3 col-sm-4 col-xs-6">
                 <div class="panel panel-default">
-                    <header class="panel-heading">
+                    <header class="panel-heading-todo">
                         <h5>{{ general_config.BACKLOG_FOLDER.Title }}
                             <span class="pull-right">
                                 <button class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('backlog');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
@@ -62,10 +62,11 @@
                         <li ng-repeat="task in backlogTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
-                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
+                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'MM/dd/yy' }}) </span>
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
+								<span class="glyphicon glyphicon-user-flag"></span>{{ task.owner }}
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
@@ -82,7 +83,7 @@
             <!-- lane #2 -->
             <div class="tasklane col-lg-2 col-md-3 col-sm-4 col-xs-6">
                 <div class="panel panel-default">
-                    <header class="panel-heading ">
+                    <header class="panel-heading-next">
                         <h5>{{ general_config.NEXT_FOLDER.Title  }}
                             <span class="pull-right">
                                 <button ng-if="( general_config.NEXT_FOLDER.Limit == 0 || nextTasks.length < general_config.NEXT_FOLDER.Limit )" class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('next');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
@@ -94,10 +95,12 @@
                         <li ng-repeat="task in nextTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
-                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
+                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'MM/dd/yy' }}) </span>
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
+								<div class="pull-right"> {{ task.percent }}%</div>
+								<span class="glyphicons glyphicons-user-flag">{{ task.owner }}</span>
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
@@ -114,7 +117,7 @@
             <!-- lane #3 -->
             <div class="tasklane col-lg-2 col-md-3 col-sm-4 col-xs-6">
                 <div class="panel panel-default">
-                    <header class="panel-heading">
+                    <header class="panel-heading-progress">
                         <h5>{{ general_config.INPROGRESS_FOLDER.Title }}
                             <span class="pull-right">
                                 <button ng-if="( general_config.INPROGRESS_FOLDER.Limit == 0 || inprogressTasks.length < general_config.INPROGRESS_FOLDER.Limit )" class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('inprogress');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
@@ -126,10 +129,12 @@
                         <li ng-repeat="task in inprogressTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
-                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
+                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'MM/dd/yy' }}) </span>
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
+								<div class="pull-right"> {{ task.percent }}%</div>
+								<span class="glyphicons glyphicons-user-flag">{{ task.owner }}</span>
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
@@ -145,7 +150,7 @@
 
             <div class="clearfix visible-sm-block"></div>
 
-            <!-- lane #4 -->
+            <!-- lane #4 --
             <div class="tasklane col-lg-2 col-md-3 col-sm-4 col-xs-6">
                 <div class="panel panel-default">
                     <header class="panel-heading">
@@ -160,7 +165,7 @@
                         <li ng-repeat="task in focusTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
-                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
+                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'MM/dd/yy' }}) </span>
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
@@ -178,9 +183,9 @@
             </div> <!-- lane #4 -->
 
             <!-- lane #5 -->
-            <div class="tasklane col-lg-2 col-md-3 col-sm-4 col-xs-6">
+            <div class="tasklane col-lg-2 col-md-3 col-sm-4 col-xs-5">
                 <div class="panel panel-default">
-                    <header class="panel-heading">
+                    <header class="panel-heading-waiting">
                         <h5>{{ general_config.WAITING_FOLDER.Title }}
                             <span class="pull-right">
                                 <button ng-if="( general_config.WAITING_FOLDER.Limit == 0 || waitingTasks.length < general_config.WAITING_FOLDER.Limit )" class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('waiting');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
@@ -192,16 +197,19 @@
                         <li ng-repeat="task in waitingTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
-                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
+                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'MM/dd/yy' }}) </span>
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
+							
                             <footer class="text-right">
+									<div class="pull-right"> {{ task.percent }}%</div>
+								<span class="glyphicons glyphicons-user-flag">{{ task.owner }}</span>
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
                                     <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,waitingTasks)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                                     <button ng-if="(task.oneNoteURL != '')"  class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button>
-                                </span>
+								</span>
                             </footer>
 
                         </li>
@@ -212,7 +220,7 @@
             <!-- lane #6 -->
             <div class="tasklane col-lg-2 col-md-3 col-sm-4 col-xs-6">
                 <div class="panel panel-default">
-                    <header class="panel-heading">
+                    <header class="panel-heading-completed">
                         <h5>{{ general_config.COMPLETED_FOLDER.Title }}
                             <span class="pull-right">
                                 <span class="label label-info">{{ completedTasks.length }}</span>
@@ -223,10 +231,11 @@
                         <li ng-repeat="task in completedTasks | filter:search" class="task panel task-completed" ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
-                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
+                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" class="pull-right">(Due: {{ task.duedate | date:'MM/dd/yy' }}) </span>
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
+								<span class="glyphicons glyphicons-user-flag">{{ task.owner }}</span>													
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
