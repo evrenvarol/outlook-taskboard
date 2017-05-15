@@ -8,7 +8,7 @@ Credit for this fork goes entirely to @evrenvarol. I have made a few simple chan
 3. Added Owner
 4. Added Task %
 5. Columns are no-longer drag and drop. Tasks move from column to column with the Outlook task status. 
-5.a. Must add and use a category of !Next to move a task to Next Column.
+5.a. Must add and use a category of !Next to move a task to the appropriate column.
 ----- End -----
 
 It uses the main "Tasks" folder as *Back Log* and utilizes 5 individual subfolders (InProgress, Next, Focus, Waiting and Completed) as each task lane for personal kanban workflow.
