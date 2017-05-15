@@ -1,6 +1,16 @@
 # Outlook Taskboard
 Outlook Taskboard is a kanban board style view for Outlook Tasks.
 
+----- 05/15/17 ------
+Credit for this fork goes entirely to @evrenvarol. I have made a few simple changes to suit my needs:
+1. Removed Focus Column
+2. Added CSS to color columns
+3. Added Owner
+4. Added Task %
+5. Columns are no-longer drag and drop. Tasks move from column to column with the Outlook task status. 
+5.a. Must add and use a category of !Next to move a task to Next Column.
+----- End -----
+
 It uses the main "Tasks" folder as *Back Log* and utilizes 5 individual subfolders (InProgress, Next, Focus, Waiting and Completed) as each task lane for personal kanban workflow.
 
 There are 2 ways to use the taskboard.
