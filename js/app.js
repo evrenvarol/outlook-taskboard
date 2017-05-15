@@ -27,7 +27,7 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
         $scope.backlogTasks = getTasksFromOutlook(GENERAL_CONFIG.BACKLOG_FOLDER.Name, GENERAL_CONFIG.BACKLOG_FOLDER.Restrict, GENERAL_CONFIG.BACKLOG_FOLDER.Sort, GENERAL_CONFIG.BACKLOG_FOLDER.Owner);
         $scope.inprogressTasks = getTasksFromOutlook(GENERAL_CONFIG.INPROGRESS_FOLDER.Name, GENERAL_CONFIG.INPROGRESS_FOLDER.Restrict, GENERAL_CONFIG.INPROGRESS_FOLDER.Sort, GENERAL_CONFIG.INPROGRESS_FOLDER.Owner);
         $scope.nextTasks = getTasksFromOutlook(GENERAL_CONFIG.NEXT_FOLDER.Name, GENERAL_CONFIG.NEXT_FOLDER.Restrict, GENERAL_CONFIG.NEXT_FOLDER.Sort, GENERAL_CONFIG.NEXT_FOLDER.Owner);
-        $scope.focusTasks = getTasksFromOutlook(GENERAL_CONFIG.FOCUS_FOLDER.Name, GENERAL_CONFIG.FOCUS_FOLDER.Restrict, GENERAL_CONFIG.FOCUS_FOLDER.Sort, GENERAL_CONFIG.FOCUS_FOLDER.Owner);
+//        $scope.focusTasks = getTasksFromOutlook(GENERAL_CONFIG.FOCUS_FOLDER.Name, GENERAL_CONFIG.FOCUS_FOLDER.Restrict, GENERAL_CONFIG.FOCUS_FOLDER.Sort, GENERAL_CONFIG.FOCUS_FOLDER.Owner);
         $scope.waitingTasks = getTasksFromOutlook(GENERAL_CONFIG.WAITING_FOLDER.Name, GENERAL_CONFIG.WAITING_FOLDER.Restrict, GENERAL_CONFIG.WAITING_FOLDER.Sort, GENERAL_CONFIG.WAITING_FOLDER.Owner);
         $scope.completedTasks = getTasksFromOutlook(GENERAL_CONFIG.COMPLETED_FOLDER.Name, GENERAL_CONFIG.COMPLETED_FOLDER.Restrict, GENERAL_CONFIG.COMPLETED_FOLDER.Sort, GENERAL_CONFIG.COMPLETED_FOLDER.Owner);
 
@@ -172,7 +172,10 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                     notes: taskExcerpt(tasks(i).Body, GENERAL_CONFIG.TASKNOTE_EXCERPT),
                     status: taskStatus(tasks(i).Body),
                     oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
-                    oneNoteURL: getUserProp(tasks(i), "OneNoteURL")
+                    oneNoteURL: getUserProp(tasks(i), "OneNoteURL"),
+					percent: tasks(i).PercentComplete,
+					owner: tasks(i).Owner,
+					completeddate: tasks(i).DateCompleted,
                 });
             };
 
