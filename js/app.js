@@ -84,9 +84,7 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                                         var taskitem = outlookNS.GetItemFromID(itemMoved.entryID);
 
                                         // set new status
-                                        window.alert(taskitem.Status);
                                         taskitem.Status = newstatus;
-                                        window.alert(taskitem.Status);
                                         taskitem.Save();
 
                                         // ensure the task is not moving into same folder
@@ -385,9 +383,9 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
         var taskitem = outlookNS.GetItemFromID(item.entryID);
 
         // move the task to the main "tasks" folder first (if it is not already in)
-        var tasksfolder = outlookNS.GetDefaultFolder(13);
-        if (taskitem.Parent.Name != tasksfolder.Name ) {
-            taskitem = taskitem.Move (tasksfolder);
+        var archivefolder = outlookNS.GetDefaultFolder(GENERAL_CONFIG.ARCHIVE_FOLDER.Name);
+        if (taskitem.Parent.Name != archivefolder.Name ) {
+            taskitem = taskitem.Move (archivefolder);
         };
 
         // mark it complete

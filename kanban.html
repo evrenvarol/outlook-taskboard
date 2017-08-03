@@ -60,7 +60,7 @@
                         <li ng-repeat="task in backlogTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
-                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'MM/dd/yy' }}) </span>
+                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:general_config.DATE_FORMAT }}) </span>
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
@@ -92,7 +92,7 @@
                         <li ng-repeat="task in nextTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
-                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'MM/dd/yy' }}) </span>
+                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:general_config.DATE_FORMAT }}) </span>
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
@@ -123,7 +123,7 @@
                         <li ng-repeat="task in inprogressTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
-                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'MM/dd/yy' }}) </span>
+                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:general_config.DATE_FORMAT }}) </span>
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
@@ -156,7 +156,7 @@
                         <li ng-repeat="task in waitingTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
-                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'MM/dd/yy' }}) </span>
+                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:general_config.DATE_FORMAT }}) </span>
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
 							
@@ -188,7 +188,7 @@
                         <li ng-repeat="task in completedTasks | filter:search" class="task panel task-completed" ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
-                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" class="pull-right">(Due: {{ task.duedate | date:'MM/dd/yy' }}) </span>
+                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" class="pull-right">(Due: {{ task.duedate | date:general_config.DATE_FORMAT }}) </span>
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">

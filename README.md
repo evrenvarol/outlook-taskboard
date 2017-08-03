@@ -8,6 +8,7 @@ I took BillyMcSkintos' fork of this project as a starting point and made the fol
 3. Use new folder 'Kanban' for all the current work: Next, InProgress, Waiting and Done
 4. Removed + at InProgress and Waiting lanes. Tasks can only be added to Backlog and Next
 5. Drag and drop now sets the new status
+6. Introduced date format in config file
 
 ----- End -----
 
