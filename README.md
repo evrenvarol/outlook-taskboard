@@ -1,6 +1,12 @@
 # Outlook Taskboard
 Outlook Taskboard is a kanban board style view for Outlook Tasks.
 
+----- aug 2017 ------
+I took BillyMcSkintos' fork of this project as a starting point and made the following changes:
+1. Removed Owner
+----- End -----
+
+
 ----- 05/15/17 ------
 Credit for this fork goes entirely to @evrenvarol. I have made a few simple changes to suit my needs:
 1. Removed Focus Column

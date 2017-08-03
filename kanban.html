@@ -66,7 +66,6 @@
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
-								<span class="glyphicon glyphicon-user-flag"></span>{{ task.owner }}
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
@@ -100,7 +99,6 @@
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
 								<div class="pull-right"> {{ task.percent }}%</div>
-								<span class="glyphicons glyphicons-user-flag">{{ task.owner }}</span>
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
@@ -134,7 +132,6 @@
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
 								<div class="pull-right"> {{ task.percent }}%</div>
-								<span class="glyphicons glyphicons-user-flag">{{ task.owner }}</span>
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
@@ -150,40 +147,6 @@
 
             <div class="clearfix visible-sm-block"></div>
 		
-		<!-- added a comment to check the weird behavior in Outlook -->
-
-            <!-- lane #4 --
-            <div class="tasklane col-lg-2 col-md-3 col-sm-4 col-xs-6">
-                <div class="panel panel-default">
-                    <header class="panel-heading">
-                        <h5>{{ general_config.FOCUS_FOLDER.Title  }}
-                            <span class="pull-right">
-                                <button ng-if="( general_config.FOCUS_FOLDER.Limit == 0 || focusTasks.length < general_config.FOCUS_FOLDER.Limit )" class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('focus');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-                                <span class="label label-info">{{ focusTasks.length }}</span> <span ng-if="( general_config.FOCUS_FOLDER.Limit > 0 )" class="label label-primary">{{ general_config.FOCUS_FOLDER.Limit }}</span>
-                            </span>
-                        </h5>
-                    </header>
-                    <ul id="focusList" ui-sortable="sortableOptions" ng-model="focusTasks" class="panel-body tasklist list-unstyled">
-                        <li ng-repeat="task in focusTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
-                            <header class="panel-heading">
-                                {{ task.subject }}
-                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'MM/dd/yy' }}) </span>
-                            </header>
-                            <div class="panel-body"> {{ task.notes }} </div>
-                            <footer class="text-right">
-                                <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
-                                <span class="btn-group btn-group-xs">
-                                    <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-                                    <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,focusTasks)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-                                    <button ng-if="(task.oneNoteURL != '')"  class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button>
-                                </span>
-                            </footer>
-
-                        </li>
-                    </ul>
-                </div>
-            </div> <!-- lane #4 -->
-
             <!-- lane #5 -->
             <div class="tasklane col-lg-2 col-md-3 col-sm-4 col-xs-5">
                 <div class="panel panel-default">
@@ -205,7 +168,6 @@
 							
                             <footer class="text-right">
 									<div class="pull-right"> {{ task.percent }}%</div>
-								<span class="glyphicons glyphicons-user-flag">{{ task.owner }}</span>
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
@@ -237,7 +199,6 @@
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
-								<span class="glyphicons glyphicons-user-flag">{{ task.owner }}</span>													
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>

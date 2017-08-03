@@ -10,13 +10,11 @@ var config_data = {
     // Limit: hard limits for each task lane. 0 = no limit
     // Sort: Sort order for tasks (default = priority), can state multiple sort keys separated by comma, use '-' to sort descending, Example "duedate,-priority,subject"
     // Restrict: Restrict certain tasks (default = only show incomplete tasks) (More info = https://msdn.microsoft.com/en-us/library/office/ff869597.aspx)
-    // Owner: If the task folder is shared by someone else, enter the name of the owner. (i.e. Evren Varol)
-    'BACKLOG_FOLDER':       { Name: '', Title: 'TODO', Limit: 0, Sort: "-priority", Restrict: "[Status] = 'Not Started' And Not([Categories] = '!Next')", Owner: '' },
-    'INPROGRESS_FOLDER': 	{ Name: '', Title: 'IN PROGRESS', Limit: 0, Sort: "-priority", Restrict: "[Status] = 'In Progress'", Owner: ''},
-    'NEXT_FOLDER': 			{ Name: '', Title: 'NEXT', Limit: 0, Sort: "duedate,-priority", Restrict: "[Categories] = '!Next' AND [Status] = 'Not Started'" , Owner: ''},
-    //'FOCUS_FOLDER': 		{ Name: 'Focus', Title: 'FOCUS', Limit: 0, Sort: "-priority", Restrict: "[Complete] = false", Owner: '' },
-    'WAITING_FOLDER': 		{ Name: '', Title: 'WAITING', Limit: 0, Sort: "-priority", Restrict: "[Status] = 'Waiting on someone else'", Owner: '' },
-    'COMPLETED_FOLDER':     { Name: '', Title: 'COMPLETED', Limit: 0, Sort: "-completeddate,-priority,subject", Restrict: "[Complete] = true " , Owner: '' },
+    'BACKLOG_FOLDER':       { Name: '', Title: 'TODO', Limit: 0, Sort: "-priority", Restrict: "[Status] = 'Not Started' And Not([Categories] = '!Next')"},
+    'INPROGRESS_FOLDER': 	{ Name: '', Title: 'IN PROGRESS', Limit: 0, Sort: "-priority", Restrict: "[Status] = 'In Progress'"},
+    'NEXT_FOLDER': 			{ Name: '', Title: 'NEXT', Limit: 0, Sort: "duedate,-priority", Restrict: "[Categories] = '!Next' AND [Status] = 'Not Started'"},
+    'WAITING_FOLDER': 		{ Name: '', Title: 'WAITING', Limit: 0, Sort: "-priority", Restrict: "[Status] = 'Waiting on someone else'"},
+    'COMPLETED_FOLDER':     { Name: '', Title: 'COMPLETED', Limit: 0, Sort: "-completeddate,-priority,subject", Restrict: "[Complete] = true "},
 
     // Task Note Excerpt Size
     // number of chars for each task note
