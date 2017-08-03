@@ -87,6 +87,7 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                                         window.alert(taskitem.Status);
                                         taskitem.Status = newstatus;
                                         window.alert(taskitem.Status);
+                                        taskitem.Save();
 
                                         // ensure the task is not moving into same folder
                                         if (taskitem.Parent.Name != tasksfolder.Name ) {
