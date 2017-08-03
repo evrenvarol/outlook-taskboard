@@ -98,7 +98,6 @@
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
-								<div class="pull-right"> {{ task.percent }}%</div>
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
@@ -131,7 +130,6 @@
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
-								<div class="pull-right"> {{ task.percent }}%</div>
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
@@ -167,7 +165,6 @@
                             <div class="panel-body"> {{ task.notes }} </div>
 							
                             <footer class="text-right">
-									<div class="pull-right"> {{ task.percent }}%</div>
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>

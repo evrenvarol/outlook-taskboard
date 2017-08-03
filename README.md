@@ -4,6 +4,9 @@ Outlook Taskboard is a kanban board style view for Outlook Tasks.
 ----- aug 2017 ------
 I took BillyMcSkintos' fork of this project as a starting point and made the following changes:
 1. Removed Owner
+2. Tasks folder is now the Backlog folder
+3. Use new folder 'Kanban' for all the current work: Next, InProgress, Waiting and Done
+
 ----- End -----
 
 

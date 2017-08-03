@@ -156,7 +156,6 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                     status: taskStatus(tasks(i).Body),
                     oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
                     oneNoteURL: getUserProp(tasks(i), "OneNoteURL"),
-					percent: tasks(i).PercentComplete,
 					completeddate: tasks(i).DateCompleted,
                 });
             };
