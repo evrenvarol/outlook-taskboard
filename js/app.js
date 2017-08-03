@@ -83,6 +83,11 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                                         //var taskitem = outlookNS.GetItemFromID(ui.item.sortable.model.entryID);
                                         var taskitem = outlookNS.GetItemFromID(itemMoved.entryID);
 
+                                        // set new status
+                                        window.alert(taskitem.Status);
+                                        taskitem.Status = newstatus;
+                                        window.alert(taskitem.Status);
+
                                         // ensure the task is not moving into same folder
                                         if (taskitem.Parent.Name != tasksfolder.Name ) {
                                             // move the task item
@@ -92,9 +97,6 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                                             // https://msdn.microsoft.com/en-us/library/office/ff868618.aspx
                                             itemMoved.entryID = taskitem.EntryID;
                                         }
-
-                                        // set new status
-                                        taskitem.Status = newstatus;
                                     }
 
                 }
