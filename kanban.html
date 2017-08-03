@@ -31,8 +31,6 @@
                     <div class="input-group-addon">
                         <button class="btn btn-default btn-xs" aria-label="Refresh" type="button" onclick="window.location.reload();"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                     </div>
-
-                    <!--<div class="input-group-addon"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></div>-->
                     <div ng-show="(search != undefined)" class="input-group-addon">
                         <button class="btn btn-default btn-xs" aria-label="Clear" type="button" ng-click="search = undefined"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                     </div>
@@ -47,7 +45,7 @@
         <!-- tasklanes section -->
         <section class="row">
 
-            <!-- lane #1 -->
+            <!-- backlog lane -->
             <div class="tasklane col-lg-2 col-md-3 col-sm-4 col-xs-6">
                 <div class="panel panel-default">
                     <header class="panel-heading-todo">
@@ -76,10 +74,10 @@
                         </li>
                     </ul>
                 </div>
-            </div> <!-- lane #1 -->
+            </div> <!-- backlog lane  -->
 
 
-            <!-- lane #2 -->
+            <!-- next lane -->
             <div class="tasklane col-lg-2 col-md-3 col-sm-4 col-xs-6">
                 <div class="panel panel-default">
                     <header class="panel-heading-next">
@@ -109,15 +107,14 @@
                         </li>
                     </ul>
                 </div>
-            </div> <!-- lane #2 -->
+            </div> <!-- next lane -->
 
-            <!-- lane #3 -->
+            <!-- inprogress lane -->
             <div class="tasklane col-lg-2 col-md-3 col-sm-4 col-xs-6">
                 <div class="panel panel-default">
                     <header class="panel-heading-progress">
                         <h5>{{ general_config.INPROGRESS_FOLDER.Title }}
                             <span class="pull-right">
-                                <button ng-if="( general_config.INPROGRESS_FOLDER.Limit == 0 || inprogressTasks.length < general_config.INPROGRESS_FOLDER.Limit )" class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('inprogress');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                                 <span class="label label-info">{{ inprogressTasks.length }}</span> <span ng-if="( general_config.INPROGRESS_FOLDER.Limit > 0 )" class="label label-primary">{{ general_config.INPROGRESS_FOLDER.Limit }}</span>
                             </span>
                         </h5>
@@ -141,17 +138,16 @@
                         </li>
                     </ul>
                 </div>
-            </div> <!-- lane #3 -->
+            </div> <!-- inprogress lane -->
 
             <div class="clearfix visible-sm-block"></div>
 		
-            <!-- lane #5 -->
+            <!-- waiting lane -->
             <div class="tasklane col-lg-2 col-md-3 col-sm-4 col-xs-5">
                 <div class="panel panel-default">
                     <header class="panel-heading-waiting">
                         <h5>{{ general_config.WAITING_FOLDER.Title }}
                             <span class="pull-right">
-                                <button ng-if="( general_config.WAITING_FOLDER.Limit == 0 || waitingTasks.length < general_config.WAITING_FOLDER.Limit )" class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('waiting');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                                 <span class="label label-info">{{ waitingTasks.length }}</span> <span ng-if="( general_config.WAITING_FOLDER.Limit > 0 )" class="label label-primary">{{ general_config.WAITING_FOLDER.Limit }}</span>
                             </span>
                         </h5>
@@ -176,9 +172,9 @@
                         </li>
                     </ul>
                 </div>
-            </div> <!-- lane #5 -->
+            </div> <!-- waiting lane -->
 
-            <!-- lane #6 -->
+            <!-- completed lane -->
             <div class="tasklane col-lg-2 col-md-3 col-sm-4 col-xs-6">
                 <div class="panel panel-default">
                     <header class="panel-heading-completed">
@@ -208,7 +204,7 @@
                         </li>
                     </ul>
                 </div>
-            </div> <!-- lane #6 -->
+            </div> <!-- completed lane -->
 
         </section>
 
