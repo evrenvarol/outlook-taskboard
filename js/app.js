@@ -58,20 +58,24 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                                         // ui.item.sortable.droptarget[0].id represents the id of the target list
                                         switch (ui.item.sortable.droptarget[0].id) {
                                             case 'backlogList':
-                                                    //var tasksfolder = outlookNS.GetDefaultFolder(13);
                                                     var tasksfolder = getOutlookFolder(GENERAL_CONFIG.BACKLOG_FOLDER.Name);
-                                                    break;
-                                            case 'inprogressList':
-                                                    var tasksfolder = getOutlookFolder(GENERAL_CONFIG.INPROGRESS_FOLDER.Name);
+                                                    var newstatus = 0; // 'Not Started';
                                                     break;
                                             case 'nextList':
                                                     var tasksfolder = getOutlookFolder(GENERAL_CONFIG.NEXT_FOLDER.Name);
+                                                    var newstatus = 0; // 'Not Started';
+                                                    break;
+                                            case 'inprogressList':
+                                                    var tasksfolder = getOutlookFolder(GENERAL_CONFIG.INPROGRESS_FOLDER.Name);
+                                                    var newstatus = 1; // 'In Progress';
                                                     break;
                                             case 'waitingList':
                                                     var tasksfolder = getOutlookFolder(GENERAL_CONFIG.WAITING_FOLDER.Name);
+                                                    var newstatus = 3; // 'Waiting on someone else';
                                                     break;
                                             case 'completedList':
                                                     var tasksfolder = getOutlookFolder(GENERAL_CONFIG.COMPLETED_FOLDER.Name);
+                                                    var newstatus = 2; //'Completed';
                                                     break;
                                         };
 
@@ -88,6 +92,9 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                                             // https://msdn.microsoft.com/en-us/library/office/ff868618.aspx
                                             itemMoved.entryID = taskitem.EntryID;
                                         }
+
+                                        // set new status
+                                        taskitem.Status = newstatus;
                                     }
 
                 }
