@@ -388,10 +388,7 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
             taskitem = taskitem.Move (archivefolder);
         };
 
-        // mark it complete
-        taskitem.MarkComplete();
-
-        // locate and remove the item from the array
+        // locate and remove the item from the screen
         var index = sourceArray.indexOf(item);
         sourceArray.splice(index, 1);
     };
