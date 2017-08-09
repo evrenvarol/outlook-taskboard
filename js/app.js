@@ -83,9 +83,11 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                                         //var taskitem = outlookNS.GetItemFromID(ui.item.sortable.model.entryID);
                                         var taskitem = outlookNS.GetItemFromID(itemMoved.entryID);
 
-                                        // set new status
-                                        taskitem.Status = newstatus;
-                                        taskitem.Save();
+                                        // set new status, if different
+                                        if (taskitem.Status != newstatus) {
+                                            taskitem.Status = newstatus;
+                                            taskitem.Save();
+                                        }
 
                                         // ensure the task is not moving into same folder
                                         if (taskitem.Parent.Name != tasksfolder.Name ) {
