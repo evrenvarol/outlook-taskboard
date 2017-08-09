@@ -376,14 +376,14 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
         };
     };
 
-    // moves the task item back to tasks folder and marks it as complete
+    // moves the task item to the archive folder and marks it as complete
     // also removes it from the model data
     $scope.archiveTask = function(item, sourceArray){
         // locate the task in outlook namespace by using unique entry id
         var taskitem = outlookNS.GetItemFromID(item.entryID);
 
-        // move the task to the main "tasks" folder first (if it is not already in)
-        var archivefolder = outlookNS.GetDefaultFolder(GENERAL_CONFIG.ARCHIVE_FOLDER.Name);
+        // move the task to the archive folder first (if it is not already in)
+        var archivefolder = getOutlookFolder(GENERAL_CONFIG.ARCHIVE_FOLDER.Name);
         if (taskitem.Parent.Name != archivefolder.Name ) {
             taskitem = taskitem.Move (archivefolder);
         };
