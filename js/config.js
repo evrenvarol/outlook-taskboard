@@ -2,7 +2,7 @@ var tbConfig = angular.module('taskboardApp.config', []);
 
 var config_data = {
 
-   'GENERAL_CONFIG': {
+   'CONFIG': {
 
   	// Outlook Task folders
     // Name: Name of the task folder
@@ -25,7 +25,15 @@ var config_data = {
     // Default task template
     'TASK_TEMPLATE':        '\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### ISSUES:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n',
 
-    'DATE_FORMAT': 'dd-MMM'
+    'DATE_FORMAT': 'dd-MMM',
+
+    // Outlook task statuses
+    'STATUS': {
+    'NOT_STARTED': { Value: 0, Text: "Not Started"},
+    'IN_PROGRESS': { Value: 1, Text: "In Progress"},
+    'WAITING'    : { Value: 3, Text: "Waiting For Someone Else"},
+    'COMPLETED'  : { Value: 2, Text: "Completed"}
+  },
   }
 };
 
