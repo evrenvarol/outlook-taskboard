@@ -101,20 +101,15 @@ tbApp.controller('taskboardController', function ($scope, CONFIG) {
                 };
 
                 // locate the task in outlook namespace by using unique entry id
-                alert('moved - ' + stringify(ui.item.sortable.moved));
 
 
                 var taskitem = outlookNS.GetItemFromID(ui.item.sortable.model.entryID);
-                    alert(taskitem.Subject + "/" + taskStatus( taskitem.Status));
 
                 // set new status, if different
                 if (taskitem.Status != newstatus) {
-                    alert("1a " + taskitem.EntryID);
-                    alert(taskitem.Subject + "/" + taskStatus( taskitem.Status));
                     taskitem.Status = newstatus;
                     ui.item.sortable.model.status = taskStatus(newstatus);
                     taskitem.Save();
-                    alert(taskitem.Subject + "/" + taskStatus( taskitem.Status));
                 }
 
                 // ensure the task is not moving into same folder
