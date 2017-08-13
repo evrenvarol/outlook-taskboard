@@ -34,7 +34,7 @@
                     <div ng-show="(search != undefined)" class="input-group-addon">
                         <button class="btn btn-default btn-xs" aria-label="Clear" type="button" ng-click="search = undefined"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                     </div>
-                    <input type="text" name="search" ng-model="search" class="form-control" placeholder="Filter" ng-change="filterTasks();" />
+                    <input type="text" name="search" ng-model="search" class="form-control" placeholder="Filter" />
                     <div class="input-group-addon">
                         <button class="btn btn-default btn-xs" aria-label="Report" type="button" ng-click="createReport();"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></button>
                     </div>
@@ -67,7 +67,7 @@
                                 <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span><strong> {{ task.categories }}</strong></div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-                                    <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,backlogTasks)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                    <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,backlogTasks,filteredBacklogTasks)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                                     <button ng-if="(task.oneNoteURL != '')"  class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button>
                                 </span>
                             </footer>
@@ -99,7 +99,7 @@
                                 <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span><strong> {{ task.categories }}</strong></div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-                                    <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,nextTasks)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                    <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,nextTasks,filteredNextTasks)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                                     <button ng-if="(task.oneNoteURL != '')"  class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button>
                                 </span>
                             </footer>
@@ -130,7 +130,7 @@
                                 <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span><strong> {{ task.categories }}</strong></div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-                                    <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,inprogressTasks)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                    <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,inprogressTasks,filteredInprogressTasks)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                                     <button ng-if="(task.oneNoteURL != '')"  class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button>
                                 </span>
                             </footer>
@@ -164,7 +164,7 @@
                                 <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span><strong> {{ task.categories }}</strong></div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-                                    <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,waitingTasks)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                    <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,waitingTasks,filteredWaitingTasks)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                                     <button ng-if="(task.oneNoteURL != '')"  class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button>
 								</span>
                             </footer>
@@ -195,8 +195,8 @@
                                 <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span><strong> {{ task.categories }}</strong></div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-                                    <button class="btn btn-default btn-xs" aria-label="Archive" type="button" ng-click="archiveTask(task,completedTasks)"><span class="glyphicon glyphicon-check" aria-hidden="true"></span></button>
-                                    <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,completedTasks)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                    <button class="btn btn-default btn-xs" aria-label="Archive" type="button" ng-click="archiveTask(task,completedTasks,filteredCompletedTasks)"><span class="glyphicon glyphicon-check" aria-hidden="true"></span></button>
+                                    <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,completedTasks,filteredCompletedTasks)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                                     <button ng-if="(task.oneNoteURL != '')"  class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button>
                                 </span>
                             </footer>

@@ -84,49 +84,49 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
             stop: function (e, ui) {
                 // locate the target folder in outlook
                 // ui.item.sortable.droptarget[0].id represents the id of the target list
-                switch (ui.item.sortable.droptarget[0].id) {
-                    case 'backlogList':
-                        var tasksfolder = getOutlookFolder(CONFIG.BACKLOG_FOLDER.Name);
-                        var newstatus = CONFIG.STATUS.NOT_STARTED.Value;
-                        break;
-                    case 'nextList':
-                        var tasksfolder = getOutlookFolder(CONFIG.NEXT_FOLDER.Name);
-                        var newstatus = CONFIG.STATUS.NOT_STARTED.Value;
-                        break;
-                    case 'inprogressList':
-                        var tasksfolder = getOutlookFolder(CONFIG.INPROGRESS_FOLDER.Name);
-                        var newstatus = CONFIG.STATUS.IN_PROGRESS.Value;
-                        break;
-                    case 'waitingList':
-                        var tasksfolder = getOutlookFolder(CONFIG.WAITING_FOLDER.Name);
-                        var newstatus = CONFIG.STATUS.WAITING.Value;
-                        break;
-                    case 'completedList':
-                        var tasksfolder = getOutlookFolder(CONFIG.COMPLETED_FOLDER.Name);
-                        var newstatus = CONFIG.STATUS.COMPLETED.Value
-                        break;
-                };
+                if (ui.item.sortable.droptarget) { // check if it is dropped on a valid target
+                    switch (ui.item.sortable.droptarget[0].id) {
+                        case 'backlogList':
+                            var tasksfolder = getOutlookFolder(CONFIG.BACKLOG_FOLDER.Name);
+                            var newstatus = CONFIG.STATUS.NOT_STARTED.Value;
+                            break;
+                        case 'nextList':
+                            var tasksfolder = getOutlookFolder(CONFIG.NEXT_FOLDER.Name);
+                            var newstatus = CONFIG.STATUS.NOT_STARTED.Value;
+                            break;
+                        case 'inprogressList':
+                            var tasksfolder = getOutlookFolder(CONFIG.INPROGRESS_FOLDER.Name);
+                            var newstatus = CONFIG.STATUS.IN_PROGRESS.Value;
+                            break;
+                        case 'waitingList':
+                            var tasksfolder = getOutlookFolder(CONFIG.WAITING_FOLDER.Name);
+                            var newstatus = CONFIG.STATUS.WAITING.Value;
+                            break;
+                        case 'completedList':
+                            var tasksfolder = getOutlookFolder(CONFIG.COMPLETED_FOLDER.Name);
+                            var newstatus = CONFIG.STATUS.COMPLETED.Value
+                            break;
+                    };
 
-                // locate the task in outlook namespace by using unique entry id
+                    // locate the task in outlook namespace by using unique entry id
+                    var taskitem = outlookNS.GetItemFromID(ui.item.sortable.model.entryID);
 
+                    // set new status, if different
+                    if (taskitem.Status != newstatus) {
+                        taskitem.Status = newstatus;
+                        ui.item.sortable.model.status = taskStatus(newstatus);
+                        taskitem.Save();
+                    }
 
-                var taskitem = outlookNS.GetItemFromID(ui.item.sortable.model.entryID);
+                    // ensure the task is not moving into same folder
+                    if (taskitem.Parent.Name != tasksfolder.Name) {
+                        // move the task item
+                        taskitem = taskitem.Move(tasksfolder);
 
-                // set new status, if different
-                if (taskitem.Status != newstatus) {
-                    taskitem.Status = newstatus;
-                    ui.item.sortable.model.status = taskStatus(newstatus);
-                    taskitem.Save();
-                }
-
-                // ensure the task is not moving into same folder
-                if (taskitem.Parent.Name != tasksfolder.Name) {
-                    // move the task item
-                    taskitem = taskitem.Move(tasksfolder);
-
-                    // update entryID with new one (entryIDs get changed after move)
-                    // https://msdn.microsoft.com/en-us/library/office/ff868618.aspx
-                    ui.item.sortable.model.entryID = taskitem.EntryID;
+                        // update entryID with new one (entryIDs get changed after move)
+                        // https://msdn.microsoft.com/en-us/library/office/ff868618.aspx
+                        ui.item.sortable.model.entryID = taskitem.EntryID;
+                    }
                 }
             }
         };
@@ -408,15 +408,17 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
             var taskitem = outlookNS.GetItemFromID(item.entryID);
             taskitem.Delete();
 
-            // locate and remove the item from the array
+            // locate and remove the item from the models
             var index = sourceArray.indexOf(item);
             sourceArray.splice(index, 1);
+            index = filteredSourceArray.indexOf(item);
+            filteredSourceArray.splice(index, 1);
         };
     };
 
     // moves the task item to the archive folder and marks it as complete
     // also removes it from the model data
-    $scope.archiveTask = function (item, sourceArray) {
+    $scope.archiveTask = function (item, sourceArray, filteredSourceArray) {
         // locate the task in outlook namespace by using unique entry id
         var taskitem = outlookNS.GetItemFromID(item.entryID);
 
@@ -426,9 +428,11 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
             taskitem = taskitem.Move(archivefolder);
         };
 
-        // locate and remove the item from the screen
+        // locate and remove the item from the models
         var index = sourceArray.indexOf(item);
         sourceArray.splice(index, 1);
+        index = filteredSourceArray.indexOf(item);
+        filteredSourceArray.splice(index, 1);
     };
 
     // checks whether the task date is overdue or today
