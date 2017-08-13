@@ -34,7 +34,7 @@
                     <div ng-show="(search != undefined)" class="input-group-addon">
                         <button class="btn btn-default btn-xs" aria-label="Clear" type="button" ng-click="search = undefined"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                     </div>
-                    <input type="text" name="search" ng-model="search" class="form-control" placeholder="Filter" />
+                    <input type="text" name="search" ng-model="search" class="form-control" placeholder="Filter" ng-change="filterTasks();" />
                     <div class="input-group-addon">
                         <button class="btn btn-default btn-xs" aria-label="Report" type="button" ng-click="createReport();"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></button>
                     </div>
@@ -56,8 +56,8 @@
                             </span>
                         </h5>
                     </header>
-                    <ul id="backlogList" ui-sortable="sortableOptions" ng-model="backlogTasks" class="panel-body tasklist list-unstyled">
-                        <li ng-repeat="task in backlogTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
+                    <ul id="backlogList" ui-sortable="sortableOptions" ng-model="filteredBacklogTasks" class="panel-body tasklist list-unstyled">
+                        <li ng-repeat="task in filteredBacklogTasks" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:config.DATE_FORMAT }}) </span>
@@ -88,8 +88,8 @@
                             </span>
                         </h5>
                     </header>
-                    <ul id="nextList" ui-sortable="sortableOptions" ng-model="nextTasks" class="panel-body tasklist list-unstyled">
-                        <li ng-repeat="task in nextTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
+                    <ul id="nextList" ui-sortable="sortableOptions" ng-model="filteredNextTasks" class="panel-body tasklist list-unstyled">
+                        <li ng-repeat="task in filteredNextTasks" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:config.DATE_FORMAT }}) </span>
@@ -119,8 +119,8 @@
                             </span>
                         </h5>
                     </header>
-                    <ul id="inprogressList" ui-sortable="sortableOptions" ng-model="inprogressTasks" class="panel-body tasklist list-unstyled">
-                        <li ng-repeat="task in inprogressTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
+                    <ul id="inprogressList" ui-sortable="sortableOptions" ng-model="filteredInprogressTasks" class="panel-body tasklist list-unstyled">
+                        <li ng-repeat="task in filteredInprogressTasks" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:config.DATE_FORMAT }}) </span>
@@ -152,8 +152,8 @@
                             </span>
                         </h5>
                     </header>
-                    <ul id="waitingList" ui-sortable="sortableOptions" ng-model="waitingTasks" class="panel-body tasklist list-unstyled">
-                        <li ng-repeat="task in waitingTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
+                    <ul id="waitingList" ui-sortable="sortableOptions" ng-model="filteredWaitingTasks" class="panel-body tasklist list-unstyled">
+                        <li ng-repeat="task in filteredWaitingTasks" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:config.DATE_FORMAT }}) </span>

@@ -42,7 +42,7 @@ function serializer(replacer, cycleReplacer) {
     }
 }
 
-tbApp.controller('taskboardController', function ($scope, CONFIG) {
+tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
     $scope.init = function () {
 
@@ -54,6 +54,13 @@ tbApp.controller('taskboardController', function ($scope, CONFIG) {
         $scope.nextTasks = getTasksFromOutlook(CONFIG.NEXT_FOLDER.Name, CONFIG.NEXT_FOLDER.Restrict, CONFIG.NEXT_FOLDER.Sort);
         $scope.waitingTasks = getTasksFromOutlook(CONFIG.WAITING_FOLDER.Name, CONFIG.WAITING_FOLDER.Restrict, CONFIG.WAITING_FOLDER.Sort);
         $scope.completedTasks = getTasksFromOutlook(CONFIG.COMPLETED_FOLDER.Name, CONFIG.COMPLETED_FOLDER.Restrict, CONFIG.COMPLETED_FOLDER.Sort);
+
+        // copy the lists as the initial filter    
+        $scope.filteredBacklogTasks = $scope.backlogTasks;
+        $scope.filteredInprogressTasks = $scope.inprogressTasks;
+        $scope.filteredNextTasks = $scope.nextTasks;
+        $scope.filteredWaitingTasks = $scope.waitingTasks;
+        $scope.filteredCompletedTasks = $scope.completedTasks;
 
         // ui-sortable options and events
         $scope.sortableOptions = {
@@ -123,6 +130,19 @@ tbApp.controller('taskboardController', function ($scope, CONFIG) {
                 }
             }
         };
+
+        // watch search filter and apply it
+        $scope.$watch('search', function (val) {
+            if (val) {
+                $scope.filteredBacklogTasks = $filter('filter')($scope.backlogTasks, val);
+                $scope.filteredNextTasks = $filter('filter')($scope.nextTasks, val);
+                $scope.filteredInprogressTasks = $filter('filter')($scope.inprogressTasks, val);
+                $scope.filteredWaitingTasks = $filter('filter')($scope.waitingTasks, val);
+                $scope.filteredCompletedTasks = $filter('filter')($scope.completedTasks, val);
+            }
+        });
+
+
     };
 
     var getOutlookFolder = function (folderpath) {
