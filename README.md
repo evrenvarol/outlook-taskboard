@@ -6,9 +6,10 @@ I took BillyMcSkintos' fork of this project as a starting point and made the fol
 1. Removed Owner and Percentage
 2. Tasks folder is now the Backlog folder
 3. Use new folder 'Kanban' for all the current work: Next, InProgress, Waiting and Done
-4. Removed + at InProgress and Waiting lanes. Tasks can only be added to Backlog and Next
+4. Removed Add button at InProgress and Waiting lanes. Tasks can only be added to Backlog and Next
 5. Drag and drop now sets the new status
 6. Introduced date format in config file
+7. Drag&Drop now also works properly when filter is active
 
 ----- End -----
 
