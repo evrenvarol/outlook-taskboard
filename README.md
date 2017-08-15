@@ -8,13 +8,13 @@ There are 2 ways to use the taskboard.
   1. Outlook Folder Home Page (recommended)
   2. Directly from Internet Explorer
 
-![Outlook Taskboard] (http://evrenvarol.github.io/outlook-taskboard/img/outlook-taskboard.png)
+![Outlook Taskboard](http://evrenvarol.github.io/outlook-taskboard/img/outlook-taskboard.png)
 
 ### Moving Tasks between task lanes
-![Moving Tasks] (http://evrenvarol.github.io/outlook-taskboard/img/task-drag.gif)
+![Moving Tasks](http://evrenvarol.github.io/outlook-taskboard/img/task-drag.gif)
 
 ### Filtering Tasks
-![Filtering] (http://evrenvarol.github.io/outlook-taskboard/img/task-filter.gif)
+![Filtering](http://evrenvarol.github.io/outlook-taskboard/img/task-filter.gif)
 
 ### Platforms supported
 Only tested with Outlook 2013 and 2016 running on Windows 8.1/10.
@@ -29,7 +29,7 @@ The taskboard can also be opened in Internet Explorer. Due to limitations with A
 
 2. In Outlook, create following folder structure under your Tasks folder (it is easier to use the *Folders* view to create these folders):
 
-    ![Tasks Folders] (http://evrenvarol.github.io/outlook-taskboard/img/task-folders.png)
+    ![Tasks Folders](http://evrenvarol.github.io/outlook-taskboard/img/task-folders.png)
 
 3. For Outlook Home page:
 
@@ -41,7 +41,7 @@ The taskboard can also be opened in Internet Explorer. Due to limitations with A
 
   * Click to select the *Show home page by default for this folder* check box and then click **OK**.
 
-      ![Folder Home Page Offline Warning] (http://evrenvarol.github.io/outlook-taskboard/img/folder-home-page-offline-warning.png)
+      ![Folder Home Page Offline Warning](http://evrenvarol.github.io/outlook-taskboard/img/folder-home-page-offline-warning.png)
 
       <sub>*If you receive above warning, simply click X icon to close both warning prompt and the Properties window.*</sub>
 
@@ -49,7 +49,7 @@ The taskboard can also be opened in Internet Explorer. Due to limitations with A
 
   * Open Internet Explorer and go to *Tools > Internet Options > Security tab*. Select the **Local Intranet Zone** and click on the **Custom Level** button. Ensure the "Initialize and script ActiveX controls not marked as safe for scripting" option is set to **Enabled**
 
-  ![IE Local Intranet Zone Setting] (http://evrenvarol.github.io/outlook-taskboard/img/ie-localintranet-activexscript-enable.png)
+  ![IE Local Intranet Zone Setting](http://evrenvarol.github.io/outlook-taskboard/img/ie-localintranet-activexscript-enable.png)
 
   * Double-click on the **kanban-ie.html** file to open the page in Internet Explorer.
 
@@ -71,7 +71,7 @@ The configuration file (config.js) under the *js* folder can be edited to custom
 
 ### Task Lane Limits
 
-![Task Lane Limits] (http://evrenvarol.github.io/outlook-taskboard/img/tasklane-limits.png)
+![Task Lane Limits](http://evrenvarol.github.io/outlook-taskboard/img/tasklane-limits.png)
 
 ```javascript
     'INPROGRESS_FOLDER':   { Name: 'InProgress', Title: 'IN PROGRESS', Limit: 5, Sort: "[Importance]", Restrict: "[Complete] = false", Owner: ''},
@@ -100,7 +100,7 @@ By default, the tasks are sorted by *priority*.
 
 ### Task Template
 
-![Task Template] (http://evrenvarol.github.io/outlook-taskboard/img/task-template.png)
+![Task Template](http://evrenvarol.github.io/outlook-taskboard/img/task-template.png)
 
 When a task created using the **Add** button on task lanes, a new task created with a default template.
 
