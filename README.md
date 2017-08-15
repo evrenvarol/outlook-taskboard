@@ -10,6 +10,7 @@ I took BillyMcSkintos' fork of this project as a starting point and made the fol
 5. Drag and drop now sets the new status
 6. Introduced date format in config file
 7. Drag&Drop now also works properly when filter is active
+8. Use another icon for archiving of completed icons, for better difference from the edit icon 
 
 ----- End -----
 

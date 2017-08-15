@@ -47,6 +47,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
     $scope.init = function () {
 
         $scope.config = CONFIG;
+        $scope.private = false;
 
         // get tasks from each outlook folder and populate model data
         $scope.backlogTasks = getTasksFromOutlook(CONFIG.BACKLOG_FOLDER.Name, CONFIG.BACKLOG_FOLDER.Restrict, CONFIG.BACKLOG_FOLDER.Sort);
@@ -141,6 +142,17 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
                 $scope.filteredCompletedTasks = $filter('filter')($scope.completedTasks, val);
             }
         });
+
+        // // watch private switch and apply it
+        // $scope.$watch('private', function (val) {
+        //     if (val) {
+        //         $scope.filteredBacklogTasks = $filter('filter')($scope.backlogTasks, val);
+        //         $scope.filteredNextTasks = $filter('filter')($scope.nextTasks, val);
+        //         $scope.filteredInprogressTasks = $filter('filter')($scope.inprogressTasks, val);
+        //         $scope.filteredWaitingTasks = $filter('filter')($scope.waitingTasks, val);
+        //         $scope.filteredCompletedTasks = $filter('filter')($scope.completedTasks, val);
+        //     }
+        // });
 
 
     };
@@ -402,7 +414,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
     };
 
     // deletes the task item in both outlook and model data
-    $scope.deleteTask = function (item, sourceArray) {
+    $scope.deleteTask = function (item, sourceArray, filteredSourceArray) {
         if (window.confirm('Are you absolutely sure you want to delete this item?')) {
             // locate and delete the outlook task
             var taskitem = outlookNS.GetItemFromID(item.entryID);
@@ -410,9 +422,9 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
             // locate and remove the item from the models
             var index = sourceArray.indexOf(item);
-            sourceArray.splice(index, 1);
+            if (index != -1) { sourceArray.splice(index, 1); }
             index = filteredSourceArray.indexOf(item);
-            filteredSourceArray.splice(index, 1);
+            if (index != -1) { filteredSourceArray.splice(index, 1); }
         };
     };
 
@@ -430,9 +442,9 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
         // locate and remove the item from the models
         var index = sourceArray.indexOf(item);
-        sourceArray.splice(index, 1);
+        if (index != -1) { sourceArray.splice(index, 1); }
         index = filteredSourceArray.indexOf(item);
-        filteredSourceArray.splice(index, 1);
+        if (index != -1) { filteredSourceArray.splice(index, 1); }
     };
 
     // checks whether the task date is overdue or today
