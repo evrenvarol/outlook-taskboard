@@ -134,28 +134,31 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         };
 
         // watch search filter and apply it
-        $scope.$watch('search', function (val) {
-            if (val) {
-                $scope.filteredBacklogTasks = $filter('filter')($scope.backlogTasks, val);
-                $scope.filteredNextTasks = $filter('filter')($scope.nextTasks, val);
-                $scope.filteredInprogressTasks = $filter('filter')($scope.inprogressTasks, val);
-                $scope.filteredWaitingTasks = $filter('filter')($scope.waitingTasks, val);
-                $scope.filteredCompletedTasks = $filter('filter')($scope.completedTasks, val);
+        $scope.$watchGroup(['search', 'private'], function (newValues, oldValues) {
+            var search = newValues[0];
+            if (search) {
+                $scope.filteredBacklogTasks = $filter('filter')($scope.backlogTasks, search);
+                $scope.filteredNextTasks = $filter('filter')($scope.nextTasks, search);
+                $scope.filteredInprogressTasks = $filter('filter')($scope.inprogressTasks, search);
+                $scope.filteredWaitingTasks = $filter('filter')($scope.waitingTasks, search);
+                $scope.filteredCompletedTasks = $filter('filter')($scope.completedTasks, search);
             }
+            else {
+                $scope.filteredBacklogTasks = $scope.backlogTasks;
+                $scope.filteredInprogressTasks = $scope.inprogressTasks;
+                $scope.filteredNextTasks = $scope.nextTasks;
+                $scope.filteredWaitingTasks = $scope.waitingTasks;
+                $scope.filteredCompletedTasks = $scope.completedTasks;
+            }
+            // I think this can be written shorter, but for now it works
+            var sensitivityFilter = 0;
+            if ($scope.private == true) { sensitivityFilter = 2; }
+            $scope.filteredBacklogTasks = $filter('filter')($scope.filteredBacklogTasks, function (task) { return task.sensitivity == sensitivityFilter });
+            $scope.filteredNextTasks = $filter('filter')($scope.filteredNextTasks, function (task) { return task.sensitivity == sensitivityFilter });
+            $scope.filteredInprogressTasks = $filter('filter')($scope.filteredInprogressTasks, function (task) { return task.sensitivity == sensitivityFilter });
+            $scope.filteredWaitingTasks = $filter('filter')($scope.filteredWaitingTasks, function (task) { return task.sensitivity == sensitivityFilter });
+            $scope.filteredCompletedTasks = $filter('filter')($scope.filteredCompletedTasks, function (task) { return task.sensitivity == sensitivityFilter });
         });
-
-        // // watch private switch and apply it
-        // $scope.$watch('private', function (val) {
-        //     if (val) {
-        //         $scope.filteredBacklogTasks = $filter('filter')($scope.backlogTasks, val);
-        //         $scope.filteredNextTasks = $filter('filter')($scope.nextTasks, val);
-        //         $scope.filteredInprogressTasks = $filter('filter')($scope.inprogressTasks, val);
-        //         $scope.filteredWaitingTasks = $filter('filter')($scope.waitingTasks, val);
-        //         $scope.filteredCompletedTasks = $filter('filter')($scope.completedTasks, val);
-        //     }
-        // });
-
-
     };
 
     var getOutlookFolder = function (folderpath) {

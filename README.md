@@ -14,6 +14,7 @@ I took BillyMcSkintos' fork of this project as a starting point and made the fol
 8. Use another icon for archiving of completed icons, for better difference from the edit icon 
 9. Removed editing option for completed tasks
 10. Display Completion Date for completed tasks instead of Due Date
+11. Implemented filter on private / non-private tasks (button top right)
 
 ----- End -----
 
