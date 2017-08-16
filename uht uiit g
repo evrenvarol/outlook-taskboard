@@ -1,0 +1,270 @@
+[33mcommit 6d2ca64ebda972cbc23025d30e5a2989c56bff56[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Jan van Veldhuizen <jvv@onguard.com>
+Date:   Sun Aug 13 11:51:21 2017 +0200
+
+    updated readme
+
+[33mcommit 434db4981ac86babf4ab3ec6e1675555cb2e0bbf[m
+Author: Jan van Veldhuizen <jvv@onguard.com>
+Date:   Sun Aug 13 11:36:08 2017 +0200
+
+    x
+
+[33mcommit d9895312074dc3524bb6df0c335cf137be38fcd1[m
+Author: Jan van Veldhuizen <jvv@onguard.com>
+Date:   Sun Aug 13 11:22:08 2017 +0200
+
+    fixed drag&drop while filter is active
+
+[33mcommit 6bb4f1ce525fb49e57e5bcacd84e2f4e1c74b448[m
+Author: Jan van Veldhuizen <jvv@onguard.com>
+Date:   Fri Aug 11 08:10:43 2017 +0200
+
+    removed alerts
+
+[33mcommit b610375006c349921c9f7f08ed7ce7fc36b1673c[m
+Author: Jan van Veldhuizen <jvv@onguard.com>
+Date:   Thu Aug 10 22:46:14 2017 +0200
+
+    tried to fix drag&drop with filtering
+
+[33mcommit 13bffb87d2ea26f7a4288578416639d9949841f6[m
+Author: Jan van Veldhuizen <jvv@onguard.com>
+Date:   Wed Aug 9 11:43:51 2017 +0200
+
+    fixed drag and drop issue
+
+[33mcommit 61bf41162fc02e572b61c470c7c892cf33a0b9d0[m
+Author: Jan van Veldhuizen <jvv@onguard.com>
+Date:   Wed Aug 9 11:00:00 2017 +0200
+
+    fixed the archive function
+
+[33mcommit ee8c3d75e7019d2283f3aac49bdc389423932abf[m
+Author: Jan van Veldhuizen <jvv@onguard.com>
+Date:   Wed Aug 9 08:40:47 2017 +0200
+
+    removed alerts
+
+[33mcommit 55c55d26076fe0b3a6574ad6dad41f11fefe6273[m
+Author: Jan van Veldhuizen <jvv@onguard.com>
+Date:   Mon Aug 7 23:13:40 2017 +0200
+
+    bold categories
+
+[33mcommit 6442a076fc6f64d5c7820f75493064c3f9841d68[m
+Author: Jan van Veldhuizen <jvv@onguard.com>
+Date:   Mon Aug 7 23:01:20 2017 +0200
+
+    test category font
+
+[33mcommit ed6d353b09a2386893452b584d22d60eebe35137[m
+Author: Jan van Veldhuizen <jvv@onguard.com>
+Date:   Thu Aug 3 23:50:01 2017 +0200
+
+    added date format
+
+[33mcommit b71a0240cabac616a7f53a97eb8bc4d605fa5525[m
+Author: Jan van Veldhuizen <jvv@onguard.com>
+Date:   Thu Aug 3 23:36:11 2017 +0200
+
+    .
+
+[33mcommit 2bcb8e29fca42c7372edc012c66ddcd1e7dc5e45[m
+Author: Jan van Veldhuizen <jvv@onguard.com>
+Date:   Thu Aug 3 23:33:18 2017 +0200
+
+    modified drag and drop behavior
+
+[33mcommit 9afb67a303e2e38f9ac10a0b826fb8b9bce9f05e[m
+Author: Jan van Veldhuizen <jvv@onguard.com>
+Date:   Thu Aug 3 23:28:48 2017 +0200
+
+    modified drag and drop behavior
+
+[33mcommit 9646d71c0e2bc5276b24024a88c616174de64760[m
+Author: Jan van Veldhuizen <jvv@onguard.com>
+Date:   Thu Aug 3 23:11:20 2017 +0200
+
+    removed Add buttons in some lanes
+
+[33mcommit facc0198eb1df87febd43e554f0cb4c80c2af712[m
+Author: Jan van Veldhuizen <jvv@onguard.com>
+Date:   Thu Aug 3 23:03:09 2017 +0200
+
+    Removed percentage
+
+[33mcommit f48d94c0a2272ac0581c0d1b53daac115f4c849b[m
+Author: Jan van Veldhuizen <jvv@onguard.com>
+Date:   Thu Aug 3 22:57:33 2017 +0200
+
+    edited foler names
+
+[33mcommit c8ff7763d69264e77b8f4e3fa8b7241d5b88919b[m
+Author: Jan van Veldhuizen <jvv@onguard.com>
+Date:   Thu Aug 3 22:35:11 2017 +0200
+
+    removed owner and clean up
+
+[33mcommit 63b3e97855984a4b7debcd55734ef26657372175[m
+Author: Jan van Veldhuizen <jan@van-veldhuizen.nl>
+Date:   Wed Aug 2 09:30:02 2017 +0200
+
+    Update kanban.html
+
+[33mcommit 4f49fe6c6c73ac8ef2b9d405072595992b02545d[m
+Author: BillyMcSkintos <marcus.glynn@gmail.com>
+Date:   Mon May 15 12:19:08 2017 -0700
+
+    Add files via upload
+
+[33mcommit b8046808af9ab95037019ce7068eab8a872c6503[m
+Author: BillyMcSkintos <marcus.glynn@gmail.com>
+Date:   Mon May 15 12:17:44 2017 -0700
+
+    Add files via upload
+
+[33mcommit 87cbbb2f134bbec8622a720c77e4017c73317c05[m
+Author: BillyMcSkintos <marcus.glynn@gmail.com>
+Date:   Mon May 15 12:12:54 2017 -0700
+
+    Add files via upload
+
+[33mcommit a088af17c0b718669e43c8518fcf396c5451484e[m
+Author: BillyMcSkintos <marcus.glynn@gmail.com>
+Date:   Mon May 15 12:12:15 2017 -0700
+
+    Add files via upload
+
+[33mcommit 5aed88bbdea461b08bf35fa38c793ee573798bd3[m
+Author: BillyMcSkintos <marcus.glynn@gmail.com>
+Date:   Mon May 15 12:10:47 2017 -0700
+
+    Add files via upload
+
+[33mcommit 58ca966eeeb71a0a687f1b41df11ac70f63d7ec5[m
+Merge: 52c7e34 a8c6ea7
+Author: Evren Varol <evren.varol@gmail.com>
+Date:   Fri Dec 16 16:13:37 2016 +0000
+
+    Merge pull request #14 from GrimmiMeloni/master
+    
+    added sorting by multiple keys; replaced Outlook API provided sort with java based sorting
+
+[33mcommit a8c6ea7d1fedea908c951c50dac13c57c70c5779[m
+Author: Michael Hess <m_hess@gmx.net>
+Date:   Mon Dec 12 14:44:32 2016 +0100
+
+    added sorting by multiple keys; replaced Outlook API provided sort with JS implementation
+
+[33mcommit 52c7e34651f194c656c87e9a34622df2316234bb[m
+Author: Evren Varol <evren.varol@gmail.com>
+Date:   Fri Oct 14 16:15:35 2016 +0100
+
+    Added moment.js for better date formatting in status report
+    GetSharedFolder path variable corrected
+
+[33mcommit 221aac0f1f1b33a3766352fbf6792f88f76dd7b8[m
+Author: Evren Varol <evren.varol@gmail.com>
+Date:   Thu Oct 13 17:25:30 2016 +0100
+
+    Reloading the view if the task is deleted
+
+[33mcommit 4a28187593493d156b6af0cbadbd3309ad296321[m
+Author: Evren Varol <evren.varol@gmail.com>
+Date:   Thu Oct 13 12:08:40 2016 +0100
+
+    minor corrections
+
+[33mcommit ed6e6ce38158081151de606f972a6671d0216b46[m
+Author: Evren Varol <evren.varol@gmail.com>
+Date:   Thu Oct 13 12:03:50 2016 +0100
+
+    Task excerpt instructions added
+
+[33mcommit 626dc54cddff8fbe645a76937c23c63bd8a5d571[m
+Author: Evren Varol <evren.varol@gmail.com>
+Date:   Thu Oct 13 11:59:32 2016 +0100
+
+    Updated instructions and added more screenshots
+
+[33mcommit 47dd3f3777c0c3540279e5142918f49ab09b6ef7[m
+Author: Evren Varol <evren.varol@gmail.com>
+Date:   Thu Oct 13 11:58:52 2016 +0100
+
+    IE view updated to be inline with the main view
+
+[33mcommit ffbb22bdacc994ee5c26bbab47061feef01f9725[m
+Author: Evren Varol <evren.varol@gmail.com>
+Date:   Thu Oct 13 11:57:53 2016 +0100
+
+    Task folder customisation option added
+    Shared folder support
+    Task excerpt issue corrected
+
+[33mcommit bae074b6a4074fe042919ca081d0099e488cb2c0[m
+Author: Evren Varol <evren.varol@gmail.com>
+Date:   Mon Sep 26 17:50:37 2016 +0100
+
+    Basic task report feature added. It will be improved later.
+
+[33mcommit fa34a82bb44d6521a5ec553e8bea57acc6f87860[m
+Author: Evren Varol <evren.varol@gmail.com>
+Date:   Mon Sep 26 14:38:02 2016 +0100
+
+    ISSUES line added to the new task template
+
+[33mcommit 7fd46fbf1ab62a442d9b125f0c31e8964a15ea97[m
+Author: Evren Varol <evren.varol@gmail.com>
+Date:   Mon Sep 26 14:37:35 2016 +0100
+
+    Task excerpt function corrected
+
+[33mcommit 1403c1a280c06aaf44d57c572877fb67512963af[m
+Author: Evren Varol <evren.varol@gmail.com>
+Date:   Fri Sep 23 17:13:52 2016 +0100
+
+    New task template added
+
+[33mcommit 7cf38596a73b4e9c27b59071e45b63752cff2598[m
+Author: Evren Varol <evren.varol@gmail.com>
+Date:   Thu Sep 22 23:28:10 2016 +0100
+
+    isOverdue function fixed
+
+[33mcommit 0def8131637d0f90eb0b5f7d9eaf8a3dd18c09d8[m
+Author: Evren Varol <evren.varol@gmail.com>
+Date:   Thu Sep 22 23:07:23 2016 +0100
+
+    Completed lane added
+
+[33mcommit ec222be888d908216b58fa9a34ffe7af013a0922[m
+Author: Evren Varol <evren.varol@gmail.com>
+Date:   Thu Sep 22 23:07:07 2016 +0100
+
+    Board style changed / completed lane added
+
+[33mcommit 9aafe8962fa1e56a9f7e70d975ebc87431b14e9e[m
+Author: Evren Varol <evren.varol@gmail.com>
+Date:   Fri Sep 9 16:54:26 2016 +0100
+
+    Missing Add buttons issue (due to hard limits) fixed
+
+[33mcommit 0fc6728e4c9dc9d0923c3195f20b04874311c295[m
+Author: Evren Varol <evren.varol@gmail.com>
+Date:   Thu Sep 8 23:25:08 2016 +0100
+
+    Updated with IE local intranet zone security setting
+
+[33mcommit a7696a40b79fe9142e4294e180d94f51e01a5f02[m
+Author: Evren Varol <evren.varol@gmail.com>
+Date:   Thu Sep 8 23:24:26 2016 +0100
+
+    Config file and hard limits for each lane changes added to the IE page
+
+[33mcommit 910923c4dd0ff8380cb14ba909a240c1c07feb47[m
+Author: Evren Varol <evren.varol@gmail.com>
+Date:   Thu Sep 8 22:46:15 2016 +0100
+
+    Configuration file added for easier customisation
+    Hard limit configuration a

@@ -105,7 +105,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
                             break;
                         case 'completedList':
                             var tasksfolder = getOutlookFolder(CONFIG.COMPLETED_FOLDER.Name);
-                            var newstatus = CONFIG.STATUS.COMPLETED.Value
+                            var newstatus = CONFIG.STATUS.COMPLETED.Value;
                             break;
                     };
 
@@ -115,8 +115,9 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
                     // set new status, if different
                     if (taskitem.Status != newstatus) {
                         taskitem.Status = newstatus;
-                        ui.item.sortable.model.status = taskStatus(newstatus);
                         taskitem.Save();
+                        ui.item.sortable.model.status = taskStatus(newstatus);
+                        ui.item.sortable.model.completeddate = new Date(taskitem.DateCompleted)
                     }
 
                     // ensure the task is not moving into same folder
@@ -219,7 +220,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
                 status: taskStatus(tasks(i).Status),
                 oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
                 oneNoteURL: getUserProp(tasks(i), "OneNoteURL"),
-                completeddate: tasks(i).DateCompleted,
+                completeddate: new Date(tasks(i).DateCompleted),
             });
         };
 

@@ -2,6 +2,7 @@
 Outlook Taskboard is a kanban board style view for Outlook Tasks.
 
 ----- aug 2017 ------
+
 I took BillyMcSkintos' fork of this project as a starting point and made the following changes:
 1. Removed Owner and Percentage
 2. Tasks folder is now the Backlog folder
@@ -11,6 +12,8 @@ I took BillyMcSkintos' fork of this project as a starting point and made the fol
 6. Introduced date format in config file
 7. Drag&Drop now also works properly when filter is active
 8. Use another icon for archiving of completed icons, for better difference from the edit icon 
+9. Removed editing option for completed tasks
+10. Display Completion Date for completed tasks instead of Due Date
 
 ----- End -----
 

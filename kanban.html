@@ -191,16 +191,15 @@
                         </h5>
                     </header>
                     <ul id="completedList" ui-sortable="sortableOptions" ng-model="completedTasks" class="panel-body tasklist list-unstyled">
-                        <li ng-repeat="task in completedTasks | filter:search" class="task panel task-completed" ng-dblclick="editTask(task)">
+                        <li ng-repeat="task in completedTasks | filter:search" class="task panel task-completed"">
                             <header class="panel-heading">
                                 {{ task.subject }}
-                                <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" class="pull-right">(Due: {{ task.duedate | date:config.DATE_FORMAT }}) </span>
+                                <span class="pull-right">(Completed: {{ task.completeddate | date:config.DATE_FORMAT }}) </span>
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
                                 <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span><strong> {{ task.categories }}</strong></div>
                                 <span class="btn-group btn-group-xs">
-                                    <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
                                     <button class="btn btn-default btn-xs" aria-label="Archive" type="button" ng-click="archiveTask(task,completedTasks,filteredCompletedTasks)"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
                                     <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,completedTasks,filteredCompletedTasks)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                                     <button ng-if="(task.oneNoteURL != '')"  class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button>
