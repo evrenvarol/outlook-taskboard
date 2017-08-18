@@ -47,9 +47,8 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
     $scope.init = function () {
 
         $scope.config = CONFIG;
-        $scope.private = false;
-        $scope.search = '';
-
+        $scope.usePrivate = CONFIG.PRIVACY_FILTER;
+        $scope.getState();
         $scope.initTasks();
 
         // ui-sortable options and events
@@ -126,6 +125,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         $scope.$watchGroup(['search', 'private'], function (newValues, oldValues) {
             var search = newValues[0];
             $scope.applyFilters();
+            $scope.saveState();
         });
     };
 
@@ -246,14 +246,52 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
             $scope.filteredCompletedTasks = $scope.completedTasks;
         }
         // I think this can be written shorter, but for now it works
-        var sensitivityFilter = 0;
-        if ($scope.private == true) { sensitivityFilter = 2; }
-        $scope.filteredBacklogTasks = $filter('filter')($scope.filteredBacklogTasks, function (task) { return task.sensitivity == sensitivityFilter });
-        $scope.filteredNextTasks = $filter('filter')($scope.filteredNextTasks, function (task) { return task.sensitivity == sensitivityFilter });
-        $scope.filteredInprogressTasks = $filter('filter')($scope.filteredInprogressTasks, function (task) { return task.sensitivity == sensitivityFilter });
-        $scope.filteredWaitingTasks = $filter('filter')($scope.filteredWaitingTasks, function (task) { return task.sensitivity == sensitivityFilter });
-        $scope.filteredCompletedTasks = $filter('filter')($scope.filteredCompletedTasks, function (task) { return task.sensitivity == sensitivityFilter });
+        if (CONFIG.PRIVACY_FILTER) {
+            var sensitivityFilter = 0;
+            if ($scope.private == true) { sensitivityFilter = 2; }
+            $scope.filteredBacklogTasks = $filter('filter')($scope.filteredBacklogTasks, function (task) { return task.sensitivity == sensitivityFilter });
+            $scope.filteredNextTasks = $filter('filter')($scope.filteredNextTasks, function (task) { return task.sensitivity == sensitivityFilter });
+            $scope.filteredInprogressTasks = $filter('filter')($scope.filteredInprogressTasks, function (task) { return task.sensitivity == sensitivityFilter });
+            $scope.filteredWaitingTasks = $filter('filter')($scope.filteredWaitingTasks, function (task) { return task.sensitivity == sensitivityFilter });
+            $scope.filteredCompletedTasks = $filter('filter')($scope.filteredCompletedTasks, function (task) { return task.sensitivity == sensitivityFilter });
+        }
+    }
 
+    $scope.saveState = function () {
+        if (CONFIG.SAVE_STATE) {
+            var state = { "private": $scope.private, "search": $scope.search };
+
+            var folder = outlookNS.GetDefaultFolder(11); // use the Journal folder to save the state
+            var stateItems = folder.Items.Restrict('[Subject] = "KanbanState"');
+            if (stateItems.Count == 0) {
+                var stateItem = outlookApp.CreateItem(4);
+                stateItem.Subject = "KanbanState";
+            }
+            else {
+                stateItem = stateItems(1);
+            }
+            stateItem.Body = JSON.stringify(state);
+            stateItem.Save();
+        }
+    }
+
+    $scope.getState = function () {
+        // set default state
+        var state = { "private": false, "search": "" };
+
+        if (CONFIG.SAVE_STATE) {
+            var folder = outlookNS.GetDefaultFolder(11);
+            var stateItems = folder.Items.Restrict('[Subject] = "KanbanState"');
+            if (stateItems.Count > 0) {
+                var stateItem = stateItems(1);
+                if (stateItem.Body) {
+                    state = JSON.parse(stateItem.Body);
+                }
+            }
+        }
+
+        $scope.search = state.search;
+        $scope.private = state.private;
     }
 
     // this is only a proof-of-concept single page report in a draft email for weekly report
@@ -419,13 +457,16 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         taskitem.Body = CONFIG.TASK_TEMPLATE;
 
         // set sensitivity according to the current filter
-        if ($scope.private) {
-            taskitem.Sensitivity = 2;
+        if (CONFIG.PRIVACY_FILTER) {
+            if ($scope.private) {
+                taskitem.Sensitivity = 2;
+            }
         }
 
         // display outlook task item window
         taskitem.Display();
 
+        $scope.saveState();
         // bind to taskitem write event on outlook and reload the page after the task is saved
         eval("function taskitem::Write (bStat) {window.location.reload();  return true;}");
 
@@ -442,6 +483,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
     $scope.editTask = function (item) {
         var taskitem = outlookNS.GetItemFromID(item.entryID);
         taskitem.Display();
+        $scope.saveState();
         // bind to taskitem write event on outlook and reload the page after the task is saved
         eval("function taskitem::Write (bStat) {window.location.reload(); return true;}");
         // bind to taskitem beforedelete event on outlook and reload the page after the task is deleted

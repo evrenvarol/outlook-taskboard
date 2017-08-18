@@ -26,6 +26,9 @@ var config_data = {
     'TASK_TEMPLATE':        '\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### ISSUES:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n',
 
     'DATE_FORMAT': 'dd-MMM',
+    
+    'SAVE_STATE': true,     // Preserve state between window.reloads (privacy and search filter)
+    'PRIVACY_FILTER': true, // Add filter to separately handle private tasks
 
     // Outlook task statuses
     'STATUS': {
