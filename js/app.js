@@ -134,8 +134,14 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
             // if folder path is not defined, return main Tasks folder
             var folder = outlookNS.GetDefaultFolder(13);
         } else {
-            // if folder path is defined
-            var folder = outlookNS.GetDefaultFolder(13).Folders(folderpath);
+            // if folder path is defined then find it, create it if it doesn't exist yet
+            try {
+                var folder = outlookNS.GetDefaultFolder(13).Folders(folderpath);
+            }
+            catch (e) {
+                outlookNS.GetDefaultFolder(13).Folders.Add(folderpath);
+                var folder = outlookNS.GetDefaultFolder(13).Folders(folderpath);
+            }
         }
         return folder;
     }
@@ -421,10 +427,14 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         taskitem.Display();
 
         // bind to taskitem write event on outlook and reload the page after the task is saved
-        // $eval("function taskitem::Write (bStat) {alert(11); window.getelementById('refreshbutton').click(); return true;}");
-        // $eval("function taskitem::Write (bStat) {alert(11); return true;}");
-       // function taskitem::Write (bStat) { alert(456);}
-        eval("function taskitem::Write (bStat) {window.location.reload(); return true;}");
+        eval("function taskitem::Write (bStat) {window.location.reload();  return true;}");
+
+        // for anyone wondering about this weird double colon syntax:
+        // Office is using IE11 to launch custom apps.
+        // This syntax is used in IE to bind events. 
+        //(https://msdn.microsoft.com/en-us/library/ms974564.aspx?f=255&MSPPError=-2147217396)
+        //
+        // by using eval we can avoid any error message until it is actually executed by Microsofts scripting engine
     }
 
     // opens up task item in outlook
