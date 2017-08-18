@@ -1,9 +1,17 @@
+
+
 # Outlook Taskboard
 Outlook Taskboard is a kanban board style view for Outlook Tasks.
 
------ aug 2017 ------
+I found the original Kanban board implemeneted by Evren Varol. I looked at the forks and liked the 
+changes by BillyMcSkintos, using the task status instead of folders. But he lost the drag&drop
+feature.
 
-I took BillyMcSkintos' fork of this project as a starting point and made the following changes:
+So I decided to take my own fork and added a bunch of features, and added some options to the
+configuration file.
+
+My changes:
+
 1. Removed Owner and Percentage
 2. Tasks folder is now the Backlog folder
 3. Use new folder 'Kanban' for all the current work: Next, InProgress, Waiting and Done
@@ -21,6 +29,7 @@ I took BillyMcSkintos' fork of this project as a starting point and made the fol
 
 ----- End -----
 
+BillyMcSkintos' additions to the original Readme file:
 
 ----- 05/15/17 ------
 Credit for this fork goes entirely to @evrenvarol. I have made a few simple changes to suit my needs:
@@ -31,6 +40,8 @@ Credit for this fork goes entirely to @evrenvarol. I have made a few simple chan
 5. Columns are no-longer drag and drop. Tasks move from column to column with the Outlook task status. 
 5.a. Must add and use a category of !Next to move a task to the appropriate column.
 ----- End -----
+
+The original Readme file of Evren Varol with all instructions:
 
 It uses the main "Tasks" folder as *Back Log* and utilizes 5 individual subfolders (InProgress, Next, Focus, Waiting and Completed) as each task lane for personal kanban workflow.
 
