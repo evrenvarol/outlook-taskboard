@@ -48,20 +48,9 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
         $scope.config = CONFIG;
         $scope.private = false;
+        $scope.search = '';
 
-        // get tasks from each outlook folder and populate model data
-        $scope.backlogTasks = getTasksFromOutlook(CONFIG.BACKLOG_FOLDER.Name, CONFIG.BACKLOG_FOLDER.Restrict, CONFIG.BACKLOG_FOLDER.Sort);
-        $scope.inprogressTasks = getTasksFromOutlook(CONFIG.INPROGRESS_FOLDER.Name, CONFIG.INPROGRESS_FOLDER.Restrict, CONFIG.INPROGRESS_FOLDER.Sort);
-        $scope.nextTasks = getTasksFromOutlook(CONFIG.NEXT_FOLDER.Name, CONFIG.NEXT_FOLDER.Restrict, CONFIG.NEXT_FOLDER.Sort);
-        $scope.waitingTasks = getTasksFromOutlook(CONFIG.WAITING_FOLDER.Name, CONFIG.WAITING_FOLDER.Restrict, CONFIG.WAITING_FOLDER.Sort);
-        $scope.completedTasks = getTasksFromOutlook(CONFIG.COMPLETED_FOLDER.Name, CONFIG.COMPLETED_FOLDER.Restrict, CONFIG.COMPLETED_FOLDER.Sort);
-
-        // copy the lists as the initial filter    
-        $scope.filteredBacklogTasks = $scope.backlogTasks;
-        $scope.filteredInprogressTasks = $scope.inprogressTasks;
-        $scope.filteredNextTasks = $scope.nextTasks;
-        $scope.filteredWaitingTasks = $scope.waitingTasks;
-        $scope.filteredCompletedTasks = $scope.completedTasks;
+        $scope.initTasks();
 
         // ui-sortable options and events
         $scope.sortableOptions = {
@@ -136,28 +125,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         // watch search filter and apply it
         $scope.$watchGroup(['search', 'private'], function (newValues, oldValues) {
             var search = newValues[0];
-            if (search) {
-                $scope.filteredBacklogTasks = $filter('filter')($scope.backlogTasks, search);
-                $scope.filteredNextTasks = $filter('filter')($scope.nextTasks, search);
-                $scope.filteredInprogressTasks = $filter('filter')($scope.inprogressTasks, search);
-                $scope.filteredWaitingTasks = $filter('filter')($scope.waitingTasks, search);
-                $scope.filteredCompletedTasks = $filter('filter')($scope.completedTasks, search);
-            }
-            else {
-                $scope.filteredBacklogTasks = $scope.backlogTasks;
-                $scope.filteredInprogressTasks = $scope.inprogressTasks;
-                $scope.filteredNextTasks = $scope.nextTasks;
-                $scope.filteredWaitingTasks = $scope.waitingTasks;
-                $scope.filteredCompletedTasks = $scope.completedTasks;
-            }
-            // I think this can be written shorter, but for now it works
-            var sensitivityFilter = 0;
-            if ($scope.private == true) { sensitivityFilter = 2; }
-            $scope.filteredBacklogTasks = $filter('filter')($scope.filteredBacklogTasks, function (task) { return task.sensitivity == sensitivityFilter });
-            $scope.filteredNextTasks = $filter('filter')($scope.filteredNextTasks, function (task) { return task.sensitivity == sensitivityFilter });
-            $scope.filteredInprogressTasks = $filter('filter')($scope.filteredInprogressTasks, function (task) { return task.sensitivity == sensitivityFilter });
-            $scope.filteredWaitingTasks = $filter('filter')($scope.filteredWaitingTasks, function (task) { return task.sensitivity == sensitivityFilter });
-            $scope.filteredCompletedTasks = $filter('filter')($scope.filteredCompletedTasks, function (task) { return task.sensitivity == sensitivityFilter });
+            $scope.applyFilters();
         });
     };
 
@@ -236,6 +204,51 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
         return sortedTasks;
     };
+
+    $scope.initTasks = function () {
+        // get tasks from each outlook folder and populate model data
+        $scope.backlogTasks = getTasksFromOutlook(CONFIG.BACKLOG_FOLDER.Name, CONFIG.BACKLOG_FOLDER.Restrict, CONFIG.BACKLOG_FOLDER.Sort);
+        $scope.inprogressTasks = getTasksFromOutlook(CONFIG.INPROGRESS_FOLDER.Name, CONFIG.INPROGRESS_FOLDER.Restrict, CONFIG.INPROGRESS_FOLDER.Sort);
+        $scope.nextTasks = getTasksFromOutlook(CONFIG.NEXT_FOLDER.Name, CONFIG.NEXT_FOLDER.Restrict, CONFIG.NEXT_FOLDER.Sort);
+        $scope.waitingTasks = getTasksFromOutlook(CONFIG.WAITING_FOLDER.Name, CONFIG.WAITING_FOLDER.Restrict, CONFIG.WAITING_FOLDER.Sort);
+        $scope.completedTasks = getTasksFromOutlook(CONFIG.COMPLETED_FOLDER.Name, CONFIG.COMPLETED_FOLDER.Restrict, CONFIG.COMPLETED_FOLDER.Sort);
+
+        // copy the lists as the initial filter    
+        $scope.filteredBacklogTasks = $scope.backlogTasks;
+        $scope.filteredInprogressTasks = $scope.inprogressTasks;
+        $scope.filteredNextTasks = $scope.nextTasks;
+        $scope.filteredWaitingTasks = $scope.waitingTasks;
+        $scope.filteredCompletedTasks = $scope.completedTasks;
+
+        // then apply the current filters for search and sensitivity
+        $scope.applyFilters();
+    };
+
+    $scope.applyFilters = function () {
+        if ($scope.search.length > 0) {
+            $scope.filteredBacklogTasks = $filter('filter')($scope.backlogTasks, $scope.search);
+            $scope.filteredNextTasks = $filter('filter')($scope.nextTasks, $scope.search);
+            $scope.filteredInprogressTasks = $filter('filter')($scope.inprogressTasks, $scope.search);
+            $scope.filteredWaitingTasks = $filter('filter')($scope.waitingTasks, $scope.search);
+            $scope.filteredCompletedTasks = $filter('filter')($scope.completedTasks, $scope.search);
+        }
+        else {
+            $scope.filteredBacklogTasks = $scope.backlogTasks;
+            $scope.filteredInprogressTasks = $scope.inprogressTasks;
+            $scope.filteredNextTasks = $scope.nextTasks;
+            $scope.filteredWaitingTasks = $scope.waitingTasks;
+            $scope.filteredCompletedTasks = $scope.completedTasks;
+        }
+        // I think this can be written shorter, but for now it works
+        var sensitivityFilter = 0;
+        if ($scope.private == true) { sensitivityFilter = 2; }
+        $scope.filteredBacklogTasks = $filter('filter')($scope.filteredBacklogTasks, function (task) { return task.sensitivity == sensitivityFilter });
+        $scope.filteredNextTasks = $filter('filter')($scope.filteredNextTasks, function (task) { return task.sensitivity == sensitivityFilter });
+        $scope.filteredInprogressTasks = $filter('filter')($scope.filteredInprogressTasks, function (task) { return task.sensitivity == sensitivityFilter });
+        $scope.filteredWaitingTasks = $filter('filter')($scope.filteredWaitingTasks, function (task) { return task.sensitivity == sensitivityFilter });
+        $scope.filteredCompletedTasks = $filter('filter')($scope.filteredCompletedTasks, function (task) { return task.sensitivity == sensitivityFilter });
+
+    }
 
     // this is only a proof-of-concept single page report in a draft email for weekly report
     // it will be improved later on
@@ -337,7 +350,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         // only display the draft email
         mailItem.Display();
 
-    }
+    };
 
     // grabs the summary part of the task until the first '###' text
     // shortens the string by number of chars
@@ -399,10 +412,18 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         // add default task template to the task body
         taskitem.Body = CONFIG.TASK_TEMPLATE;
 
+        // set sensitivity according to the current filter
+        if ($scope.private) {
+            taskitem.Sensitivity = 2;
+        }
+
         // display outlook task item window
         taskitem.Display();
 
         // bind to taskitem write event on outlook and reload the page after the task is saved
+        // $eval("function taskitem::Write (bStat) {alert(11); window.getelementById('refreshbutton').click(); return true;}");
+        // $eval("function taskitem::Write (bStat) {alert(11); return true;}");
+       // function taskitem::Write (bStat) { alert(456);}
         eval("function taskitem::Write (bStat) {window.location.reload(); return true;}");
     }
 

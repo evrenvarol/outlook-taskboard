@@ -29,10 +29,10 @@
                 <div class="input-group">
                     <div class="input-group-addon"><strong>Outlook Taskboard</strong></div>
                     <div class="input-group-addon">
-                        <button class="btn btn-default btn-xs" aria-label="Refresh" type="button" onclick="window.location.reload();"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                        <button id="refreshbutton" class="btn btn-default btn-xs" aria-label="Refresh" type="button" ng-click="initTasks();"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                     </div>
-                    <div ng-show="(search != undefined)" class="input-group-addon">
-                        <button class="btn btn-default btn-xs" aria-label="Clear" type="button" ng-click="search = undefined"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                    <div ng-show="(search != '')" class="input-group-addon">
+                        <button class="btn btn-default btn-xs" aria-label="Clear" type="button" ng-click="search = ''"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                     </div>
                     <input type="text" name="search" ng-model="search" class="form-control" placeholder="Filter" />
                     <div class="input-group-addon">
