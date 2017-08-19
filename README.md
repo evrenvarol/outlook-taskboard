@@ -27,6 +27,11 @@ My changes:
 13. Optional saving of filter state via CONFIG file
 14. Optional use of privacy filter via CONFIG file
 
+TODO:
+- Add tooltips to the buttons
+- Look into performance issues, because currently it re-reads the tasks from Outlook quite often
+- implement error logging by sending a mail to myself
+
 ----- End -----
 
 BillyMcSkintos' additions to the original Readme file:
