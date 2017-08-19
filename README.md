@@ -31,6 +31,9 @@ TODO:
 - Add tooltips to the buttons
 - Look into performance issues, because currently it re-reads the tasks from Outlook quite often
 - implement error logging by sending a mail to myself
+- More configuration and customization options
+- And finally a rewrite using React. 
+  Why? Firstly, because I want to get experience with it, and secondly, it is said to be faster
 
 ----- End -----
 
