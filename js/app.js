@@ -99,11 +99,13 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
                     // locate the task in outlook namespace by using unique entry id
                     var taskitem = outlookNS.GetItemFromID(ui.item.sortable.model.entryID);
+                    var itemChanged = false;
 
                     // set new status, if different
                     if (taskitem.Status != newstatus) {
                         taskitem.Status = newstatus;
                         taskitem.Save();
+                        itemChanged = true;
                         ui.item.sortable.model.status = taskStatus(newstatus);
                         ui.item.sortable.model.completeddate = new Date(taskitem.DateCompleted)
                     }
@@ -112,10 +114,15 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
                     if (taskitem.Parent.Name != tasksfolder.Name) {
                         // move the task item
                         taskitem = taskitem.Move(tasksfolder);
+                        itemChanged = true;
 
                         // update entryID with new one (entryIDs get changed after move)
                         // https://msdn.microsoft.com/en-us/library/office/ff868618.aspx
                         ui.item.sortable.model.entryID = taskitem.EntryID;
+                    }
+
+                    if (itemChanged){
+                        $scope.initTasks();
                     }
                 }
             }
