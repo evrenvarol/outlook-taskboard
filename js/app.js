@@ -121,7 +121,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
                         ui.item.sortable.model.entryID = taskitem.EntryID;
                     }
 
-                    if (itemChanged){
+                    if (itemChanged) {
                         $scope.initTasks();
                     }
                 }
@@ -235,6 +235,25 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
         // then apply the current filters for search and sensitivity
         $scope.applyFilters();
+
+        // cleran up Completed Tasks
+        if (CONFIG.COMPLETED.ACTION == 'ARCHIVE' || CONFIG.COMPLETED.ACTION == 'DELETE') {
+            var i;
+            var tasks = $scope.completedTasks;
+            var count = tasks.length;
+            for (i = 0; i < count; i++) {
+                var days = Date.daysBetween(tasks[i].completeddate, new Date());
+                if (days > CONFIG.COMPLETED.AFTER_X_DAYS) {
+                    if (CONFIG.COMPLETED.ACTION == 'ARCHIVE') {
+                        $scope.archiveTask(tasks[i], $scope.completedTasks, $scope.filteredCompletedTasks);
+                    }
+                    if (CONFIG.COMPLETED.ACTION == 'DELETE') {
+                        $scope.deleteTask(tasks[i], $scope.completedTasks, $scope.filteredCompletedTasks, false);
+                    }
+                };
+            };
+        };
+
     };
 
     $scope.applyFilters = function () {
@@ -261,6 +280,15 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
             $scope.filteredInprogressTasks = $filter('filter')($scope.filteredInprogressTasks, function (task) { return task.sensitivity == sensitivityFilter });
             $scope.filteredWaitingTasks = $filter('filter')($scope.filteredWaitingTasks, function (task) { return task.sensitivity == sensitivityFilter });
             $scope.filteredCompletedTasks = $filter('filter')($scope.filteredCompletedTasks, function (task) { return task.sensitivity == sensitivityFilter });
+        }
+
+        // filter completed tasks if the HIDE options is configured
+        if (CONFIG.COMPLETED.ACTION == 'HIDE') {
+            alert('hide');
+            $scope.filteredCompletedTasks = $filter('filter')($scope.filteredCompletedTasks, function (task) {
+                var days = Date.daysBetween(task.completeddate, new Date());
+                return days < CONFIG.COMPLETED.AFTER_X_DAYS;
+            });
         }
     }
 
@@ -498,8 +526,12 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
     };
 
     // deletes the task item in both outlook and model data
-    $scope.deleteTask = function (item, sourceArray, filteredSourceArray) {
-        if (window.confirm('Are you absolutely sure you want to delete this item?')) {
+    $scope.deleteTask = function (item, sourceArray, filteredSourceArray, bAskConfirmation) {
+        var doDelete = true;
+        if (bAskConfirmation) {
+            doDelete = window.confirm('Are you absolutely sure you want to delete this item?');
+        }
+        if (doDelete) {
             // locate and delete the outlook task
             var taskitem = outlookNS.GetItemFromID(item.entryID);
             taskitem.Delete();
@@ -555,6 +587,20 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         return false;
     }
 
+    Date.daysBetween = function (date1, date2) {
+        //Get 1 day in milliseconds
+        var one_day = 1000 * 60 * 60 * 24;
+
+        // Convert both dates to milliseconds
+        var date1_ms = date1.getTime();
+        var date2_ms = date2.getTime();
+
+        // Calculate the difference in milliseconds
+        var difference_ms = date2_ms - date1_ms;
+
+        // Convert back to days and return
+        return difference_ms / one_day;
+    }
 
 });
 

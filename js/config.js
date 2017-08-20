@@ -37,6 +37,14 @@ var config_data = {
       'WAITING': { Value: 3, Text: "Waiting For Someone Else" },
       'COMPLETED': { Value: 2, Text: "Completed" }
     },
+
+    // Configure what needs to be done with completed tasks
+    // N.B. 0 days means immediately, which makes the Completed column display nothing at all
+    'COMPLETED': {
+      'AFTER_X_DAYS': 3, 
+      'ACTION': 'ARCHIVE' // the options are: NONE, HIDE, ARCHIVE, DELETE
+    }
+
   }
 };
 
