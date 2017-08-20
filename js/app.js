@@ -183,29 +183,33 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         };
     };
 
-    var getTasksFromOutlook = function (path, restrict, sort) {
+    var getTasksFromOutlook = function (path, restrict, sort, folderStatus) {
         var i, array = [];
-        // default restriction is to get only incomplete tasks
-        if (restrict === undefined) { restrict = "[Complete] = false"; }
-
-        var tasks = getOutlookFolder(path).Items.Restrict(restrict);
+        if (restrict === undefined || restrict == '') {
+            var tasks = getOutlookFolder(path).Items;
+        }
+        else {
+            var tasks = getOutlookFolder(path).Items.Restrict(restrict);
+        }
 
         var count = tasks.Count;
         for (i = 1; i <= count; i++) {
-            array.push({
-                entryID: tasks(i).EntryID,
-                subject: tasks(i).Subject,
-                priority: tasks(i).Importance,
-                startdate: tasks(i).StartDate,
-                duedate: new Date(tasks(i).DueDate),
-                sensitivity: tasks(i).Sensitivity,
-                categories: tasks(i).Categories,
-                notes: taskExcerpt(tasks(i).Body, CONFIG.TASKNOTE_EXCERPT),
-                status: taskStatus(tasks(i).Status),
-                oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
-                oneNoteURL: getUserProp(tasks(i), "OneNoteURL"),
-                completeddate: new Date(tasks(i).DateCompleted),
-            });
+            if (tasks(i).Status == folderStatus) {
+                array.push({
+                    entryID: tasks(i).EntryID,
+                    subject: tasks(i).Subject,
+                    priority: tasks(i).Importance,
+                    startdate: tasks(i).StartDate,
+                    duedate: new Date(tasks(i).DueDate),
+                    sensitivity: tasks(i).Sensitivity,
+                    categories: tasks(i).Categories,
+                    notes: taskExcerpt(tasks(i).Body, CONFIG.TASKNOTE_EXCERPT),
+                    status: taskStatus(tasks(i).Status),
+                    oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
+                    oneNoteURL: getUserProp(tasks(i), "OneNoteURL"),
+                    completeddate: new Date(tasks(i).DateCompleted),
+                });
+            }
         };
 
         // sort tasks
@@ -220,11 +224,11 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
     $scope.initTasks = function () {
         // get tasks from each outlook folder and populate model data
-        $scope.backlogTasks = getTasksFromOutlook(CONFIG.BACKLOG_FOLDER.Name, CONFIG.BACKLOG_FOLDER.Restrict, CONFIG.BACKLOG_FOLDER.Sort);
-        $scope.inprogressTasks = getTasksFromOutlook(CONFIG.INPROGRESS_FOLDER.Name, CONFIG.INPROGRESS_FOLDER.Restrict, CONFIG.INPROGRESS_FOLDER.Sort);
-        $scope.nextTasks = getTasksFromOutlook(CONFIG.NEXT_FOLDER.Name, CONFIG.NEXT_FOLDER.Restrict, CONFIG.NEXT_FOLDER.Sort);
-        $scope.waitingTasks = getTasksFromOutlook(CONFIG.WAITING_FOLDER.Name, CONFIG.WAITING_FOLDER.Restrict, CONFIG.WAITING_FOLDER.Sort);
-        $scope.completedTasks = getTasksFromOutlook(CONFIG.COMPLETED_FOLDER.Name, CONFIG.COMPLETED_FOLDER.Restrict, CONFIG.COMPLETED_FOLDER.Sort);
+        $scope.backlogTasks = getTasksFromOutlook(CONFIG.BACKLOG_FOLDER.Name, CONFIG.BACKLOG_FOLDER.Restrict, CONFIG.BACKLOG_FOLDER.Sort, CONFIG.STATUS.NOT_STARTED.Value);
+        $scope.inprogressTasks = getTasksFromOutlook(CONFIG.INPROGRESS_FOLDER.Name, CONFIG.INPROGRESS_FOLDER.Restrict, CONFIG.INPROGRESS_FOLDER.Sort, CONFIG.STATUS.IN_PROGRESS.Value);
+        $scope.nextTasks = getTasksFromOutlook(CONFIG.NEXT_FOLDER.Name, CONFIG.NEXT_FOLDER.Restrict, CONFIG.NEXT_FOLDER.Sort, CONFIG.STATUS.NOT_STARTED.Value);
+        $scope.waitingTasks = getTasksFromOutlook(CONFIG.WAITING_FOLDER.Name, CONFIG.WAITING_FOLDER.Restrict, CONFIG.WAITING_FOLDER.Sort, CONFIG.STATUS.WAITING.Value);
+        $scope.completedTasks = getTasksFromOutlook(CONFIG.COMPLETED_FOLDER.Name, CONFIG.COMPLETED_FOLDER.Restrict, CONFIG.COMPLETED_FOLDER.Sort, CONFIG.STATUS.COMPLETED.Value);
 
         // copy the lists as the initial filter    
         $scope.filteredBacklogTasks = $scope.backlogTasks;
