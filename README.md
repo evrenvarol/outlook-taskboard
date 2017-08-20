@@ -26,6 +26,7 @@ My changes:
 12. If one of the task folders in the config does not exist, then it is created
 13. Optional saving of filter state via CONFIG file
 14. Optional use of privacy filter via CONFIG file
+15. Added configuration for what to do with completed tasks
 
 TODO:
 - Add tooltips to the buttons
