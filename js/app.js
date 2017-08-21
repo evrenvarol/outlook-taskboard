@@ -208,6 +208,8 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
                     oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
                     oneNoteURL: getUserProp(tasks(i), "OneNoteURL"),
                     completeddate: new Date(tasks(i).DateCompleted),
+                    percent: tasks(i).PercentComplete,
+                    owner: tasks(i).Owner,
                 });
             }
         };

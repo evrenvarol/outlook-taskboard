@@ -72,6 +72,8 @@
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
+                                <div ng-if="( config.BACKLOG_FOLDER.SHOW.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
+                                <div ng-if="( config.BACKLOG_FOLDER.SHOW.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
                                 <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span><strong> {{ task.categories }}</strong></div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
@@ -107,7 +109,9 @@
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
-                                <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span><strong> {{ task.categories }}</strong></div>
+                                    <div ng-if="( config.NEXT_FOLDER.SHOW.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
+                                    <div ng-if="( config.NEXT_FOLDER.SHOW.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
+                                    <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span><strong> {{ task.categories }}</strong></div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
                                 <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,nextTasks,filteredNextTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
@@ -140,7 +144,9 @@
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
-                                <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span><strong> {{ task.categories }}</strong></div>
+                                    <div ng-if="( config.INPROGRESS_FOLDER.SHOW.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
+                                    <div ng-if="( config.INPROGRESS_FOLDER.SHOW.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
+                                    <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span><strong> {{ task.categories }}</strong></div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
                                 <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,inprogressTasks,filteredInprogressTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
@@ -162,7 +168,8 @@
                     <header class="panel-heading-waiting">
                         <h5>{{ config.WAITING_FOLDER.Title }}
                             <span class="pull-right">
-                                <span class="label label-info">{{ waitingTasks.length }}</span>                            <span ng-if="( config.WAITING_FOLDER.Limit > 0 )" class="label label-primary">{{ config.WAITING_FOLDER.Limit }}</span>
+                                <span class="label label-info">{{ waitingTasks.length }}</span>
+                            <span ng-if="( config.WAITING_FOLDER.Limit > 0 )" class="label label-primary">{{ config.WAITING_FOLDER.Limit }}</span>
                             </span>
                         </h5>
                     </header>
@@ -176,7 +183,9 @@
                             <div class="panel-body"> {{ task.notes }} </div>
 
                             <footer class="text-right">
-                                <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span><strong> {{ task.categories }}</strong></div>
+                                    <div ng-if="( config.WAITING_FOLDER.SHOW.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
+                                    <div ng-if="( config.WAITING_FOLDER.SHOW.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
+                                    <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span><strong> {{ task.categories }}</strong></div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
                                 <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,waitingTasks,filteredWaitingTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
@@ -208,7 +217,9 @@
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
-                                <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span><strong> {{ task.categories }}</strong></div>
+                                    <div ng-if="( config.COMPLETED_FOLDER.SHOW.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
+                                    <div ng-if="( config.COMPLETED_FOLDER.SHOW.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
+                                    <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span><strong> {{ task.categories }}</strong></div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Archive" type="button" ng-click="archiveTask(task,completedTasks,filteredCompletedTasks)"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
                                 <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,completedTasks,filteredCompletedTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>

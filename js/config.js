@@ -11,11 +11,41 @@ var config_data = {
     // Sort: Sort order for tasks (default = priority), can state multiple sort keys separated by comma, use '-' to sort descending, Example "duedate,-priority,subject"
     // Restrict: Restrict certain tasks (More info = https://msdn.microsoft.com/en-us/library/office/ff869597.aspx)
     //           N.B.: The folders will already be filtered on task status 
-    'BACKLOG_FOLDER': { Name: '', Title: 'BACKLOG', Limit: 0, Sort: "duedate,-priority", Restrict: "" },
-    'NEXT_FOLDER': { Name: 'Kanban', Title: 'NEXT', Limit: 10, Sort: "duedate,-priority", Restrict: "" },
-    'INPROGRESS_FOLDER': { Name: 'Kanban', Title: 'IN PROGRESS', Limit: 5, Sort: "-priority", Restrict: "" },
-    'WAITING_FOLDER': { Name: 'Kanban', Title: 'WAITING', Limit: 0, Sort: "-priority", Restrict: "" },
-    'COMPLETED_FOLDER': { Name: 'Kanban', Title: 'COMPLETED', Limit: 0, Sort: "-completeddate,-priority,subject", Restrict: "" },
+    'BACKLOG_FOLDER': {
+      Name: '', Title: 'BACKLOG', Limit: 0, Sort: "duedate,-priority", Restrict: "",
+      'SHOW': {
+        'OWNER': false,
+        'PERCENT': false,
+      },
+    },
+    'NEXT_FOLDER': {
+      Name: 'Kanban', Title: 'NEXT', Limit: 10, Sort: "duedate,-priority", Restrict: "",
+      'SHOW': {
+        'OWNER': false,
+        'PERCENT': false,
+      },
+    },
+    'INPROGRESS_FOLDER': {
+      Name: 'Kanban', Title: 'IN PROGRESS', Limit: 5, Sort: "-priority", Restrict: "",
+      'SHOW': {
+        'OWNER': true,
+        'PERCENT': false,
+      },
+    },
+    'WAITING_FOLDER': {
+      Name: 'Kanban', Title: 'WAITING', Limit: 0, Sort: "-priority", Restrict: "",
+      'SHOW': {
+        'OWNER': false,
+        'PERCENT': false,
+      },
+    },
+    'COMPLETED_FOLDER': {
+      Name: 'Kanban', Title: 'COMPLETED', Limit: 0, Sort: "-completeddate,-priority,subject", Restrict: "",
+      'SHOW': {
+        'OWNER': false,
+        'PERCENT': true,
+      },
+    },
     'ARCHIVE_FOLDER': { Name: 'Completed' },
 
     // Task Note Excerpt Size
@@ -42,7 +72,7 @@ var config_data = {
     // Configure what needs to be done with completed tasks
     // N.B. 0 days means immediately, which makes the Completed column display nothing at all
     'COMPLETED': {
-      'AFTER_X_DAYS': 3, 
+      'AFTER_X_DAYS': 3,
       'ACTION': 'ARCHIVE' // the options are: NONE, HIDE, ARCHIVE, DELETE
     }
 
