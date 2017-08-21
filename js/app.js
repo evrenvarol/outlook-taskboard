@@ -506,9 +506,12 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         // display outlook task item window
         taskitem.Display();
 
-        $scope.saveState();
-        // bind to taskitem write event on outlook and reload the page after the task is saved
-        eval("function taskitem::Write (bStat) {window.location.reload();  return true;}");
+        if (CONFIG.AUTO_UPDATE) {
+            $scope.saveState();
+
+            // bind to taskitem write event on outlook and reload the page after the task is saved
+            eval("function taskitem::Write (bStat) {window.location.reload();  return true;}");
+        }
 
         // for anyone wondering about this weird double colon syntax:
         // Office is using IE11 to launch custom apps.
@@ -523,11 +526,13 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
     $scope.editTask = function (item) {
         var taskitem = outlookNS.GetItemFromID(item.entryID);
         taskitem.Display();
-        $scope.saveState();
-        // bind to taskitem write event on outlook and reload the page after the task is saved
-        eval("function taskitem::Write (bStat) {window.location.reload(); return true;}");
-        // bind to taskitem beforedelete event on outlook and reload the page after the task is deleted
-        eval("function taskitem::BeforeDelete (bStat) {window.location.reload(); return true;}");
+        if (CONFIG.AUTO_UPDATE) {
+            $scope.saveState();
+            // bind to taskitem write event on outlook and reload the page after the task is saved
+            eval("function taskitem::Write (bStat) {window.location.reload(); return true;}");
+            // bind to taskitem beforedelete event on outlook and reload the page after the task is deleted
+            eval("function taskitem::BeforeDelete (bStat) {window.location.reload(); return true;}");
+        }
     };
 
     // deletes the task item in both outlook and model data

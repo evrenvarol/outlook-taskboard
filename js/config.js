@@ -74,7 +74,9 @@ var config_data = {
     'COMPLETED': {
       'AFTER_X_DAYS': 3,
       'ACTION': 'ARCHIVE' // the options are: NONE, HIDE, ARCHIVE, DELETE
-    }
+    },
+
+    'AUTO_UPDATE': true, // Switch for reloading the page after adding or editing tasks
 
   }
 };
