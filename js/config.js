@@ -28,7 +28,7 @@ var config_data = {
     'INPROGRESS_FOLDER': {
       Name: 'Kanban', Title: 'IN PROGRESS', Limit: 5, Sort: "-priority", Restrict: "",
       'SHOW': {
-        'OWNER': true,
+        'OWNER': false,
         'PERCENT': false,
       },
     },
@@ -43,7 +43,7 @@ var config_data = {
       Name: 'Kanban', Title: 'COMPLETED', Limit: 0, Sort: "-completeddate,-priority,subject", Restrict: "",
       'SHOW': {
         'OWNER': false,
-        'PERCENT': true,
+        'PERCENT': false,
       },
     },
     'ARCHIVE_FOLDER': { Name: 'Completed' },

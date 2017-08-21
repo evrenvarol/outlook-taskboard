@@ -290,7 +290,6 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
         // filter completed tasks if the HIDE options is configured
         if (CONFIG.COMPLETED.ACTION == 'HIDE') {
-            alert('hide');
             $scope.filteredCompletedTasks = $filter('filter')($scope.filteredCompletedTasks, function (task) {
                 var days = Date.daysBetween(task.completeddate, new Date());
                 return days < CONFIG.COMPLETED.AFTER_X_DAYS;
