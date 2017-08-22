@@ -17,6 +17,7 @@ var config_data = {
         'OWNER': false,
         'PERCENT': false,
       },
+      'FILTER_ON_START_DATE': true,
     },
     'NEXT_FOLDER': {
       Name: 'Kanban', Title: 'NEXT', Limit: 10, Sort: "duedate,-priority", Restrict: "",

@@ -199,7 +199,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
                     entryID: tasks(i).EntryID,
                     subject: tasks(i).Subject,
                     priority: tasks(i).Importance,
-                    startdate: tasks(i).StartDate,
+                    startdate: new Date(tasks(i).StartDate),
                     duedate: new Date(tasks(i).DueDate),
                     sensitivity: tasks(i).Sensitivity,
                     categories: tasks(i).Categories,
@@ -287,6 +287,17 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
             $scope.filteredWaitingTasks = $filter('filter')($scope.filteredWaitingTasks, function (task) { return task.sensitivity == sensitivityFilter });
             $scope.filteredCompletedTasks = $filter('filter')($scope.filteredCompletedTasks, function (task) { return task.sensitivity == sensitivityFilter });
         }
+
+        // filter backlog on start date
+        if (CONFIG.BACKLOG_FOLDER.FILTER_ON_START_DATE) {
+            $scope.filteredBacklogTasks = $filter('filter')($scope.filteredBacklogTasks, function (task) {
+                if (task.startdate.getFullYear() != 4501) {
+                    var days = Date.daysBetween(task.startdate, new Date());
+                    return days >= 0;
+                }
+                else return true; // always show tasks not having start date
+            });
+        };
 
         // filter completed tasks if the HIDE options is configured
         if (CONFIG.COMPLETED.ACTION == 'HIDE') {
