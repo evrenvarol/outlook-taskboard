@@ -192,6 +192,15 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
             var tasks = getOutlookFolder(path).Items.Restrict(restrict);
         }
 
+        var categories = outlookNS.Categories;
+        var count = outlookNS.Categories.Count;
+        for (i = 1; i <= count; i++) {
+            array.push({
+                entryID: categories(i).CategoryID,
+                color: categories(i).Color
+            });
+        };
+
         var count = tasks.Count;
         for (i = 1; i <= count; i++) {
             if (tasks(i).Status == folderStatus) {
