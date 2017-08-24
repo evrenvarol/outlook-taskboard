@@ -20,28 +20,28 @@ var config_data = {
       'FILTER_ON_START_DATE': true,
     },
     'NEXT_FOLDER': {
-      Name: 'Kanban', Title: 'NEXT', Limit: 10, Sort: "duedate,-priority", Restrict: "",
+      Name: '', Title: 'NEXT', Limit: 10, Sort: "duedate,-priority", Restrict: "",
       'SHOW': {
         'OWNER': false,
         'PERCENT': false,
       },
     },
     'INPROGRESS_FOLDER': {
-      Name: 'Kanban', Title: 'IN PROGRESS', Limit: 5, Sort: "-priority", Restrict: "",
+      Name: '', Title: 'IN PROGRESS', Limit: 5, Sort: "-priority", Restrict: "",
       'SHOW': {
-        'OWNER': false,
-        'PERCENT': false,
+        'OWNER': true,
+        'PERCENT': true,
       },
     },
     'WAITING_FOLDER': {
-      Name: 'Kanban', Title: 'WAITING', Limit: 0, Sort: "-priority", Restrict: "",
+      Name: '', Title: 'WAITING', Limit: 0, Sort: "-priority", Restrict: "",
       'SHOW': {
-        'OWNER': false,
-        'PERCENT': false,
+        'OWNER': true,
+        'PERCENT': true,
       },
     },
     'COMPLETED_FOLDER': {
-      Name: 'Kanban', Title: 'COMPLETED', Limit: 0, Sort: "-completeddate,-priority,subject", Restrict: "",
+      Name: '', Title: 'COMPLETED', Limit: 0, Sort: "-completeddate,-priority,subject", Restrict: "",
       'SHOW': {
         'OWNER': false,
         'PERCENT': false,
@@ -73,11 +73,11 @@ var config_data = {
     // Configure what needs to be done with completed tasks
     // N.B. 0 days means immediately, which makes the Completed column display nothing at all
     'COMPLETED': {
-      'AFTER_X_DAYS': 3,
+      'AFTER_X_DAYS': 30,
       'ACTION': 'ARCHIVE' // the options are: NONE, HIDE, ARCHIVE, DELETE
     },
 
-    'AUTO_UPDATE': true, // Switch for reloading the page after adding or editing tasks
+    'AUTO_UPDATE': false, // Switch for reloading the page after adding or editing tasks
 
   }
 };
