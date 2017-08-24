@@ -48,6 +48,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
         $scope.config = CONFIG;
         $scope.usePrivate = CONFIG.PRIVACY_FILTER;
+        $scope.outlookCategories = getCategories();
         $scope.getState();
         $scope.initTasks();
 
@@ -192,15 +193,6 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
             var tasks = getOutlookFolder(path).Items.Restrict(restrict);
         }
 
-        var categories = outlookNS.Categories;
-        var count = outlookNS.Categories.Count;
-        for (i = 1; i <= count; i++) {
-            array.push({
-                entryID: categories(i).CategoryID,
-                color: categories(i).Color
-            });
-        };
-
         var count = tasks.Count;
         for (i = 1; i <= count; i++) {
             if (tasks(i).Status == folderStatus) {
@@ -212,6 +204,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
                     duedate: new Date(tasks(i).DueDate),
                     sensitivity: tasks(i).Sensitivity,
                     categories: tasks(i).Categories,
+                    categoryColor: getColor(tasks(i).Categories),
                     notes: taskExcerpt(tasks(i).Body, CONFIG.TASKNOTE_EXCERPT),
                     status: taskStatus(tasks(i).Status),
                     oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
@@ -220,11 +213,6 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
                     percent: tasks(i).PercentComplete,
                     owner: tasks(i).Owner,
                 });
-                var j;
-                for (j = 1; j <= tasks(i).Categories.Count; j++){
-                    var c = tasks(i).Categories(j);
-                    
-                }
             }
         };
 
@@ -237,6 +225,29 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
         return sortedTasks;
     };
+
+    var getCategories = function () {
+        var i;
+        var catNames = [];
+        var catColors = [];
+        var categories = outlookNS.Categories;
+        var count = outlookNS.Categories.Count;
+        catNames.length = count;
+        catColors.length = count;
+        for (i = 1; i <= count; i++) {
+            catNames[i - 1] = categories(i).Name;
+            catColors[i - 1] = categories(i).Color;
+        };
+        return { names: catNames, colors: catColors };
+    }
+
+    var getColor = function (category) {
+        var i = $scope.outlookCategories.names.indexOf(category);
+        if (i == -1) return 'black';
+        if (i == 4) return 'red';
+        return 'red';
+        //return $scope.outlookCategories.colors[i];
+    }
 
     $scope.initTasks = function () {
         // get tasks from each outlook folder and populate model data

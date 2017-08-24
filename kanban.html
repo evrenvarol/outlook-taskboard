@@ -74,7 +74,7 @@
                             <footer class="text-right">
                                 <div ng-if="( config.BACKLOG_FOLDER.SHOW.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
                                 <div ng-if="( config.BACKLOG_FOLDER.SHOW.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
-                                <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span><strong> {{ task.categories }}</strong></div>
+                                <div  style="color: '{{task.categoryColor}}'" ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span><strong><div style="color: 'red'"> {{ task.categories }}</div></strong></div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
                                 <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,backlogTasks,filteredBacklogTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
