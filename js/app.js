@@ -211,6 +211,11 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
                     percent: tasks(i).PercentComplete,
                     owner: tasks(i).Owner,
                 });
+                var j;
+                for (j = 1; j <= tasks(i).Categories.Count; j++){
+                    var c = tasks(i).Categories(j);
+                    
+                }
             }
         };
 
