@@ -242,34 +242,35 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
     }
 
     var getColor = function (category) {
-        var i = $scope.outlookCategories.names.indexOf(category);
-        if (i == -1) return 'black';
-        if (i == 1) return 'red';
-        if (i == 2) return 'orange';
-        if (i == 3) return 'peach';
-        if (i == 4) return 'yellow';
-        if (i == 5) return 'green';
-        if (i == 6) return 'teal';
-        if (i == 7) return 'olive';
-        if (i == 8) return 'blue';
-        if (i == 9) return 'purple';
-        if (i == 10) return 'maroon';
-        if (i == 11) return 'steel';
-        if (i == 12) return 'darksteel';
-        if (i == 13) return 'gray';
-        if (i == 14) return 'darkgray';
-        if (i == 15) return 'black';
-        if (i == 16) return 'darkred';
-        if (i == 17) return 'darkorange';
-        if (i == 18) return 'darkpeach';
-        if (i == 19) return 'darkyellow';
-        if (i == 20) return 'darkgreen';
-        if (i == 21) return 'darkteal';
-        if (i == 22) return 'darkolive';
-        if (i == 24) return 'darkpurple';
-        if (i == 25) return 'darkmaroon';
-        return 'red';
-        //return $scope.outlookCategories.colors[i];
+        // this has to be optimized by using an arry
+        var c = $scope.outlookCategories.names.indexOf(category);
+        var i = $scope.outlookCategories.colors[c];
+        if (i == -1) return '#4f4f4f';
+        if (i == 1) return '#E7A1A2';
+        if (i == 2) return '#F9BA89';
+        if (i == 3) return '#F7DD8F';
+        if (i == 4) return '#FCFA90';
+        if (i == 5) return '#78D168';
+        if (i == 6) return '#9FDCC9';
+        if (i == 7) return '#C6D2B0';
+        if (i == 8) return '#9DB7E8';
+        if (i == 9) return '#B5A1E2';
+        if (i == 10) return '#daaec2';
+        if (i == 11) return '#dad9dc';
+        if (i == 12) return '#6b7994';
+        if (i == 13) return '#bfbfbf';
+        if (i == 14) return '#6f6f6f';
+        if (i == 15) return '#4f4f4f';
+        if (i == 16) return '#c11a25';
+        if (i == 17) return '#e2620d';
+        if (i == 18) return '#c79930';
+        if (i == 19) return '#b9b300';
+        if (i == 20) return '#368f2b';
+        if (i == 21) return '#329b7a';
+        if (i == 22) return '#778b45';
+        if (i == 23) return '#2858a5';
+        if (i == 24) return '#5c3fa3';
+        if (i == 25) return '#93446b';
     }
 
     $scope.initTasks = function () {
