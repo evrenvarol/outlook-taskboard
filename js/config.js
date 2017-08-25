@@ -59,6 +59,8 @@ var config_data = {
 
     'DATE_FORMAT': 'dd-MMM',
 
+    'USE_CATEGORY_COLORS': true,
+
     'SAVE_STATE': true,     // Preserve state between window.reloads (privacy and search filter)
     'PRIVACY_FILTER': true, // Add filter to separately handle private tasks
 

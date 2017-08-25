@@ -48,6 +48,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
         $scope.config = CONFIG;
         $scope.usePrivate = CONFIG.PRIVACY_FILTER;
+        $scope.useCategoryColors = CONFIG.USE_CATEGORY_COLORS;
         $scope.outlookCategories = getCategories();
         $scope.getState();
         $scope.initTasks();
@@ -204,7 +205,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
                     duedate: new Date(tasks(i).DueDate),
                     sensitivity: tasks(i).Sensitivity,
                     categories: tasks(i).Categories,
-                    categoryStyle: { color: getColor(tasks(i).Categories) },
+                    categoryStyle: getCategoryStyle(tasks(i).Categories),
                     notes: taskExcerpt(tasks(i).Body, CONFIG.TASKNOTE_EXCERPT),
                     status: taskStatus(tasks(i).Status),
                     oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
@@ -225,6 +226,13 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
         return sortedTasks;
     };
+
+    var getCategoryStyle = function (category) {
+        if ($scope.useCategoryColors) {
+            return { "background-color": getColor(category), color: getContrastYIQ(getColor(category)) };
+        }
+        return { color: "black" };
+    }
 
     var getCategories = function () {
         var i;
@@ -271,6 +279,17 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         if (i == 23) return '#2858a5';
         if (i == 24) return '#5c3fa3';
         if (i == 25) return '#93446b';
+    }
+
+    function getContrastYIQ(hexcolor) {
+        if (hexcolor == undefined) {
+            return 'black';
+        }
+        var r = parseInt(hexcolor.substr(1, 2), 16);
+        var g = parseInt(hexcolor.substr(3, 2), 16);
+        var b = parseInt(hexcolor.substr(5, 2), 16);
+        var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+        return (yiq >= 128) ? 'black' : 'white';
     }
 
     $scope.initTasks = function () {
