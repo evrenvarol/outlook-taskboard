@@ -204,7 +204,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
                     duedate: new Date(tasks(i).DueDate),
                     sensitivity: tasks(i).Sensitivity,
                     categories: tasks(i).Categories,
-                    categoryColor: getColor(tasks(i).Categories),
+                    categoryStyle: { color: getColor(tasks(i).Categories) },
                     notes: taskExcerpt(tasks(i).Body, CONFIG.TASKNOTE_EXCERPT),
                     status: taskStatus(tasks(i).Status),
                     oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
@@ -244,7 +244,30 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
     var getColor = function (category) {
         var i = $scope.outlookCategories.names.indexOf(category);
         if (i == -1) return 'black';
-        if (i == 4) return 'red';
+        if (i == 1) return 'red';
+        if (i == 2) return 'orange';
+        if (i == 3) return 'peach';
+        if (i == 4) return 'yellow';
+        if (i == 5) return 'green';
+        if (i == 6) return 'teal';
+        if (i == 7) return 'olive';
+        if (i == 8) return 'blue';
+        if (i == 9) return 'purple';
+        if (i == 10) return 'maroon';
+        if (i == 11) return 'steel';
+        if (i == 12) return 'darksteel';
+        if (i == 13) return 'gray';
+        if (i == 14) return 'darkgray';
+        if (i == 15) return 'black';
+        if (i == 16) return 'darkred';
+        if (i == 17) return 'darkorange';
+        if (i == 18) return 'darkpeach';
+        if (i == 19) return 'darkyellow';
+        if (i == 20) return 'darkgreen';
+        if (i == 21) return 'darkteal';
+        if (i == 22) return 'darkolive';
+        if (i == 24) return 'darkpurple';
+        if (i == 25) return 'darkmaroon';
         return 'red';
         //return $scope.outlookCategories.colors[i];
     }
