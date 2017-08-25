@@ -48,6 +48,8 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
         $scope.config = CONFIG;
         $scope.usePrivate = CONFIG.PRIVACY_FILTER;
+        $scope.useCategoryColors = CONFIG.USE_CATEGORY_COLORS;
+        $scope.outlookCategories = getCategories();
         $scope.getState();
         $scope.initTasks();
 
@@ -203,6 +205,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
                     duedate: new Date(tasks(i).DueDate),
                     sensitivity: tasks(i).Sensitivity,
                     categories: tasks(i).Categories,
+                    categoryStyle: getCategoryStyle(tasks(i).Categories),
                     notes: taskExcerpt(tasks(i).Body, CONFIG.TASKNOTE_EXCERPT),
                     status: taskStatus(tasks(i).Status),
                     oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
@@ -223,6 +226,71 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
         return sortedTasks;
     };
+
+    var getCategoryStyle = function (category) {
+        if ($scope.useCategoryColors) {
+            return { "background-color": getColor(category), color: getContrastYIQ(getColor(category)) };
+        }
+        return { color: "black" };
+    }
+
+    var getCategories = function () {
+        var i;
+        var catNames = [];
+        var catColors = [];
+        var categories = outlookNS.Categories;
+        var count = outlookNS.Categories.Count;
+        catNames.length = count;
+        catColors.length = count;
+        for (i = 1; i <= count; i++) {
+            catNames[i - 1] = categories(i).Name;
+            catColors[i - 1] = categories(i).Color;
+        };
+        return { names: catNames, colors: catColors };
+    }
+
+    var getColor = function (category) {
+        // this has to be optimized by using an arry
+        var c = $scope.outlookCategories.names.indexOf(category);
+        var i = $scope.outlookCategories.colors[c];
+        if (i == -1) return '#4f4f4f';
+        if (i == 1) return '#E7A1A2';
+        if (i == 2) return '#F9BA89';
+        if (i == 3) return '#F7DD8F';
+        if (i == 4) return '#FCFA90';
+        if (i == 5) return '#78D168';
+        if (i == 6) return '#9FDCC9';
+        if (i == 7) return '#C6D2B0';
+        if (i == 8) return '#9DB7E8';
+        if (i == 9) return '#B5A1E2';
+        if (i == 10) return '#daaec2';
+        if (i == 11) return '#dad9dc';
+        if (i == 12) return '#6b7994';
+        if (i == 13) return '#bfbfbf';
+        if (i == 14) return '#6f6f6f';
+        if (i == 15) return '#4f4f4f';
+        if (i == 16) return '#c11a25';
+        if (i == 17) return '#e2620d';
+        if (i == 18) return '#c79930';
+        if (i == 19) return '#b9b300';
+        if (i == 20) return '#368f2b';
+        if (i == 21) return '#329b7a';
+        if (i == 22) return '#778b45';
+        if (i == 23) return '#2858a5';
+        if (i == 24) return '#5c3fa3';
+        if (i == 25) return '#93446b';
+    }
+
+    function getContrastYIQ(hexcolor) {
+        if (hexcolor == undefined) {
+            return 'black';
+        }
+        var r = parseInt(hexcolor.substr(1, 2), 16);
+        var g = parseInt(hexcolor.substr(3, 2), 16);
+        var b = parseInt(hexcolor.substr(5, 2), 16);
+        var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+        return (yiq >= 128) ? 'black' : 'white';
+    }
 
     $scope.initTasks = function () {
         // get tasks from each outlook folder and populate model data
