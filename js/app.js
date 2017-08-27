@@ -196,23 +196,22 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
         var count = tasks.Count;
         for (i = 1; i <= count; i++) {
-            if (tasks(i).Status == folderStatus) {
+            var task = tasks(i);
+            if (task.Status == folderStatus) {
                 array.push({
-                    entryID: tasks(i).EntryID,
-                    subject: tasks(i).Subject,
-                    priority: tasks(i).Importance,
-                    startdate: new Date(tasks(i).StartDate),
-                    duedate: new Date(tasks(i).DueDate),
-                    sensitivity: tasks(i).Sensitivity,
-                    categories: tasks(i).Categories,
-                    categoryStyle: getCategoryStyle(tasks(i).Categories),
-                    notes: taskExcerpt(tasks(i).Body, CONFIG.TASKNOTE_EXCERPT),
-                    status: taskStatus(tasks(i).Status),
-                    oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
-                    oneNoteURL: getUserProp(tasks(i), "OneNoteURL"),
-                    completeddate: new Date(tasks(i).DateCompleted),
-                    percent: tasks(i).PercentComplete,
-                    owner: tasks(i).Owner,
+                    entryID: task.EntryID,
+                    subject: task.Subject,
+                    priority: task.Importance,
+                    startdate: new Date(task.StartDate),
+                    duedate: new Date(task.DueDate),
+                    sensitivity: task.Sensitivity,
+                    categories: task.Categories,
+                    categoryStyle: getCategoryStyle(task.Categories),
+                    notes: taskExcerpt(task.Body, CONFIG.TASKNOTE_EXCERPT),
+                    status: taskStatus(task.Status),
+                    completeddate: new Date(task.DateCompleted),
+                    percent: task.PercentComplete,
+                    owner: task.Owner,
                 });
             }
         };
@@ -542,17 +541,6 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         return str;
     };
 
-    // grabs values of user defined fields from outlook item object
-    // currently used for getting onenote url info
-    var getUserProp = function (item, prop) {
-        var userprop = item.UserProperties(prop);
-        var value = '';
-        if (userprop != null) {
-            value = userprop.Value;
-        }
-        return value;
-    };
-
     // create a new task under target folder
     $scope.addTask = function (target) {
         // set the parent folder to target defined
@@ -660,22 +648,6 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         var today = new Date().setHours(0, 0, 0, 0);
         return { 'task-overdue': dateobj < today, 'task-today': dateobj == today };
     };
-
-    // opens up onenote app and locates the page by using onenote uri
-    $scope.openOneNoteURL = function (url) {
-        window.event.returnValue = false;
-        // try to open the link using msLaunchUri which does not create unsafe-link security warning
-        // unfortunately this method is only available Win8+
-        if (navigator.msLaunchUri) {
-            navigator.msLaunchUri(url);
-        } else {
-            // old window.open method, this creates unsafe-link warning if the link clicked via outlook app
-            // there is a registry key to disable these warnings, but not recommended as it disables
-            // the unsafe-link protection in entire outlook app
-            window.open(url, "_blank").close();
-        }
-        return false;
-    }
 
     Date.daysBetween = function (date1, date2) {
         //Get 1 day in milliseconds
