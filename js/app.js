@@ -208,6 +208,8 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
                     categories: getCategoriesArray(task.Categories),
                     notes: taskExcerpt(task.Body, CONFIG.TASKNOTE_EXCERPT),
                     status: taskStatus(task.Status),
+                    oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
+                    oneNoteURL: getUserProp(tasks(i), "OneNoteURL"),
                     completeddate: new Date(task.DateCompleted),
                     percent: task.PercentComplete,
                     owner: task.Owner,
@@ -224,6 +226,8 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
         return sortedTasks;
     };
+
+
 
     var getCategories = function () {
         var i;
@@ -260,6 +264,34 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         }
         return catStyles;
     }
+
+    // grabs values of user defined fields from outlook item object 
+    // currently used for getting onenote url info 
+    var getUserProp = function (item, prop) {
+        var userprop = item.UserProperties(prop);
+        var value = '';
+        if (userprop != null) {
+            value = userprop.Value;
+        }
+        return value;
+    };
+
+    // opens up onenote app and locates the page by using onenote uri 
+    $scope.openOneNoteURL = function (url) {
+        window.event.returnValue = false;
+        // try to open the link using msLaunchUri which does not create unsafe-link security warning 
+        // unfortunately this method is only available Win8+ 
+        if (navigator.msLaunchUri) {
+            navigator.msLaunchUri(url);
+        } else {
+            // old window.open method, this creates unsafe-link warning if the link clicked via outlook app 
+            // there is a registry key to disable these warnings, but not recommended as it disables 
+            // the unsafe-link protection in entire outlook app 
+            window.open(url, "_blank").close();
+        }
+        return nfalse;
+    }
+
 
     var getColor = function (category) {
         // this has to be optimized by using an arry

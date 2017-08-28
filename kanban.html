@@ -81,6 +81,7 @@
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
                                 <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,backlogTasks,filteredBacklogTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                                 </span>
+                                <button ng-if="(task.oneNoteURL != '')" class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button> 
                             </footer>
                         </li>
                     </ul>
@@ -119,6 +120,7 @@
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
                                 <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,nextTasks,filteredNextTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                                 </span>
+                                <button ng-if="(task.oneNoteURL != '')" class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button> 
                             </footer>
 
                         </li>
@@ -155,6 +157,7 @@
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
                                 <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,inprogressTasks,filteredInprogressTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                                 </span>
+                                <button ng-if="(task.oneNoteURL != '')" class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button> 
                             </footer>
 
                         </li>
@@ -195,6 +198,7 @@
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
                                 <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,waitingTasks,filteredWaitingTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                                 </span>
+                                <button ng-if="(task.oneNoteURL != '')" class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button> 
                             </footer>
 
                         </li>
@@ -230,6 +234,7 @@
                                     <button class="btn btn-default btn-xs" aria-label="Archive" type="button" ng-click="archiveTask(task,completedTasks,filteredCompletedTasks)"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
                                 <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,completedTasks,filteredCompletedTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                                 </span>
+                                <button ng-if="(task.oneNoteURL != '')" class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button> 
                             </footer>
 
                         </li>
