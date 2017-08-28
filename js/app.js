@@ -205,8 +205,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
                     startdate: new Date(task.StartDate),
                     duedate: new Date(task.DueDate),
                     sensitivity: task.Sensitivity,
-                    categories: task.Categories,
-                    categoryStyle: getCategoryStyle(task.Categories),
+                    categories: getCategoriesArray(task.Categories),
                     notes: taskExcerpt(task.Body, CONFIG.TASKNOTE_EXCERPT),
                     status: taskStatus(task.Status),
                     completeddate: new Date(task.DateCompleted),
@@ -226,13 +225,6 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         return sortedTasks;
     };
 
-    var getCategoryStyle = function (category) {
-        if ($scope.useCategoryColors) {
-            return { "background-color": getColor(category), color: getContrastYIQ(getColor(category)) };
-        }
-        return { color: "black" };
-    }
-
     var getCategories = function () {
         var i;
         var catNames = [];
@@ -246,6 +238,27 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
             catColors[i - 1] = categories(i).Color;
         };
         return { names: catNames, colors: catColors };
+    }
+
+    var getCategoriesArray = function (csvCategories) {
+        var i;
+        var catStyles = [];
+        var categories = csvCategories.split(/[;,]+/);
+        catStyles.length = categories.length;
+        for (i = 0; i < categories.length; i++) {
+            categories[i] = categories[i].trim();
+            if ($scope.useCategoryColors) {
+                catStyles[i] = {
+                    label: categories[i], style: { "background-color": getColor(categories[i]), color: getContrastYIQ(getColor(categories[i])) }
+                }
+            }
+            else {
+                catStyles[i] = {
+                    label: categories[i], style: { color: "black" }
+                };
+            }
+        }
+        return catStyles;
     }
 
     var getColor = function (category) {
@@ -412,7 +425,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         $scope.private = state.private;
     }
 
-	// this is only a proof-of-concept single page report in a draft email for weekly report
+    // this is only a proof-of-concept single page report in a draft email for weekly report
     // it will be improved later on
     $scope.createReport = function () {
         var i, array = [];
@@ -435,8 +448,8 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         var count = tasks.Count;
         for (i = 1; i <= count; i++) {
             mailBody += "<li>"
-			if (tasks(i).Categories !== "") { mailBody += "[" + tasks(i).Categories + "] "; } 
-			mailBody += "<strong>" + tasks(i).Subject + "</strong>" + " - <i>" + taskStatus(tasks(i).Status) + "</i>";
+            if (tasks(i).Categories !== "") { mailBody += "[" + tasks(i).Categories + "] "; }
+            mailBody += "<strong>" + tasks(i).Subject + "</strong>" + " - <i>" + taskStatus(tasks(i).Status) + "</i>";
             if (tasks(i).Importance == 2) { mailBody += "<font color=red> [H]</font>"; }
             if (tasks(i).Importance == 0) { mailBody += "<font color=gray> [L]</font>"; }
             var dueDate = new Date(tasks(i).DueDate);
@@ -445,7 +458,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
             mailBody += "</li>";
         }
         mailBody += "</ul>";
-		
+
         // INPROGRESS ITEMS
         var tasks = getOutlookFolder(CONFIG.INPROGRESS_FOLDER.Name).Items.Restrict("[Status] = 1 And Not ([Sensitivity] = 2)");
         tasks.Sort("[Importance][Status]", true);
@@ -454,8 +467,8 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         var count = tasks.Count;
         for (i = 1; i <= count; i++) {
             mailBody += "<li>"
-			if (tasks(i).Categories !== "") { mailBody += "[" + tasks(i).Categories + "] "; } 
-			mailBody += "<strong>" + tasks(i).Subject + "</strong>" + " - <i>" + taskStatus(tasks(i).Status) + "</i>";
+            if (tasks(i).Categories !== "") { mailBody += "[" + tasks(i).Categories + "] "; }
+            mailBody += "<strong>" + tasks(i).Subject + "</strong>" + " - <i>" + taskStatus(tasks(i).Status) + "</i>";
             if (tasks(i).Importance == 2) { mailBody += "<font color=red> [H]</font>"; }
             if (tasks(i).Importance == 0) { mailBody += "<font color=gray> [L]</font>"; }
             var dueDate = new Date(tasks(i).DueDate);
@@ -466,16 +479,16 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         mailBody += "</ul>";
 
         // WAITING ITEMS
-//       var tasks = getOutlookFolder(CONFIG.WAITING_FOLDER.Name).Items.Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
-		var tasks = getOutlookFolder(CONFIG.WAITING_FOLDER.Name).Items.Restrict("[Status] = 3 And Not ([Sensitivity] = 2)");
+        //       var tasks = getOutlookFolder(CONFIG.WAITING_FOLDER.Name).Items.Restrict("[Complete] = false And Not ([Sensitivity] = 2)");
+        var tasks = getOutlookFolder(CONFIG.WAITING_FOLDER.Name).Items.Restrict("[Status] = 3 And Not ([Sensitivity] = 2)");
         tasks.Sort("[Importance][Status]", true);
         mailBody += "<h3>" + CONFIG.WAITING_FOLDER.Title + "</h3>";
         mailBody += "<ul>";
         var count = tasks.Count;
         for (i = 1; i <= count; i++) {
             mailBody += "<li>"
-			if (tasks(i).Categories !== "") { mailBody += "[" + tasks(i).Categories + "] "; } 
-			mailBody += "<strong>" + tasks(i).Subject + "</strong>" + " - <i>" + taskStatus(tasks(i).Status) + "</i>";
+            if (tasks(i).Categories !== "") { mailBody += "[" + tasks(i).Categories + "] "; }
+            mailBody += "<strong>" + tasks(i).Subject + "</strong>" + " - <i>" + taskStatus(tasks(i).Status) + "</i>";
             if (tasks(i).Importance == 2) { mailBody += "<font color=red> [H]</font>"; }
             if (tasks(i).Importance == 0) { mailBody += "<font color=gray> [L]</font>"; }
             var dueDate = new Date(tasks(i).DueDate);
@@ -493,8 +506,8 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         var count = tasks.Count;
         for (i = 1; i <= count; i++) {
             mailBody += "<li>"
-			if (tasks(i).Categories !== "") { mailBody += "[" + tasks(i).Categories + "] "; } 
-			mailBody += "<strong>" + tasks(i).Subject + "</strong>" + " - <i>" + taskStatus(tasks(i).Status) + "</i>";
+            if (tasks(i).Categories !== "") { mailBody += "[" + tasks(i).Categories + "] "; }
+            mailBody += "<strong>" + tasks(i).Subject + "</strong>" + " - <i>" + taskStatus(tasks(i).Status) + "</i>";
             if (tasks(i).Importance == 2) { mailBody += "<font color=red> [H]</font>"; }
             if (tasks(i).Importance == 0) { mailBody += "<font color=gray> [L]</font>"; }
             var dueDate = new Date(tasks(i).DueDate);
@@ -615,10 +628,8 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
             taskitem.Delete();
 
             // locate and remove the item from the models
-            var index = sourceArray.indexOf(item);
-            if (index != -1) { sourceArray.splice(index, 1); }
-            index = filteredSourceArray.indexOf(item);
-            if (index != -1) { filteredSourceArray.splice(index, 1); }
+            removeItemFromArray(item, sourceArray);
+            removeItemFromArray(item, filteredSourceArray);
         };
     };
 
@@ -635,10 +646,13 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         };
 
         // locate and remove the item from the models
-        var index = sourceArray.indexOf(item);
-        if (index != -1) { sourceArray.splice(index, 1); }
-        index = filteredSourceArray.indexOf(item);
-        if (index != -1) { filteredSourceArray.splice(index, 1); }
+        removeItemFromArray(item, sourceArray);
+        removeItemFromArray(item, filteredSourceArray);
+    };
+
+    var removeItemFromArray = function (item, array) {
+        var index = array.indexOf(item);
+        if (index != -1) { array.splice(index, 1); }
     };
 
     // checks whether the task date is overdue or today
