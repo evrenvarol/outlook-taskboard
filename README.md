@@ -1,5 +1,3 @@
-
-
 # Outlook Taskboard
 Outlook Taskboard is a kanban board style view for Outlook Tasks.
 
@@ -12,13 +10,13 @@ configuration file.
 
 My changes:
 
-1. Removed Owner and Percentage
+1. Added colours to task categories
 2. Tasks folder is now the Backlog folder
 3. Use new folder 'Kanban' for all the current work: Next, InProgress, Waiting and Done
 4. Removed Add button at InProgress and Waiting lanes. Tasks can only be added to Backlog and Next
 5. Drag and drop now sets the new status
 6. Introduced date format in config file
-7. Drag&Drop now also works properly when filter is active
+7. Drag & Drop now also works properly when filter is active
 8. Use another icon for archiving of completed icons, for better difference from the edit icon 
 9. Removed editing option for completed tasks
 10. Display Completion Date for completed tasks instead of Due Date
@@ -26,12 +24,15 @@ My changes:
 12. If one of the task folders in the config does not exist, then it is created
 13. Optional saving of filter state via CONFIG file
 14. Optional use of privacy filter via CONFIG file
-15. Added configuration for what to do with completed tasks
+15. Added configuration for what to do with completed tasks (Nothing, Archive, Hide, Delete)
+16. Added "Filter on start date" configuration option to Backlog folder/column to hide tasks with start date in the future
+17. Added configuration options to show/hide 'Owner' and '% complete' per column
+18. Addded configuration option to enable/disable auto refresh of the taskboard
 
 TODO:
 - Add tooltips to the buttons
 - Look into performance issues, because currently it re-reads the tasks from Outlook quite often
-- implement error logging by sending a mail to myself
+- Implement error logging by sending a mail to myself
 - More configuration and customization options
 - And finally a rewrite using React. 
   Why? Firstly, because I want to get experience with it, and secondly, it is said to be faster
