@@ -1,6 +1,6 @@
 'use strict';
 
-var tbApp = angular.module('taskboardApp', ['taskboardApp.config', 'ui.sortable']);
+var tbApp = angular.module('taskboardApp', ['ui.sortable']);
 
 try {
     // check whether the page is opened in outlook app
@@ -42,13 +42,14 @@ function serializer(replacer, cycleReplacer) {
     }
 }
 
-tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
+tbApp.controller('taskboardController', function ($scope, $filter) {
 
     $scope.init = function () {
 
-        $scope.config = CONFIG;
-        $scope.usePrivate = CONFIG.PRIVACY_FILTER;
-        $scope.useCategoryColors = CONFIG.USE_CATEGORY_COLORS;
+        // $scope.config = CONFIG;
+        $scope.getConfig();
+        $scope.usePrivate = $scope.config.PRIVACY_FILTER;
+        $scope.useCategoryColors = $scope.config.USE_CATEGORY_COLORS;
         $scope.outlookCategories = getCategories();
         $scope.getState();
         $scope.initTasks();
@@ -64,9 +65,9 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
             update: function (e, ui) {
                 // cancels dropping to the lane if it exceeds the limit
                 // but allows sorting within the lane
-                if ((CONFIG.INPROGRESS_FOLDER.Limit !== 0 && e.target.id !== 'inprogressList' && ui.item.sortable.droptarget.attr('id') === 'inprogressList' && $scope.inprogressTasks.length >= CONFIG.INPROGRESS_FOLDER.Limit) ||
-                    (CONFIG.NEXT_FOLDER.Limit !== 0 && e.target.id !== 'nextList' && ui.item.sortable.droptarget.attr('id') === 'nextList' && $scope.nextTasks.length >= CONFIG.NEXT_FOLDER.Limit) ||
-                    (CONFIG.WAITING_FOLDER.Limit !== 0 && e.target.id !== 'waitingList' && ui.item.sortable.droptarget.attr('id') === 'waitingList' && $scope.waitingTasks.length >= CONFIG.WAITING_FOLDER.Limit)) {
+                if (($scope.config.INPROGRESS_FOLDER.Limit !== 0 && e.target.id !== 'inprogressList' && ui.item.sortable.droptarget.attr('id') === 'inprogressList' && $scope.inprogressTasks.length >= $scope.config.INPROGRESS_FOLDER.Limit) ||
+                    ($scope.config.NEXT_FOLDER.Limit !== 0 && e.target.id !== 'nextList' && ui.item.sortable.droptarget.attr('id') === 'nextList' && $scope.nextTasks.length >= $scope.config.NEXT_FOLDER.Limit) ||
+                    ($scope.config.WAITING_FOLDER.Limit !== 0 && e.target.id !== 'waitingList' && ui.item.sortable.droptarget.attr('id') === 'waitingList' && $scope.waitingTasks.length >= $scope.config.WAITING_FOLDER.Limit)) {
                     ui.item.sortable.cancel();
                 }
             },
@@ -78,24 +79,24 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
                 if (ui.item.sortable.droptarget) { // check if it is dropped on a valid target
                     switch (ui.item.sortable.droptarget[0].id) {
                         case 'backlogList':
-                            var tasksfolder = getOutlookFolder(CONFIG.BACKLOG_FOLDER.Name);
-                            var newstatus = CONFIG.STATUS.NOT_STARTED.Value;
+                            var tasksfolder = getOutlookFolder($scope.config.BACKLOG_FOLDER.Name);
+                            var newstatus = $scope.config.STATUS.NOT_STARTED.Value;
                             break;
                         case 'nextList':
-                            var tasksfolder = getOutlookFolder(CONFIG.NEXT_FOLDER.Name);
-                            var newstatus = CONFIG.STATUS.NOT_STARTED.Value;
+                            var tasksfolder = getOutlookFolder($scope.config.NEXT_FOLDER.Name);
+                            var newstatus = $scope.config.STATUS.NOT_STARTED.Value;
                             break;
                         case 'inprogressList':
-                            var tasksfolder = getOutlookFolder(CONFIG.INPROGRESS_FOLDER.Name);
-                            var newstatus = CONFIG.STATUS.IN_PROGRESS.Value;
+                            var tasksfolder = getOutlookFolder($scope.config.INPROGRESS_FOLDER.Name);
+                            var newstatus = $scope.config.STATUS.IN_PROGRESS.Value;
                             break;
                         case 'waitingList':
-                            var tasksfolder = getOutlookFolder(CONFIG.WAITING_FOLDER.Name);
-                            var newstatus = CONFIG.STATUS.WAITING.Value;
+                            var tasksfolder = getOutlookFolder($scope.config.WAITING_FOLDER.Name);
+                            var newstatus = $scope.config.STATUS.WAITING.Value;
                             break;
                         case 'completedList':
-                            var tasksfolder = getOutlookFolder(CONFIG.COMPLETED_FOLDER.Name);
-                            var newstatus = CONFIG.STATUS.COMPLETED.Value;
+                            var tasksfolder = getOutlookFolder($scope.config.COMPLETED_FOLDER.Name);
+                            var newstatus = $scope.config.STATUS.COMPLETED.Value;
                             break;
                     };
 
@@ -206,7 +207,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
                     duedate: new Date(task.DueDate),
                     sensitivity: task.Sensitivity,
                     categories: getCategoriesArray(task.Categories),
-                    notes: taskExcerpt(task.Body, CONFIG.TASKNOTE_EXCERPT),
+                    notes: taskExcerpt(task.Body, $scope.config.TASKNOTE_EXCERPT),
                     status: taskStatus(task.Status),
                     oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
                     oneNoteURL: getUserProp(tasks(i), "OneNoteURL"),
@@ -338,11 +339,11 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
     $scope.initTasks = function () {
         // get tasks from each outlook folder and populate model data
-        $scope.backlogTasks = getTasksFromOutlook(CONFIG.BACKLOG_FOLDER.Name, CONFIG.BACKLOG_FOLDER.Restrict, CONFIG.BACKLOG_FOLDER.Sort, CONFIG.STATUS.NOT_STARTED.Value);
-        $scope.inprogressTasks = getTasksFromOutlook(CONFIG.INPROGRESS_FOLDER.Name, CONFIG.INPROGRESS_FOLDER.Restrict, CONFIG.INPROGRESS_FOLDER.Sort, CONFIG.STATUS.IN_PROGRESS.Value);
-        $scope.nextTasks = getTasksFromOutlook(CONFIG.NEXT_FOLDER.Name, CONFIG.NEXT_FOLDER.Restrict, CONFIG.NEXT_FOLDER.Sort, CONFIG.STATUS.NOT_STARTED.Value);
-        $scope.waitingTasks = getTasksFromOutlook(CONFIG.WAITING_FOLDER.Name, CONFIG.WAITING_FOLDER.Restrict, CONFIG.WAITING_FOLDER.Sort, CONFIG.STATUS.WAITING.Value);
-        $scope.completedTasks = getTasksFromOutlook(CONFIG.COMPLETED_FOLDER.Name, CONFIG.COMPLETED_FOLDER.Restrict, CONFIG.COMPLETED_FOLDER.Sort, CONFIG.STATUS.COMPLETED.Value);
+        $scope.backlogTasks = getTasksFromOutlook($scope.config.BACKLOG_FOLDER.Name, $scope.config.BACKLOG_FOLDER.Restrict, $scope.config.BACKLOG_FOLDER.Sort, $scope.config.STATUS.NOT_STARTED.Value);
+        $scope.inprogressTasks = getTasksFromOutlook($scope.config.INPROGRESS_FOLDER.Name, $scope.config.INPROGRESS_FOLDER.Restrict, $scope.config.INPROGRESS_FOLDER.Sort, $scope.config.STATUS.IN_PROGRESS.Value);
+        $scope.nextTasks = getTasksFromOutlook($scope.config.NEXT_FOLDER.Name, $scope.config.NEXT_FOLDER.Restrict, $scope.config.NEXT_FOLDER.Sort, $scope.config.STATUS.NOT_STARTED.Value);
+        $scope.waitingTasks = getTasksFromOutlook($scope.config.WAITING_FOLDER.Name, $scope.config.WAITING_FOLDER.Restrict, $scope.config.WAITING_FOLDER.Sort, $scope.config.STATUS.WAITING.Value);
+        $scope.completedTasks = getTasksFromOutlook($scope.config.COMPLETED_FOLDER.Name, $scope.config.COMPLETED_FOLDER.Restrict, $scope.config.COMPLETED_FOLDER.Sort, $scope.config.STATUS.COMPLETED.Value);
 
         // copy the lists as the initial filter    
         $scope.filteredBacklogTasks = $scope.backlogTasks;
@@ -355,17 +356,17 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         $scope.applyFilters();
 
         // cleran up Completed Tasks
-        if (CONFIG.COMPLETED.ACTION == 'ARCHIVE' || CONFIG.COMPLETED.ACTION == 'DELETE') {
+        if ($scope.config.COMPLETED.ACTION == 'ARCHIVE' || $scope.config.COMPLETED.ACTION == 'DELETE') {
             var i;
             var tasks = $scope.completedTasks;
             var count = tasks.length;
             for (i = 0; i < count; i++) {
                 var days = Date.daysBetween(tasks[i].completeddate, new Date());
-                if (days > CONFIG.COMPLETED.AFTER_X_DAYS) {
-                    if (CONFIG.COMPLETED.ACTION == 'ARCHIVE') {
+                if (days > $scope.config.COMPLETED.AFTER_X_DAYS) {
+                    if ($scope.config.COMPLETED.ACTION == 'ARCHIVE') {
                         $scope.archiveTask(tasks[i], $scope.completedTasks, $scope.filteredCompletedTasks);
                     }
-                    if (CONFIG.COMPLETED.ACTION == 'DELETE') {
+                    if ($scope.config.COMPLETED.ACTION == 'DELETE') {
                         $scope.deleteTask(tasks[i], $scope.completedTasks, $scope.filteredCompletedTasks, false);
                     }
                 };
@@ -390,7 +391,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
             $scope.filteredCompletedTasks = $scope.completedTasks;
         }
         // I think this can be written shorter, but for now it works
-        if (CONFIG.PRIVACY_FILTER) {
+        if ($scope.config.PRIVACY_FILTER) {
             var sensitivityFilter = 0;
             if ($scope.private == true) { sensitivityFilter = 2; }
             $scope.filteredBacklogTasks = $filter('filter')($scope.filteredBacklogTasks, function (task) { return task.sensitivity == sensitivityFilter });
@@ -401,7 +402,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         }
 
         // filter backlog on start date
-        if (CONFIG.BACKLOG_FOLDER.FILTER_ON_START_DATE) {
+        if ($scope.config.BACKLOG_FOLDER.FILTER_ON_START_DATE) {
             $scope.filteredBacklogTasks = $filter('filter')($scope.filteredBacklogTasks, function (task) {
                 if (task.startdate.getFullYear() != 4501) {
                     var days = Date.daysBetween(task.startdate, new Date());
@@ -412,16 +413,16 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         };
 
         // filter completed tasks if the HIDE options is configured
-        if (CONFIG.COMPLETED.ACTION == 'HIDE') {
+        if ($scope.config.COMPLETED.ACTION == 'HIDE') {
             $scope.filteredCompletedTasks = $filter('filter')($scope.filteredCompletedTasks, function (task) {
                 var days = Date.daysBetween(task.completeddate, new Date());
-                return days < CONFIG.COMPLETED.AFTER_X_DAYS;
+                return days < $scope.config.COMPLETED.AFTER_X_DAYS;
             });
         }
     }
 
     $scope.saveState = function () {
-        if (CONFIG.SAVE_STATE) {
+        if ($scope.config.SAVE_STATE) {
             var state = { "private": $scope.private, "search": $scope.search };
 
             var folder = outlookNS.GetDefaultFolder(11); // use the Journal folder to save the state
@@ -438,11 +439,25 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         }
     }
 
+    $scope.saveConfig = function () {
+        var folder = outlookNS.GetDefaultFolder(11); // use the Journal folder to save the state
+        var configItems = folder.Items.Restrict('[Subject] = "KanbanConfig"');
+        if (configItems.Count == 0) {
+            var configItem = outlookApp.CreateItem(4);
+            configItem.Subject = "KanbanConfig";
+        }
+        else {
+            configItem = configItems(1);
+        }
+        configItem.Body = JSON.stringify($scope.config, null, 2);
+        configItem.Save();
+    }
+
     $scope.getState = function () {
         // set default state
         var state = { "private": false, "search": "" };
 
-        if (CONFIG.SAVE_STATE) {
+        if ($scope.config.SAVE_STATE) {
             var folder = outlookNS.GetDefaultFolder(11);
             var stateItems = folder.Items.Restrict('[Subject] = "KanbanState"');
             if (stateItems.Count > 0) {
@@ -455,6 +470,22 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
         $scope.search = state.search;
         $scope.private = state.private;
+    }
+
+    $scope.getConfig = function () {
+        var folder = outlookNS.GetDefaultFolder(11);
+        var configItems = folder.Items.Restrict('[Subject] = "KanbanConfig"');
+        var configFound = false;
+        if (configItems.Count > 0) {
+            var configItem = configItems(1);
+            if (configItem.Body) {
+                $scope.config = JSON.parse(configItem.Body);
+                configFound = true;
+            }
+        }
+        if (!configFound) {
+            $scope.makeDefaultConfig();
+        }
     }
 
     // this is only a proof-of-concept single page report in a draft email for weekly report
@@ -473,10 +504,10 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         mailBody += "<body>";
 
         // COMPLETED ITEMS
-        if (CONFIG.COMPLETED_FOLDER.REPORT.SHOW) {
-            var tasks = getOutlookFolder(CONFIG.COMPLETED_FOLDER.Name).Items.Restrict("[Complete] = true And Not ([Sensitivity] = 2)");
+        if ($scope.config.COMPLETED_FOLDER.REPORT.SHOW) {
+            var tasks = getOutlookFolder($scope.config.COMPLETED_FOLDER.Name).Items.Restrict("[Complete] = true And Not ([Sensitivity] = 2)");
             tasks.Sort("[Importance][Status]", true);
-            mailBody += "<h3>" + CONFIG.COMPLETED_FOLDER.Title + "</h3>";
+            mailBody += "<h3>" + $scope.config.COMPLETED_FOLDER.Title + "</h3>";
             mailBody += "<ul>";
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
@@ -494,10 +525,10 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         }
 
         // INPROGRESS ITEMS
-        if (CONFIG.INPROGRESS_FOLDER.REPORT.SHOW) {
-            var tasks = getOutlookFolder(CONFIG.INPROGRESS_FOLDER.Name).Items.Restrict("[Status] = 1 And Not ([Sensitivity] = 2)");
+        if ($scope.config.INPROGRESS_FOLDER.REPORT.SHOW) {
+            var tasks = getOutlookFolder($scope.config.INPROGRESS_FOLDER.Name).Items.Restrict("[Status] = 1 And Not ([Sensitivity] = 2)");
             tasks.Sort("[Importance][Status]", true);
-            mailBody += "<h3>" + CONFIG.INPROGRESS_FOLDER.Title + "</h3>";
+            mailBody += "<h3>" + $scope.config.INPROGRESS_FOLDER.Title + "</h3>";
             mailBody += "<ul>";
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
@@ -515,10 +546,10 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         }
 
         // NEXT ITEMS
-        if (CONFIG.NEXT_FOLDER.REPORT.SHOW) {
-            var tasks = getOutlookFolder(CONFIG.NEXT_FOLDER.Name).Items.Restrict("[Status] = 0 And Not ([Sensitivity] = 2)");
+        if ($scope.config.NEXT_FOLDER.REPORT.SHOW) {
+            var tasks = getOutlookFolder($scope.config.NEXT_FOLDER.Name).Items.Restrict("[Status] = 0 And Not ([Sensitivity] = 2)");
             tasks.Sort("[Importance][Status]", true);
-            mailBody += "<h3>" + CONFIG.NEXT_FOLDER.Title + "</h3>";
+            mailBody += "<h3>" + $scope.config.NEXT_FOLDER.Title + "</h3>";
             mailBody += "<ul>";
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
@@ -536,10 +567,10 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         }
 
         // WAITING ITEMS
-        if (CONFIG.WAITING_FOLDER.REPORT.SHOW) {
-            var tasks = getOutlookFolder(CONFIG.WAITING_FOLDER.Name).Items.Restrict("[Status] = 3 And Not ([Sensitivity] = 2)");
+        if ($scope.config.WAITING_FOLDER.REPORT.SHOW) {
+            var tasks = getOutlookFolder($scope.config.WAITING_FOLDER.Name).Items.Restrict("[Status] = 3 And Not ([Sensitivity] = 2)");
             tasks.Sort("[Importance][Status]", true);
-            mailBody += "<h3>" + CONFIG.WAITING_FOLDER.Title + "</h3>";
+            mailBody += "<h3>" + $scope.config.WAITING_FOLDER.Title + "</h3>";
             mailBody += "<ul>";
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
@@ -557,10 +588,10 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         }
 
         // BACKLOG ITEMS
-        if (CONFIG.BACKLOG_FOLDER.REPORT.SHOW) {
-            var tasks = getOutlookFolder(CONFIG.BACKLOG_FOLDER.Name).Items.Restrict("[Status] = 0 And Not ([Sensitivity] = 2)");
+        if ($scope.config.BACKLOG_FOLDER.REPORT.SHOW) {
+            var tasks = getOutlookFolder($scope.config.BACKLOG_FOLDER.Name).Items.Restrict("[Status] = 0 And Not ([Sensitivity] = 2)");
             tasks.Sort("[Importance][Status]", true);
-            mailBody += "<h3>" + CONFIG.BACKLOG_FOLDER.Title + "</h3>";
+            mailBody += "<h3>" + $scope.config.BACKLOG_FOLDER.Title + "</h3>";
             mailBody += "<ul>";
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
@@ -606,10 +637,10 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
 
     var taskStatus = function (status) {
         var str = '';
-        if (status == CONFIG.STATUS.NOT_STARTED.Value) { str = CONFIG.STATUS.NOT_STARTED.Text; }
-        if (status == CONFIG.STATUS.IN_PROGRESS.Value) { str = CONFIG.STATUS.IN_PROGRESS.Text; }
-        if (status == CONFIG.STATUS.WAITING.Value) { str = CONFIG.STATUS.WAITING.Text; }
-        if (status == CONFIG.STATUS.COMPLETED.Value) { str = CONFIG.STATUS.COMPLETED.Text; }
+        if (status == $scope.config.STATUS.NOT_STARTED.Value) { str = $scope.config.STATUS.NOT_STARTED.Text; }
+        if (status == $scope.config.STATUS.IN_PROGRESS.Value) { str = $scope.config.STATUS.IN_PROGRESS.Text; }
+        if (status == $scope.config.STATUS.WAITING.Value) { str = $scope.config.STATUS.WAITING.Text; }
+        if (status == $scope.config.STATUS.COMPLETED.Value) { str = $scope.config.STATUS.COMPLETED.Text; }
         return str;
     };
 
@@ -618,26 +649,26 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         // set the parent folder to target defined
         switch (target) {
             case 'backlog':
-                var tasksfolder = getOutlookFolder(CONFIG.BACKLOG_FOLDER.Name);
+                var tasksfolder = getOutlookFolder($scope.config.BACKLOG_FOLDER.Name);
                 break;
             case 'inprogress':
-                var tasksfolder = getOutlookFolder(CONFIG.INPROGRESS_FOLDER.Name);
+                var tasksfolder = getOutlookFolder($scope.config.INPROGRESS_FOLDER.Name);
                 break;
             case 'next':
-                var tasksfolder = getOutlookFolder(CONFIG.NEXT_FOLDER.Name);
+                var tasksfolder = getOutlookFolder($scope.config.NEXT_FOLDER.Name);
                 break;
             case 'waiting':
-                var tasksfolder = getOutlookFolder(CONFIG.WAITING_FOLDER.Name);
+                var tasksfolder = getOutlookFolder($scope.config.WAITING_FOLDER.Name);
                 break;
         };
         // create a new task item object in outlook
         var taskitem = tasksfolder.Items.Add();
 
         // add default task template to the task body
-        taskitem.Body = CONFIG.TASK_TEMPLATE;
+        taskitem.Body = $scope.config.TASK_TEMPLATE;
 
         // set sensitivity according to the current filter
-        if (CONFIG.PRIVACY_FILTER) {
+        if ($scope.config.PRIVACY_FILTER) {
             if ($scope.private) {
                 taskitem.Sensitivity = 2;
             }
@@ -646,7 +677,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         // display outlook task item window
         taskitem.Display();
 
-        if (CONFIG.AUTO_UPDATE) {
+        if ($scope.config.AUTO_UPDATE) {
             $scope.saveState();
 
             // bind to taskitem write event on outlook and reload the page after the task is saved
@@ -666,7 +697,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
     $scope.editTask = function (item) {
         var taskitem = outlookNS.GetItemFromID(item.entryID);
         taskitem.Display();
-        if (CONFIG.AUTO_UPDATE) {
+        if ($scope.config.AUTO_UPDATE) {
             $scope.saveState();
             // bind to taskitem write event on outlook and reload the page after the task is saved
             eval("function taskitem::Write (bStat) {window.location.reload(); return true;}");
@@ -699,7 +730,7 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         var taskitem = outlookNS.GetItemFromID(item.entryID);
 
         // move the task to the archive folder first (if it is not already in)
-        var archivefolder = getOutlookFolder(CONFIG.ARCHIVE_FOLDER.Name);
+        var archivefolder = getOutlookFolder($scope.config.ARCHIVE_FOLDER.Name);
         if (taskitem.Parent.Name != archivefolder.Name) {
             taskitem = taskitem.Move(archivefolder);
         };
@@ -737,5 +768,89 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         return difference_ms / one_day;
     }
 
+    $scope.editConfig = function () {
+        var folder = outlookNS.GetDefaultFolder(11);
+        var configItems = folder.Items.Restrict('[Subject] = "KanbanConfig"');
+        var configItem = configItems(1);
+        configItem.Display();
+        // bind to taskitem write event on outlook and reload the page after the task is saved
+        eval("function configItem::Write (bStat) {window.location.reload(); return true;}");
+    }
+
+    $scope.makeDefaultConfig = function () {
+        $scope.config = {
+
+            'BACKLOG_FOLDER': {
+                Name: '', Title: 'BACKLOG', Limit: 0, Sort: "duedate,-priority", Restrict: "",
+                'SHOW': {
+                    'OWNER': false,
+                    'PERCENT': false,
+                },
+                'FILTER_ON_START_DATE': true,
+                'REPORT': {
+                    'SHOW': true,
+                }
+            },
+            'NEXT_FOLDER': {
+                Name: 'Kanban', Title: 'NEXT', Limit: 20, Sort: "duedate,-priority", Restrict: "",
+                'SHOW': {
+                    'OWNER': false,
+                    'PERCENT': false,
+                },
+                'REPORT': {
+                    'SHOW': true,
+                }
+            },
+            'INPROGRESS_FOLDER': {
+                Name: 'Kanban', Title: 'IN PROGRESS', Limit: 5, Sort: "-priority", Restrict: "",
+                'SHOW': {
+                    'OWNER': false,
+                    'PERCENT': false,
+                },
+                'REPORT': {
+                    'SHOW': true,
+                }
+            },
+            'WAITING_FOLDER': {
+                Name: 'Kanban', Title: 'WAITING', Limit: 0, Sort: "-priority", Restrict: "",
+                'SHOW': {
+                    'OWNER': false,
+                    'PERCENT': false,
+                },
+                'REPORT': {
+                    'SHOW': true,
+                }
+            },
+            'COMPLETED_FOLDER': {
+                Name: 'Kanban', Title: 'COMPLETED', Limit: 0, Sort: "-completeddate,-priority,subject", Restrict: "",
+                'SHOW': {
+                    'OWNER': false,
+                    'PERCENT': false,
+                },
+                'REPORT': {
+                    'SHOW': true,
+                }
+            },
+            'ARCHIVE_FOLDER': { Name: 'Completed' },
+            'TASKNOTE_EXCERPT': 100,
+            'TASK_TEMPLATE': '\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### ISSUES:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n',
+            'DATE_FORMAT': 'dd-MMM',
+            'USE_CATEGORY_COLORS': true,
+            'SAVE_STATE': true,
+            'PRIVACY_FILTER': true,
+            'STATUS': {
+                'NOT_STARTED': { Value: 0, Text: "Not Started" },
+                'IN_PROGRESS': { Value: 1, Text: "In Progress" },
+                'WAITING': { Value: 3, Text: "Waiting For Someone Else" },
+                'COMPLETED': { Value: 2, Text: "Completed" }
+            },
+            'COMPLETED': {
+                'AFTER_X_DAYS': 7,
+                'ACTION': 'ARCHIVE' // the options are: NONE, HIDE, ARCHIVE, DELETE
+            },
+            'AUTO_UPDATE': true,
+        };
+        $scope.saveConfig();
+    }
 });
 
