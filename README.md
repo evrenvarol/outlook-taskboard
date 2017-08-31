@@ -27,7 +27,8 @@ My changes:
 15. Added configuration for what to do with completed tasks (Nothing, Archive, Hide, Delete)
 16. Added "Filter on start date" configuration option to Backlog folder/column to hide tasks with start date in the future
 17. Added configuration options to show/hide 'Owner' and '% complete' per column
-18. Addded configuration option to enable/disable auto refresh of the taskboard
+18. Added configuration option to enable/disable auto refresh of the taskboard
+19. Added configuration option to show/hide sections in the report
 
 TODO:
 - Add tooltips to the buttons

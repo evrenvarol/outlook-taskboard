@@ -18,6 +18,9 @@ var config_data = {
         'PERCENT': false,
       },
       'FILTER_ON_START_DATE': true,
+      'REPORT': {
+        'SHOW': true,
+      }
     },
     'NEXT_FOLDER': {
       Name: 'Kanban', Title: 'NEXT', Limit: 20, Sort: "duedate,-priority", Restrict: "",
@@ -25,6 +28,9 @@ var config_data = {
         'OWNER': false,
         'PERCENT': false,
       },
+      'REPORT': {
+        'SHOW': true,
+      }
     },
     'INPROGRESS_FOLDER': {
       Name: 'Kanban', Title: 'IN PROGRESS', Limit: 5, Sort: "-priority", Restrict: "",
@@ -32,6 +38,9 @@ var config_data = {
         'OWNER': false,
         'PERCENT': false,
       },
+      'REPORT': {
+        'SHOW': true,
+      }
     },
     'WAITING_FOLDER': {
       Name: 'Kanban', Title: 'WAITING', Limit: 0, Sort: "-priority", Restrict: "",
@@ -39,6 +48,9 @@ var config_data = {
         'OWNER': false,
         'PERCENT': false,
       },
+      'REPORT': {
+        'SHOW': true,
+      }
     },
     'COMPLETED_FOLDER': {
       Name: 'Kanban', Title: 'COMPLETED', Limit: 0, Sort: "-completeddate,-priority,subject", Restrict: "",
@@ -46,6 +58,9 @@ var config_data = {
         'OWNER': false,
         'PERCENT': false,
       },
+      'REPORT': {
+        'SHOW': true,
+      }
     },
     'ARCHIVE_FOLDER': { Name: 'Completed' },
 
@@ -75,7 +90,7 @@ var config_data = {
     // Configure what needs to be done with completed tasks
     // N.B. 0 days means immediately, which makes the Completed column display nothing at all
     'COMPLETED': {
-      'AFTER_X_DAYS': 3,
+      'AFTER_X_DAYS': 7,
       'ACTION': 'ARCHIVE' // the options are: NONE, HIDE, ARCHIVE, DELETE
     },
 
