@@ -479,7 +479,13 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         if (configItems.Count > 0) {
             var configItem = configItems(1);
             if (configItem.Body) {
-                $scope.config = JSON.parse(configItem.Body);
+                try {
+                    $scope.config = JSON.parse(configItem.Body);
+                }
+                catch (e) {
+                    alert("I am afraid there is something wrong with the json structure of your configuration data. Please correct it.");
+                    $scope.editConfig();
+                }
                 configFound = true;
             }
         }
