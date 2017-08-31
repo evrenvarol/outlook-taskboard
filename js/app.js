@@ -494,6 +494,22 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         }
     }
 
+    $scope.displayHelp = function () {
+        var mailItem, mailBody;
+        mailItem = outlookApp.CreateItem(0);
+        mailItem.Subject = "Help";
+        mailItem.BodyFormat = 2;
+        mailBody = "<style>";
+        mailBody += "body { font-family: Calibri; font-size:11.0pt; } ";
+        mailBody += " </style>";
+        mailBody += "<body>";
+        mailBody += "<h2>Here we need to write the instructions on how to configure and use the app</h2>";
+        mailBody += "Then the user can just read it here, or mail it to himself for later reference";
+        mailBody += "</body>"
+        mailItem.HTMLBody = mailBody;
+        mailItem.Display();
+    }
+
     // this is only a proof-of-concept single page report in a draft email for weekly report
     // it will be improved later on
     $scope.createReport = function () {
