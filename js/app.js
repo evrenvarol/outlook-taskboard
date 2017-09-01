@@ -497,7 +497,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
     $scope.displayHelp = function () {
         var mailItem, mailBody;
         mailItem = outlookApp.CreateItem(0);
-        mailItem.Subject = "Help";
+        mailItem.Subject = "Outlook Kanban Help";
+        mailItem.To = "you@yourself.com";
         mailItem.BodyFormat = 2;
         mailBody = "<style>";
         mailBody += "body { font-family: Calibri; font-size:11.0pt; } ";
