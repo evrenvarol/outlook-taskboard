@@ -251,15 +251,17 @@ tbApp.controller('taskboardController', function ($scope, CONFIG, $filter) {
         catStyles.length = categories.length;
         for (i = 0; i < categories.length; i++) {
             categories[i] = categories[i].trim();
-            if ($scope.useCategoryColors) {
-                catStyles[i] = {
-                    label: categories[i], style: { "background-color": getColor(categories[i]), color: getContrastYIQ(getColor(categories[i])) }
+            if (categories[i].length > 0) {
+                if ($scope.useCategoryColors) {
+                    catStyles[i] = {
+                        label: categories[i], style: { "background-color": getColor(categories[i]), color: getContrastYIQ(getColor(categories[i])) }
+                    }
                 }
-            }
-            else {
-                catStyles[i] = {
-                    label: categories[i], style: { color: "black" }
-                };
+                else {
+                    catStyles[i] = {
+                        label: categories[i], style: { color: "black" }
+                    };
+                }
             }
         }
         return catStyles;
