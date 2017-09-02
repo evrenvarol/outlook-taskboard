@@ -46,7 +46,6 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
 
     $scope.init = function () {
 
-        // $scope.config = CONFIG;
         $scope.getConfig();
         $scope.usePrivate = $scope.config.PRIVACY_FILTER;
         $scope.useCategoryColors = $scope.config.USE_CATEGORY_COLORS;
@@ -54,6 +53,13 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         $scope.getState();
         $scope.initTasks();
 
+        $scope.numfolders = 0;
+        if ($scope.config.BACKLOG_FOLDER.ACTIVE) $scope.numfolders++;
+        if ($scope.config.NEXT_FOLDER.ACTIVE) $scope.numfolders++;
+        if ($scope.config.INPROGRESS_FOLDER.ACTIVE) $scope.numfolders++;
+        if ($scope.config.WAITING_FOLDER.ACTIVE) $scope.numfolders++;
+        if ($scope.config.COMPLETED_FOLDER.ACTIVE) $scope.numfolders++;
+        
         // ui-sortable options and events
         $scope.sortableOptions = {
             connectWith: '.tasklist',
@@ -480,7 +486,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             var configItem = configItems(1);
             if (configItem.Body) {
                 try {
-                    $scope.config = JSON.parse(configItem.Body);
+                    $scope.config = JSON.parse(JSON.minify(configItem.Body));
                 }
                 catch (e) {
                     alert("I am afraid there is something wrong with the json structure of your configuration data. Please correct it.");
@@ -505,7 +511,11 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         mailBody += " </style>";
         mailBody += "<body>";
         mailBody += "<h2>Here we need to write the instructions on how to configure and use the app</h2>";
-        mailBody += "Then the user can just read it here, or mail it to himself for later reference";
+        mailBody += "<p>Latest changes:</p>";
+        mailBody += "<p>Added this help screen. Simply cancel the mail screen to return to the application.</p>";
+        mailBody += "<p>Added configuration option to make task lanes active or inactive.</p>";
+        mailBody += "<p>The configuration can now be changed by using the wrench button. The configuration data is saved in a journal item. After saving the configuration data the application will automatically be reloaded.</p>";
+        mailBody += "<p>If you want to revert to the default configuration then delete the journal item and restart the application.</p>";
         mailBody += "</body>"
         mailItem.HTMLBody = mailBody;
         mailItem.Display();
@@ -803,75 +813,126 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
     $scope.makeDefaultConfig = function () {
         $scope.config = {
 
-            'BACKLOG_FOLDER': {
-                Name: '', Title: 'BACKLOG', Limit: 0, Sort: "duedate,-priority", Restrict: "",
-                'SHOW': {
-                    'OWNER': false,
-                    'PERCENT': false,
+            "COMMENT": "This is the settings file for the Kanban board. Please be careful to keep the JSON syntax intact !!",
+            "BACKLOG_FOLDER": {
+                "ACTIVE": true,
+                "Name": "",
+                "Title": "BACKLOG",
+                "Limit": 0,
+                "Sort": "duedate,-priority",
+                "Restrict": "",
+                "SHOW": {
+                    "OWNER": false,
+                    "PERCENT": false
                 },
-                'FILTER_ON_START_DATE': true,
-                'REPORT': {
-                    'SHOW': true,
+                "FILTER_ON_START_DATE": true,
+                "REPORT": {
+                    "SHOW": true
                 }
             },
-            'NEXT_FOLDER': {
-                Name: 'Kanban', Title: 'NEXT', Limit: 20, Sort: "duedate,-priority", Restrict: "",
-                'SHOW': {
-                    'OWNER': false,
-                    'PERCENT': false,
+            "NEXT_FOLDER": {
+                "ACTIVE": true,
+                "Name": "Kanban",
+                "Title": "NEXT",
+                "Limit": 20,
+                "Sort": "duedate,-priority",
+                "Restrict": "",
+                "SHOW": {
+                    "OWNER": false,
+                    "PERCENT": false
                 },
-                'REPORT': {
-                    'SHOW': true,
+                "REPORT": {
+                    "SHOW": true
                 }
             },
-            'INPROGRESS_FOLDER': {
-                Name: 'Kanban', Title: 'IN PROGRESS', Limit: 5, Sort: "-priority", Restrict: "",
-                'SHOW': {
-                    'OWNER': false,
-                    'PERCENT': false,
+            "INPROGRESS_FOLDER": {
+                "ACTIVE": true,
+                "Name": "Kanban",
+                "Title": "IN PROGRESS",
+                "Limit": 5,
+                "Sort": "-priority",
+                "Restrict": "",
+                "SHOW": {
+                    "OWNER": false,
+                    "PERCENT": false
                 },
-                'REPORT': {
-                    'SHOW': true,
+                "REPORT": {
+                    "SHOW": true
                 }
             },
-            'WAITING_FOLDER': {
-                Name: 'Kanban', Title: 'WAITING', Limit: 0, Sort: "-priority", Restrict: "",
-                'SHOW': {
-                    'OWNER': false,
-                    'PERCENT': false,
+            "WAITING_FOLDER": {
+                "ACTIVE": true,
+                "Name": "Kanban",
+                "Title": "WAITING",
+                "Limit": 0,
+                "Sort": "-priority",
+                "Restrict": "",
+                "SHOW": {
+                    "OWNER": false,
+                    "PERCENT": false
                 },
-                'REPORT': {
-                    'SHOW': true,
+                "REPORT": {
+                    "SHOW": true
                 }
             },
-            'COMPLETED_FOLDER': {
-                Name: 'Kanban', Title: 'COMPLETED', Limit: 0, Sort: "-completeddate,-priority,subject", Restrict: "",
-                'SHOW': {
-                    'OWNER': false,
-                    'PERCENT': false,
+            "COMPLETED_FOLDER": {
+                "ACTIVE": true,
+                "Name": "Kanban",
+                "Title": "COMPLETED",
+                "Limit": 0,
+                "Sort": "-completeddate,-priority,subject",
+                "Restrict": "",
+                "SHOW": {
+                    "OWNER": false,
+                    "PERCENT": false
                 },
-                'REPORT': {
-                    'SHOW': true,
+                "REPORT": {
+                    "SHOW": true
                 }
             },
-            'ARCHIVE_FOLDER': { Name: 'Completed' },
-            'TASKNOTE_EXCERPT': 100,
-            'TASK_TEMPLATE': '\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### ISSUES:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n',
-            'DATE_FORMAT': 'dd-MMM',
-            'USE_CATEGORY_COLORS': true,
-            'SAVE_STATE': true,
-            'PRIVACY_FILTER': true,
-            'STATUS': {
-                'NOT_STARTED': { Value: 0, Text: "Not Started" },
-                'IN_PROGRESS': { Value: 1, Text: "In Progress" },
-                'WAITING': { Value: 3, Text: "Waiting For Someone Else" },
-                'COMPLETED': { Value: 2, Text: "Completed" }
+            "ARCHIVE_FOLDER_COMMENT": "Define the folder where you want the completed tasks to be moved to",
+            "ARCHIVE_FOLDER": {
+                "Name": "Completed"
             },
-            'COMPLETED': {
-                'AFTER_X_DAYS': 7,
-                'ACTION': 'ARCHIVE' // the options are: NONE, HIDE, ARCHIVE, DELETE
+            "TASKNOTE_EXCERPT_COMMENT": "Define how many characters of the Task body will be display on the Task cards",
+            "TASKNOTE_EXCERPT": 100,
+            "TASK_TEMPLATE _COMMENT": "Define the template for the body of new tasks",
+            "TASK_TEMPLATE": "\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### ISSUES:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n",
+            "DATE_FORMAT_COMMENT": "Use a valid Javascript date format",
+            "DATE_FORMAT": "dd-MMM",
+            "USE_CATEGORY_COLORS_COMMENT": "Define if you want the categories to be displayed in the same colors as you have defined in Outlook",
+            "USE_CATEGORY_COLORS": true,
+            "SAVE_STATE_COMMENT": "Define if you want to open the board with the last used filters",
+            "SAVE_STATE": true,
+            "PRIVACY_FILTER_COMMENT": "Define if you want to be able to have separate Kanban boards for your private and public tasks",
+            "PRIVACY_FILTER": true,
+            "STATUS_COMMENT": "The status text is used in the report, you can translate it if you want them to be printed in your own language. Please do not change the numeric values.",
+            "STATUS": {
+                "NOT_STARTED": {
+                    "Value": 0,
+                    "Text": "Not Started"
+                },
+                "IN_PROGRESS": {
+                    "Value": 1,
+                    "Text": "In Progress"
+                },
+                "WAITING": {
+                    "Value": 3,
+                    "Text": "Waiting For Someone Else"
+                },
+                "COMPLETED": {
+                    "Value": 2,
+                    "Text": "Completed"
+                }
             },
-            'AUTO_UPDATE': true,
+            "COMPLETED_COMMENT": "Define what you want to do with completed tasks. Valid options are: NONE, HIDE, ARCHIVE, DELETE",
+            "COMPLETED": {
+                "AFTER_X_DAYS": 7,
+                "ACTION": "ARCHIVE"
+            },
+            "AUTO_UPDATE_COMMENT": "Define if you want the board automatically being refreshed after editing and adding tasks",
+            "AUTO_UPDATE": true
+
         };
         $scope.saveConfig();
     }

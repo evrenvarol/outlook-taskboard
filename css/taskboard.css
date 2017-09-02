@@ -134,9 +134,21 @@ li.task.task-completed {
   padding-right: 10px;
 }
 
-  .col-lg-2 {
+.col-lg-100 {
+    width: 100%
+}
+.col-lg-50 {
+    width: 50%
+}
+.col-lg-33 {
+    width: 33%
+}
+.col-lg-25 {
+    width: 25%
+}
+.col-lg-20 {
     width: 20%
-  }
+}
 /* blue
 header: #BBDAFF;
 body: #DBEBFF;
