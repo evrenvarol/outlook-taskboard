@@ -16,6 +16,7 @@
     <script src="lib/sortable.min.js"></script>
     <script src="lib/moment.min.js"></script>
     <script src="lib/minify.json.js"></script>
+    <script src="lib/deep-diff-0.3.8.min.js"></script>
     <script src="js/app.js"></script>
 
 </head>
@@ -62,7 +63,7 @@
             <div ng-if="( config.BACKLOG_FOLDER.ACTIVE )" class="tasklane col-md-3 col-sm-4 col-xs-6" ng-class=" { 'col-lg-100' : numfolders === 1, 'col-lg-50' : numfolders === 2, 'col-lg-33' : numfolders === 3, 'col-lg-25': numfolders === 4, 'col-lg-20': numfolders === 5 }">
                 <div class="panel panel-default">
                     <header class="panel-heading-todo">
-                        <h5>{{ config.BACKLOG_FOLDER.Title }}
+                        <h5>{{ config.BACKLOG_FOLDER.TITLE }}
                             <span class="pull-right">
                                 <button class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('backlog');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                             <span class="label label-info">{{ backlogTasks.length }}</span>
@@ -78,8 +79,8 @@
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
-                                <div ng-if="( config.BACKLOG_FOLDER.SHOW.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
-                                <div ng-if="( config.BACKLOG_FOLDER.SHOW.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
+                                <div ng-if="( config.BACKLOG_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
+                                <div ng-if="( config.BACKLOG_FOLDER.DISPLAY_PROPERTIES.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
                                 <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span>
                                     <span ng-repeat="cat in task.categories"><strong ng-style="cat.style">{{ cat.label }}</strong>&nbsp;</span>
                                 </div>
@@ -100,11 +101,11 @@
             <div ng-if="( config.NEXT_FOLDER.ACTIVE )" class="tasklane col-md-3 col-sm-4 col-xs-6" ng-class=" { 'col-lg-100' : numfolders === 1, 'col-lg-50' : numfolders === 2, 'col-lg-33' : numfolders === 3, 'col-lg-25': numfolders === 4, 'col-lg-20': numfolders === 5 }">
                 <div class="panel panel-default">
                     <header class="panel-heading-next">
-                        <h5>{{ config.NEXT_FOLDER.Title }}
+                        <h5>{{ config.NEXT_FOLDER.TITLE }}
                             <span class="pull-right">
-                                <button ng-if="( config.NEXT_FOLDER.Limit == 0 || nextTasks.length < config.NEXT_FOLDER.Limit )" class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('next');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-                            <span class="label label-info">{{ nextTasks.length }}</span> <span ng-if="( config.NEXT_FOLDER.Limit > 0 )"
-                                class="label label-primary">{{ config.NEXT_FOLDER.Limit }}</span>
+                                <button ng-if="( config.NEXT_FOLDER.LIMIT == 0 || nextTasks.length < config.NEXT_FOLDER.LIMIT )" class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('next');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                            <span class="label label-info">{{ nextTasks.length }}</span> <span ng-if="( config.NEXT_FOLDER.LIMIT > 0 )"
+                                class="label label-primary">{{ config.NEXT_FOLDER.LIMIT }}</span>
                             </span>
                         </h5>
                     </header>
@@ -117,8 +118,8 @@
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
-                                <div ng-if="( config.NEXT_FOLDER.SHOW.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
-                                <div ng-if="( config.NEXT_FOLDER.SHOW.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
+                                <div ng-if="( config.NEXT_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
+                                <div ng-if="( config.NEXT_FOLDER.DISPLAY_PROPERTIES.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
                                 <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span>
                                     <span ng-repeat="cat in task.categories"><strong ng-style="cat.style">{{ cat.label }}</strong>&nbsp;</span>
                                 </div>
@@ -139,9 +140,9 @@
             <div ng-if="( config.INPROGRESS_FOLDER.ACTIVE )" class="tasklane col-md-3 col-sm-4 col-xs-6" ng-class=" { 'col-lg-100' : numfolders === 1, 'col-lg-50' : numfolders === 2, 'col-lg-33' : numfolders === 3, 'col-lg-25': numfolders === 4, 'col-lg-20': numfolders === 5 }">
                 <div class="panel panel-default">
                     <header class="panel-heading-progress">
-                        <h5>{{ config.INPROGRESS_FOLDER.Title }}
+                        <h5>{{ config.INPROGRESS_FOLDER.TITLE }}
                             <span class="pull-right">
-                                <span class="label label-info">{{ inprogressTasks.length }}</span>                            <span ng-if="( config.INPROGRESS_FOLDER.Limit > 0 )" class="label label-primary">{{ config.INPROGRESS_FOLDER.Limit }}</span>
+                                <span class="label label-info">{{ inprogressTasks.length }}</span>                            <span ng-if="( config.INPROGRESS_FOLDER.LIMIT > 0 )" class="label label-primary">{{ config.INPROGRESS_FOLDER.LIMIT }}</span>
                             </span>
                         </h5>
                     </header>
@@ -154,8 +155,8 @@
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
-                                <div ng-if="( config.INPROGRESS_FOLDER.SHOW.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
-                                <div ng-if="( config.INPROGRESS_FOLDER.SHOW.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
+                                <div ng-if="( config.INPROGRESS_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
+                                <div ng-if="( config.INPROGRESS_FOLDER.DISPLAY_PROPERTIES.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
                                 <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span>
                                     <span ng-repeat="cat in task.categories"><strong ng-style="cat.style">{{ cat.label }}</strong>&nbsp;</span>
                                 </div>
@@ -178,10 +179,10 @@
             <div ng-if="( config.WAITING_FOLDER.ACTIVE )" class="tasklane col-md-3 col-sm-4 col-xs-6" ng-class=" { 'col-lg-100' : numfolders === 1, 'col-lg-50' : numfolders === 2, 'col-lg-33' : numfolders === 3, 'col-lg-25': numfolders === 4, 'col-lg-20': numfolders === 5 }">
                 <div class="panel panel-default">
                     <header class="panel-heading-waiting">
-                        <h5>{{ config.WAITING_FOLDER.Title }}
+                        <h5>{{ config.WAITING_FOLDER.TITLE }}
                             <span class="pull-right">
                                 <span class="label label-info">{{ waitingTasks.length }}</span>
-                            <span ng-if="( config.WAITING_FOLDER.Limit > 0 )" class="label label-primary">{{ config.WAITING_FOLDER.Limit }}</span>
+                            <span ng-if="( config.WAITING_FOLDER.LIMIT > 0 )" class="label label-primary">{{ config.WAITING_FOLDER.LIMIT }}</span>
                             </span>
                         </h5>
                     </header>
@@ -195,8 +196,8 @@
                             <div class="panel-body"> {{ task.notes }} </div>
 
                             <footer class="text-right">
-                                <div ng-if="( config.WAITING_FOLDER.SHOW.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
-                                <div ng-if="( config.WAITING_FOLDER.SHOW.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
+                                <div ng-if="( config.WAITING_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
+                                <div ng-if="( config.WAITING_FOLDER.DISPLAY_PROPERTIES.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
                                 <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span>
                                     <span ng-repeat="cat in task.categories"><strong ng-style="cat.style">{{ cat.label }}</strong>&nbsp;</span>
                                 </div>
@@ -217,7 +218,7 @@
             <div ng-if="( config.COMPLETED_FOLDER.ACTIVE )" class="tasklane col-md-3 col-sm-4 col-xs-6" ng-class=" { 'col-lg-100' : numfolders === 1, 'col-lg-50' : numfolders === 2, 'col-lg-33' : numfolders === 3, 'col-lg-25': numfolders === 4, 'col-lg-20': numfolders === 5 }">
                 <div class="panel panel-default">
                     <header class="panel-heading-completed">
-                        <h5>{{ config.COMPLETED_FOLDER.Title }}
+                        <h5>{{ config.COMPLETED_FOLDER.TITLE }}
                             <span class="pull-right">
                                 <span class="label label-info">{{ completedTasks.length }}</span>
                             </span>
@@ -231,8 +232,8 @@
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
                             <footer class="text-right">
-                                <div ng-if="( config.COMPLETED_FOLDER.SHOW.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
-                                <div ng-if="( config.COMPLETED_FOLDER.SHOW.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
+                                <div ng-if="( config.COMPLETED_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
+                                <div ng-if="( config.COMPLETED_FOLDER.DISPLAY_PROPERTIES.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
                                 <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span>
                                     <span ng-repeat="cat in task.categories"><strong ng-style="cat.style">{{ cat.label }}</strong>&nbsp;</span>
                                 </div>

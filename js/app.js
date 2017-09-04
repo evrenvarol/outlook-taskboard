@@ -44,9 +44,25 @@ function serializer(replacer, cycleReplacer) {
 
 tbApp.controller('taskboardController', function ($scope, $filter) {
 
+    // DeepDiff.observableDiff(def, curr, function(d) {
+
+    // });
+
     $scope.init = function () {
 
         $scope.getConfig();
+
+        var defaultConfig = $scope.makeDefaultConfig();
+        var delta = DeepDiff.diff($scope.config, defaultConfig);
+        if (delta) {
+            delta.forEach(function (change) {
+                if (change.kind === 'N' || change.kind === 'D') {
+                    DeepDiff.applyChange($scope.config, defaultConfig, change);
+                }
+            });
+            $scope.saveConfig();
+        }
+
         $scope.usePrivate = $scope.config.PRIVACY_FILTER;
         $scope.useCategoryColors = $scope.config.USE_CATEGORY_COLORS;
         $scope.outlookCategories = getCategories();
@@ -59,7 +75,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         if ($scope.config.INPROGRESS_FOLDER.ACTIVE) $scope.numfolders++;
         if ($scope.config.WAITING_FOLDER.ACTIVE) $scope.numfolders++;
         if ($scope.config.COMPLETED_FOLDER.ACTIVE) $scope.numfolders++;
-        
+
         // ui-sortable options and events
         $scope.sortableOptions = {
             connectWith: '.tasklist',
@@ -71,9 +87,9 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             update: function (e, ui) {
                 // cancels dropping to the lane if it exceeds the limit
                 // but allows sorting within the lane
-                if (($scope.config.INPROGRESS_FOLDER.Limit !== 0 && e.target.id !== 'inprogressList' && ui.item.sortable.droptarget.attr('id') === 'inprogressList' && $scope.inprogressTasks.length >= $scope.config.INPROGRESS_FOLDER.Limit) ||
-                    ($scope.config.NEXT_FOLDER.Limit !== 0 && e.target.id !== 'nextList' && ui.item.sortable.droptarget.attr('id') === 'nextList' && $scope.nextTasks.length >= $scope.config.NEXT_FOLDER.Limit) ||
-                    ($scope.config.WAITING_FOLDER.Limit !== 0 && e.target.id !== 'waitingList' && ui.item.sortable.droptarget.attr('id') === 'waitingList' && $scope.waitingTasks.length >= $scope.config.WAITING_FOLDER.Limit)) {
+                if (($scope.config.INPROGRESS_FOLDER.LIMIT !== 0 && e.target.id !== 'inprogressList' && ui.item.sortable.droptarget.attr('id') === 'inprogressList' && $scope.inprogressTasks.length >= $scope.config.INPROGRESS_FOLDER.LIMIT) ||
+                    ($scope.config.NEXT_FOLDER.LIMIT !== 0 && e.target.id !== 'nextList' && ui.item.sortable.droptarget.attr('id') === 'nextList' && $scope.nextTasks.length >= $scope.config.NEXT_FOLDER.LIMIT) ||
+                    ($scope.config.WAITING_FOLDER.LIMIT !== 0 && e.target.id !== 'waitingList' && ui.item.sortable.droptarget.attr('id') === 'waitingList' && $scope.waitingTasks.length >= $scope.config.WAITING_FOLDER.LIMIT)) {
                     ui.item.sortable.cancel();
                 }
             },
@@ -85,24 +101,24 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 if (ui.item.sortable.droptarget) { // check if it is dropped on a valid target
                     switch (ui.item.sortable.droptarget[0].id) {
                         case 'backlogList':
-                            var tasksfolder = getOutlookFolder($scope.config.BACKLOG_FOLDER.Name);
-                            var newstatus = $scope.config.STATUS.NOT_STARTED.Value;
+                            var tasksfolder = getOutlookFolder($scope.config.BACKLOG_FOLDER.NAME);
+                            var newstatus = $scope.config.STATUS.NOT_STARTED.VALUE;
                             break;
                         case 'nextList':
-                            var tasksfolder = getOutlookFolder($scope.config.NEXT_FOLDER.Name);
-                            var newstatus = $scope.config.STATUS.NOT_STARTED.Value;
+                            var tasksfolder = getOutlookFolder($scope.config.NEXT_FOLDER.NAME);
+                            var newstatus = $scope.config.STATUS.NOT_STARTED.VALUE;
                             break;
                         case 'inprogressList':
-                            var tasksfolder = getOutlookFolder($scope.config.INPROGRESS_FOLDER.Name);
-                            var newstatus = $scope.config.STATUS.IN_PROGRESS.Value;
+                            var tasksfolder = getOutlookFolder($scope.config.INPROGRESS_FOLDER.NAME);
+                            var newstatus = $scope.config.STATUS.IN_PROGRESS.VALUE;
                             break;
                         case 'waitingList':
-                            var tasksfolder = getOutlookFolder($scope.config.WAITING_FOLDER.Name);
-                            var newstatus = $scope.config.STATUS.WAITING.Value;
+                            var tasksfolder = getOutlookFolder($scope.config.WAITING_FOLDER.NAME);
+                            var newstatus = $scope.config.STATUS.WAITING.VALUE;
                             break;
                         case 'completedList':
-                            var tasksfolder = getOutlookFolder($scope.config.COMPLETED_FOLDER.Name);
-                            var newstatus = $scope.config.STATUS.COMPLETED.Value;
+                            var tasksfolder = getOutlookFolder($scope.config.COMPLETED_FOLDER.NAME);
+                            var newstatus = $scope.config.STATUS.COMPLETED.VALUE;
                             break;
                     };
 
@@ -278,7 +294,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         var userprop = item.UserProperties(prop);
         var value = '';
         if (userprop != null) {
-            value = userprop.Value;
+            value = userprop.VALUE;
         }
         return value;
     };
@@ -345,11 +361,11 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
 
     $scope.initTasks = function () {
         // get tasks from each outlook folder and populate model data
-        $scope.backlogTasks = getTasksFromOutlook($scope.config.BACKLOG_FOLDER.Name, $scope.config.BACKLOG_FOLDER.Restrict, $scope.config.BACKLOG_FOLDER.Sort, $scope.config.STATUS.NOT_STARTED.Value);
-        $scope.inprogressTasks = getTasksFromOutlook($scope.config.INPROGRESS_FOLDER.Name, $scope.config.INPROGRESS_FOLDER.Restrict, $scope.config.INPROGRESS_FOLDER.Sort, $scope.config.STATUS.IN_PROGRESS.Value);
-        $scope.nextTasks = getTasksFromOutlook($scope.config.NEXT_FOLDER.Name, $scope.config.NEXT_FOLDER.Restrict, $scope.config.NEXT_FOLDER.Sort, $scope.config.STATUS.NOT_STARTED.Value);
-        $scope.waitingTasks = getTasksFromOutlook($scope.config.WAITING_FOLDER.Name, $scope.config.WAITING_FOLDER.Restrict, $scope.config.WAITING_FOLDER.Sort, $scope.config.STATUS.WAITING.Value);
-        $scope.completedTasks = getTasksFromOutlook($scope.config.COMPLETED_FOLDER.Name, $scope.config.COMPLETED_FOLDER.Restrict, $scope.config.COMPLETED_FOLDER.Sort, $scope.config.STATUS.COMPLETED.Value);
+        $scope.backlogTasks = getTasksFromOutlook($scope.config.BACKLOG_FOLDER.NAME, $scope.config.BACKLOG_FOLDER.RESTRICT, $scope.config.BACKLOG_FOLDER.SORT, $scope.config.STATUS.NOT_STARTED.VALUE);
+        $scope.inprogressTasks = getTasksFromOutlook($scope.config.INPROGRESS_FOLDER.NAME, $scope.config.INPROGRESS_FOLDER.RESTRICT, $scope.config.INPROGRESS_FOLDER.SORT, $scope.config.STATUS.IN_PROGRESS.VALUE);
+        $scope.nextTasks = getTasksFromOutlook($scope.config.NEXT_FOLDER.NAME, $scope.config.NEXT_FOLDER.RESTRICT, $scope.config.NEXT_FOLDER.SORT, $scope.config.STATUS.NOT_STARTED.VALUE);
+        $scope.waitingTasks = getTasksFromOutlook($scope.config.WAITING_FOLDER.NAME, $scope.config.WAITING_FOLDER.RESTRICT, $scope.config.WAITING_FOLDER.SORT, $scope.config.STATUS.WAITING.VALUE);
+        $scope.completedTasks = getTasksFromOutlook($scope.config.COMPLETED_FOLDER.NAME, $scope.config.COMPLETED_FOLDER.RESTRICT, $scope.config.COMPLETED_FOLDER.SORT, $scope.config.STATUS.COMPLETED.VALUE);
 
         // copy the lists as the initial filter    
         $scope.filteredBacklogTasks = $scope.backlogTasks;
@@ -496,7 +512,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             }
         }
         if (!configFound) {
-            $scope.makeDefaultConfig();
+            $scope.config = $scope.makeDefaultConfig();
         }
     }
 
@@ -510,12 +526,67 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         mailBody += "body { font-family: Calibri; font-size:11.0pt; } ";
         mailBody += " </style>";
         mailBody += "<body>";
-        mailBody += "<h2>Here we need to write the instructions on how to configure and use the app</h2>";
-        mailBody += "<p>Latest changes:</p>";
-        mailBody += "<p>Added this help screen. Simply cancel the mail screen to return to the application.</p>";
-        mailBody += "<p>Added configuration option to make task lanes active or inactive.</p>";
-        mailBody += "<p>The configuration can now be changed by using the wrench button. The configuration data is saved in a journal item. After saving the configuration data the application will automatically be reloaded.</p>";
-        mailBody += "<p>If you want to revert to the default configuration then delete the journal item and restart the application.</p>";
+        mailBody += "<h2>Configuration options:</h2>";
+        mailBody += "<table>";
+        mailBody += "<tr><strong>BACKLOG_FOLDER</strong></tr>";
+        mailBody += "<tr><td>ACTIVE</td><td>display this folder on the board or not</td></tr>";
+        mailBody += "<tr><td>FILTER_ON_START_DATE</td><td>if true, then task with start date in the future will not be displayed</td></tr>";
+        mailBody += "<tr><td>TITLE</td><td>Folder title</td></tr>";
+        mailBody += "<tr><td>NAME</td><td>Name of the Outlook tasks folder (blank = default tasks folder)</td></tr>";
+        mailBody += "<tr><td>LIMIT</td><td>Maximum number of tasks in this folder (0 means no maximum)</td></tr>";
+        mailBody += "<tr><td>SORT</td><td>The sort order of the tasks</td></tr>";
+        mailBody += "<tr><td>RESTRICT</td><td>Filter that is applied to the tasks collection</td></tr>";
+        mailBody += "<tr><td>DISPLAY_PROPERTIES</td><td>Defines the task properties that will be displayed on the task card</td></tr>";
+        mailBody += "<tr><td>REPORT</td><td>Settings for the status report</td></tr>";
+        mailBody += "<tr><strong>NEXT_FOLDER</strong></tr>";
+        mailBody += "<tr><td>ACTIVE</td><td>display this folder on the board or not</td></tr>";
+        mailBody += "<tr><td>TITLE</td><td>Folder title</td></tr>";
+        mailBody += "<tr><td>NAME</td><td>Name of the Outlook tasks folder (blank = default tasks folder)</td></tr>";
+        mailBody += "<tr><td>LIMIT</td><td>Maximum number of tasks in this folder (0 means no maximum)</td></tr>";
+        mailBody += "<tr><td>SORT</td><td>The sort order of the tasks</td></tr>";
+        mailBody += "<tr><td>RESTRICT</td><td>Filter that is applied to the tasks collection</td></tr>";
+        mailBody += "<tr><td>DISPLAY_PROPERTIES</td><td>Defines the task properties that will be displayed on the task card</td></tr>";
+        mailBody += "<tr><td>REPORT</td><td>Settings for the status report</td></tr>";
+        mailBody += "<tr><strong>INPROGRESS_FOLDER</strong></tr>";
+        mailBody += "<tr><td>ACTIVE</td><td>display this folder on the board or not</td></tr>";
+        mailBody += "<tr><td>TITLE</td><td>Folder title</td></tr>";
+        mailBody += "<tr><td>NAME</td><td>Name of the Outlook tasks folder (blank = default tasks folder)</td></tr>";
+        mailBody += "<tr><td>LIMIT</td><td>Maximum number of tasks in this folder (0 means no maximum)</td></tr>";
+        mailBody += "<tr><td>SORT</td><td>The sort order of the tasks</td></tr>";
+        mailBody += "<tr><td>RESTRICT</td><td>Filter that is applied to the tasks collection</td></tr>";
+        mailBody += "<tr><td>DISPLAY_PROPERTIES</td><td>Defines the task properties that will be displayed on the task card</td></tr>";
+        mailBody += "<tr><td>REPORT</td><td>Settings for the status report</td></tr>";
+        mailBody += "<tr><strong>WAITING_FOLDER</strong></tr>";
+        mailBody += "<tr><td>ACTIVE</td><td>display this folder on the board or not</td></tr>";
+        mailBody += "<tr><td>TITLE</td><td>Folder title</td></tr>";
+        mailBody += "<tr><td>NAME</td><td>Name of the Outlook tasks folder (blank = default tasks folder)</td></tr>";
+        mailBody += "<tr><td>LIMIT</td><td>Maximum number of tasks in this folder (0 means no maximum)</td></tr>";
+        mailBody += "<tr><td>SORT</td><td>The sort order of the tasks</td></tr>";
+        mailBody += "<tr><td>RESTRICT</td><td>Filter that is applied to the tasks collection</td></tr>";
+        mailBody += "<tr><td>DISPLAY_PROPERTIES</td><td>Defines the task properties that will be displayed on the task card</td></tr>";
+        mailBody += "<tr><td>REPORT</td><td>Settings for the status report</td></tr>";
+        mailBody += "<tr><strong>COMPLETED_FOLDER</strong></tr>";
+        mailBody += "<tr><td>ACTIVE</td><td>display this folder on the board or not</td></tr>";
+        mailBody += "<tr><td>TITLE</td><td>Folder title</td></tr>";
+        mailBody += "<tr><td>NAME</td><td>Name of the Outlook tasks folder (blank = default tasks folder)</td></tr>";
+        mailBody += "<tr><td>LIMIT</td><td>Maximum number of tasks in this folder (0 means no maximum)</td></tr>";
+        mailBody += "<tr><td>SORT</td><td>The sort order of the tasks</td></tr>";
+        mailBody += "<tr><td>RESTRICT</td><td>Filter that is applied to the tasks collection</td></tr>";
+        mailBody += "<tr><td>DISPLAY_PROPERTIES</td><td>Defines the task properties that will be displayed on the task card</td></tr>";
+        mailBody += "<tr><td>REPORT</td><td>Settings for the status report</td></tr>";
+        mailBody += "<tr><strong>ARCHIVE_FOLDER</strong></tr>";
+        mailBody += "<tr><td>NAME</td><td>Name of the Outlook tasks folder (blank = default tasks folder)</td></tr>";
+        mailBody += "<tr><strong>OTHER SETTINGS</strong></tr>";
+        mailBody += "<tr><td>TASKNOTE_EXCERPT</td><td>Number of characters that are displayed for the tasks details</td></tr>";
+        mailBody += "<tr><td>TASK_TEMPLATE</td><td>Template to use for new tasks</td></tr>";
+        mailBody += "<tr><td>DATE_FORMAT</td><td>Date format (must a valid JS date format)</td></tr>";
+        mailBody += "<tr><td>USE_CATEGORY_COLORS</td><td>if true, then the Outlook category colors will be used</td></tr>";
+        mailBody += "<tr><td>SAVE_STATE</td><td>if true, then the filters will be save dand re-used when the app is restarted</td></tr>";
+        mailBody += "<tr><td>PRIVACY_FILTER</td><td>if true, then you can use separate boards for private and publis tasks</td></tr>";
+        mailBody += "<tr><td>STATUS</td><td>Tha value and descriptions for the task statuses. The text can be changed for the status report</td></tr>";
+        mailBody += "<tr><td>COMPLETED</td><td>Define what to do with completed tasks after x days: NONE, HIDE, ARCHIVE or DELETE</td></tr>";
+        mailBody += "<tr><td>AUTO_UPDATE</td><td>if true, then the board is updated immediately after adding or deleting tasks</td></tr>";
+        mailBody += "</table>";
         mailBody += "</body>"
         mailItem.HTMLBody = mailBody;
         mailItem.Display();
@@ -537,10 +608,10 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         mailBody += "<body>";
 
         // COMPLETED ITEMS
-        if ($scope.config.COMPLETED_FOLDER.REPORT.SHOW) {
-            var tasks = getOutlookFolder($scope.config.COMPLETED_FOLDER.Name).Items.Restrict("[Complete] = true And Not ([Sensitivity] = 2)");
+        if ($scope.config.COMPLETED_FOLDER.REPORT.DISPLAY) {
+            var tasks = getOutlookFolder($scope.config.COMPLETED_FOLDER.NAME).Items.Restrict("[Complete] = true And Not ([Sensitivity] = 2)");
             tasks.Sort("[Importance][Status]", true);
-            mailBody += "<h3>" + $scope.config.COMPLETED_FOLDER.Title + "</h3>";
+            mailBody += "<h3>" + $scope.config.COMPLETED_FOLDER.TITLE + "</h3>";
             mailBody += "<ul>";
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
@@ -558,10 +629,10 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         }
 
         // INPROGRESS ITEMS
-        if ($scope.config.INPROGRESS_FOLDER.REPORT.SHOW) {
-            var tasks = getOutlookFolder($scope.config.INPROGRESS_FOLDER.Name).Items.Restrict("[Status] = 1 And Not ([Sensitivity] = 2)");
+        if ($scope.config.INPROGRESS_FOLDER.REPORT.DISPLAY) {
+            var tasks = getOutlookFolder($scope.config.INPROGRESS_FOLDER.NAME).Items.Restrict("[Status] = 1 And Not ([Sensitivity] = 2)");
             tasks.Sort("[Importance][Status]", true);
-            mailBody += "<h3>" + $scope.config.INPROGRESS_FOLDER.Title + "</h3>";
+            mailBody += "<h3>" + $scope.config.INPROGRESS_FOLDER.TITLE + "</h3>";
             mailBody += "<ul>";
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
@@ -579,10 +650,10 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         }
 
         // NEXT ITEMS
-        if ($scope.config.NEXT_FOLDER.REPORT.SHOW) {
-            var tasks = getOutlookFolder($scope.config.NEXT_FOLDER.Name).Items.Restrict("[Status] = 0 And Not ([Sensitivity] = 2)");
+        if ($scope.config.NEXT_FOLDER.REPORT.DISPLAY) {
+            var tasks = getOutlookFolder($scope.config.NEXT_FOLDER.NAME).Items.Restrict("[Status] = 0 And Not ([Sensitivity] = 2)");
             tasks.Sort("[Importance][Status]", true);
-            mailBody += "<h3>" + $scope.config.NEXT_FOLDER.Title + "</h3>";
+            mailBody += "<h3>" + $scope.config.NEXT_FOLDER.TITLE + "</h3>";
             mailBody += "<ul>";
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
@@ -600,10 +671,10 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         }
 
         // WAITING ITEMS
-        if ($scope.config.WAITING_FOLDER.REPORT.SHOW) {
-            var tasks = getOutlookFolder($scope.config.WAITING_FOLDER.Name).Items.Restrict("[Status] = 3 And Not ([Sensitivity] = 2)");
+        if ($scope.config.WAITING_FOLDER.REPORT.DISPLAY) {
+            var tasks = getOutlookFolder($scope.config.WAITING_FOLDER.NAME).Items.Restrict("[Status] = 3 And Not ([Sensitivity] = 2)");
             tasks.Sort("[Importance][Status]", true);
-            mailBody += "<h3>" + $scope.config.WAITING_FOLDER.Title + "</h3>";
+            mailBody += "<h3>" + $scope.config.WAITING_FOLDER.TITLE + "</h3>";
             mailBody += "<ul>";
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
@@ -621,10 +692,10 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         }
 
         // BACKLOG ITEMS
-        if ($scope.config.BACKLOG_FOLDER.REPORT.SHOW) {
-            var tasks = getOutlookFolder($scope.config.BACKLOG_FOLDER.Name).Items.Restrict("[Status] = 0 And Not ([Sensitivity] = 2)");
+        if ($scope.config.BACKLOG_FOLDER.REPORT.DISPLAY) {
+            var tasks = getOutlookFolder($scope.config.BACKLOG_FOLDER.NAME).Items.Restrict("[Status] = 0 And Not ([Sensitivity] = 2)");
             tasks.Sort("[Importance][Status]", true);
-            mailBody += "<h3>" + $scope.config.BACKLOG_FOLDER.Title + "</h3>";
+            mailBody += "<h3>" + $scope.config.BACKLOG_FOLDER.TITLE + "</h3>";
             mailBody += "<ul>";
             var count = tasks.Count;
             for (i = 1; i <= count; i++) {
@@ -670,10 +741,10 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
 
     var taskStatus = function (status) {
         var str = '';
-        if (status == $scope.config.STATUS.NOT_STARTED.Value) { str = $scope.config.STATUS.NOT_STARTED.Text; }
-        if (status == $scope.config.STATUS.IN_PROGRESS.Value) { str = $scope.config.STATUS.IN_PROGRESS.Text; }
-        if (status == $scope.config.STATUS.WAITING.Value) { str = $scope.config.STATUS.WAITING.Text; }
-        if (status == $scope.config.STATUS.COMPLETED.Value) { str = $scope.config.STATUS.COMPLETED.Text; }
+        if (status == $scope.config.STATUS.NOT_STARTED.VALUE) { str = $scope.config.STATUS.NOT_STARTED.TEXT; }
+        if (status == $scope.config.STATUS.IN_PROGRESS.VALUE) { str = $scope.config.STATUS.IN_PROGRESS.TEXT; }
+        if (status == $scope.config.STATUS.WAITING.VALUE) { str = $scope.config.STATUS.WAITING.TEXT; }
+        if (status == $scope.config.STATUS.COMPLETED.VALUE) { str = $scope.config.STATUS.COMPLETED.TEXT; }
         return str;
     };
 
@@ -682,16 +753,16 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         // set the parent folder to target defined
         switch (target) {
             case 'backlog':
-                var tasksfolder = getOutlookFolder($scope.config.BACKLOG_FOLDER.Name);
+                var tasksfolder = getOutlookFolder($scope.config.BACKLOG_FOLDER.NAME);
                 break;
             case 'inprogress':
-                var tasksfolder = getOutlookFolder($scope.config.INPROGRESS_FOLDER.Name);
+                var tasksfolder = getOutlookFolder($scope.config.INPROGRESS_FOLDER.NAME);
                 break;
             case 'next':
-                var tasksfolder = getOutlookFolder($scope.config.NEXT_FOLDER.Name);
+                var tasksfolder = getOutlookFolder($scope.config.NEXT_FOLDER.NAME);
                 break;
             case 'waiting':
-                var tasksfolder = getOutlookFolder($scope.config.WAITING_FOLDER.Name);
+                var tasksfolder = getOutlookFolder($scope.config.WAITING_FOLDER.NAME);
                 break;
         };
         // create a new task item object in outlook
@@ -763,7 +834,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         var taskitem = outlookNS.GetItemFromID(item.entryID);
 
         // move the task to the archive folder first (if it is not already in)
-        var archivefolder = getOutlookFolder($scope.config.ARCHIVE_FOLDER.Name);
+        var archivefolder = getOutlookFolder($scope.config.ARCHIVE_FOLDER.NAME);
         if (taskitem.Parent.Name != archivefolder.Name) {
             taskitem = taskitem.Move(archivefolder);
         };
@@ -811,126 +882,115 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
     }
 
     $scope.makeDefaultConfig = function () {
-        $scope.config = {
+        return {
 
-            "COMMENT": "This is the settings file for the Kanban board. Please be careful to keep the JSON syntax intact !!",
             "BACKLOG_FOLDER": {
                 "ACTIVE": true,
-                "Name": "",
-                "Title": "BACKLOG",
-                "Limit": 0,
-                "Sort": "duedate,-priority",
-                "Restrict": "",
-                "SHOW": {
+                "NAME": "",
+                "TITLE": "BACKLOG",
+                "LIMIT": 0,
+                "SORT": "duedate,-priority",
+                "RESTRICT": "",
+                "DISPLAY_PROPERTIES": {
                     "OWNER": false,
                     "PERCENT": false
                 },
                 "FILTER_ON_START_DATE": true,
                 "REPORT": {
-                    "SHOW": true
+                    "DISPLAY" : true
                 }
             },
             "NEXT_FOLDER": {
                 "ACTIVE": true,
-                "Name": "Kanban",
-                "Title": "NEXT",
-                "Limit": 20,
-                "Sort": "duedate,-priority",
-                "Restrict": "",
-                "SHOW": {
+                "NAME": "Kanban",
+                "TITLE": "NEXT",
+                "LIMIT": 20,
+                "SORT": "duedate,-priority",
+                "RESTRICT": "",
+                "DISPLAY_PROPERTIES": {
                     "OWNER": false,
                     "PERCENT": false
                 },
                 "REPORT": {
-                    "SHOW": true
+                    "DISPLAY": true
                 }
             },
             "INPROGRESS_FOLDER": {
                 "ACTIVE": true,
-                "Name": "Kanban",
-                "Title": "IN PROGRESS",
-                "Limit": 5,
-                "Sort": "-priority",
-                "Restrict": "",
-                "SHOW": {
+                "NAME": "Kanban",
+                "TITLE": "IN PROGRESS",
+                "LIMIT": 5,
+                "SORT": "-priority",
+                "RESTRICT": "",
+                "DISPLAY_PROPERTIES": {
                     "OWNER": false,
                     "PERCENT": false
                 },
                 "REPORT": {
-                    "SHOW": true
+                    "DISPLAY": true
                 }
             },
             "WAITING_FOLDER": {
                 "ACTIVE": true,
-                "Name": "Kanban",
-                "Title": "WAITING",
-                "Limit": 0,
-                "Sort": "-priority",
-                "Restrict": "",
-                "SHOW": {
+                "NAME": "Kanban",
+                "TITLE": "WAITING",
+                "LIMIT": 0,
+                "SORT": "-priority",
+                "RESTRICT": "",
+                "DISPLAY_PROPERTIES": {
                     "OWNER": false,
                     "PERCENT": false
                 },
                 "REPORT": {
-                    "SHOW": true
+                    "DISPLAY": true
                 }
             },
             "COMPLETED_FOLDER": {
                 "ACTIVE": true,
-                "Name": "Kanban",
-                "Title": "COMPLETED",
-                "Limit": 0,
-                "Sort": "-completeddate,-priority,subject",
-                "Restrict": "",
-                "SHOW": {
+                "NAME": "Kanban",
+                "TITLE": "COMPLETED",
+                "LIMIT": 0,
+                "SORT": "-completeddate,-priority,subject",
+                "RESTRICT": "",
+                "DISPLAY_PROPERTIES": {
                     "OWNER": false,
                     "PERCENT": false
                 },
                 "REPORT": {
-                    "SHOW": true
+                    "DISPLAY": true
                 }
             },
-            "ARCHIVE_FOLDER_COMMENT": "Define the folder where you want the completed tasks to be moved to",
             "ARCHIVE_FOLDER": {
-                "Name": "Completed"
+                "NAME": "Completed"
             },
-            "TASKNOTE_EXCERPT_COMMENT": "Define how many characters of the Task body will be display on the Task cards",
             "TASKNOTE_EXCERPT": 100,
-            "TASK_TEMPLATE _COMMENT": "Define the template for the body of new tasks",
             "TASK_TEMPLATE": "\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### ISSUES:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n",
-            "DATE_FORMAT_COMMENT": "Use a valid Javascript date format",
             "DATE_FORMAT": "dd-MMM",
-            "USE_CATEGORY_COLORS_COMMENT": "Define if you want the categories to be displayed in the same colors as you have defined in Outlook",
             "USE_CATEGORY_COLORS": true,
-            "SAVE_STATE_COMMENT": "Define if you want to open the board with the last used filters",
             "SAVE_STATE": true,
-            "PRIVACY_FILTER_COMMENT": "Define if you want to be able to have separate Kanban boards for your private and public tasks",
             "PRIVACY_FILTER": true,
-            "STATUS_COMMENT": "The status text is used in the report, you can translate it if you want them to be printed in your own language. Please do not change the numeric values.",
             "STATUS": {
                 "NOT_STARTED": {
-                    "Value": 0,
-                    "Text": "Not Started"
+                    "VALUE": 0,
+                    "TEXT": "Not Started"
                 },
                 "IN_PROGRESS": {
-                    "Value": 1,
-                    "Text": "In Progress"
+                    "VALUE": 1,
+                    "TEXT": "In Progress"
                 },
                 "WAITING": {
-                    "Value": 3,
-                    "Text": "Waiting For Someone Else"
+                    "VALUE": 3,
+                    "TEXT": "Waiting For Someone Else"
                 },
                 "COMPLETED": {
-                    "Value": 2,
-                    "Text": "Completed"
+                    "VALUE": 2,
+                    "TEXT": "Completed"
                 }
             },
-            "COMPLETED_COMMENT": "Define what you want to do with completed tasks. Valid options are: NONE, HIDE, ARCHIVE, DELETE",
             "COMPLETED": {
                 "AFTER_X_DAYS": 7,
                 "ACTION": "ARCHIVE"
             },
-            "AUTO_UPDATE_COMMENT": "Define if you want the board automatically being refreshed after editing and adding tasks",
             "AUTO_UPDATE": true
 
         };
