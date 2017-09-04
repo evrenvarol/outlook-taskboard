@@ -32,6 +32,7 @@ My changes:
 20. Added configuration option to make task lanes active or inactive
 21. Added help screen
 22. Added configuration screen (journal item)
+23. Tested with recurring tasks. Works perfectly :-)
 
 TODO:
 - Add tooltips to the buttons
