@@ -29,6 +29,10 @@ My changes:
 17. Added configuration options to show/hide 'Owner' and '% complete' per column
 18. Added configuration option to enable/disable auto refresh of the taskboard
 19. Added configuration option to show/hide sections in the report
+20. Added configuration option to make task lanes active or inactive
+21. Added help screen
+22. Added configuration screen (journal item)
+23. Tested with recurring tasks. Works perfectly :-)
 
 TODO:
 - Add tooltips to the buttons
