@@ -294,7 +294,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         var userprop = item.UserProperties(prop);
         var value = '';
         if (userprop != null) {
-            value = userprop.VALUE;
+            value = userprop.Value;
         }
         return value;
     };
