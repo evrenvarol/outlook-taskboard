@@ -44,6 +44,10 @@ function serializer(replacer, cycleReplacer) {
 
 tbApp.controller('taskboardController', function ($scope, $filter) {
 
+    // DeepDiff.observableDiff(def, curr, function(d) {
+
+    // });
+
     $scope.init = function () {
 
         $scope.getConfig();
