@@ -86,34 +86,28 @@ li.task.task-completed {
 }
 
 /* Color codes from: https://apple.stackexchange.com/a/96061 */
-li.task.task-red{
+footer.task-red{
     background-color: #E7A1A2;
-    border: 1px solid #E7A1A2;
 }
 
-li.task.task-orange{
+footer.task-orange{
     background-color: #F9BA89;
-    border: 1px solid #F9BA89;
 }
 
-li.task.task-yellow{
+footer.task-yellow{
     background-color: #FCFA90;
-    border: 1px solid #FCFA90;
 }
 
-li.task.task-green{
+footer.task-green{
     background-color: #78D168;
-    border: 1px solid #78D168;
 }
 
-li.task.task-blue{
+footer.task-blue{
     background-color: #9DB7E8;
-    border: 1px solid #9DB7E8;
 }
 
-li.task.task-purple{
+footer.task-purple{
     background-color: #B5A1E2;
-    border: 1px solid #B5A1E2;
 }
 
 /* blue
