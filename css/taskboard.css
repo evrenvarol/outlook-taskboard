@@ -85,6 +85,36 @@ li.task.task-completed {
     border: 1px solid #bbb;
 }
 
+li.task.task-yellow{
+    background-color: #FFFFDD;
+    border: 1px solid #EEEEA0;
+}
+
+li.task.task-orange{
+    background-color: #FFEEDD;
+    border: 1px solid #FFEEA8;
+}
+
+li.task.task-purple{
+    background-color: #FFDDFF;
+    border: 1px solid #FFDDA8;
+}
+
+li.task.task-blue{
+    background-color: #DDDDFF;
+    border: 1px solid #A8A8FF;
+}
+
+li.task.task-green{
+    background-color: #DDFFDD;
+    border: 1px solid #A8FFA8;
+}
+
+li.task.task-red{
+    background-color: #FFDDDD;
+    border: 1px solid #FFA8A8;
+}
+
 /* blue
 header: #BBDAFF;
 body: #DBEBFF;

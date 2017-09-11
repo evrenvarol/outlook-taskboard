@@ -59,7 +59,10 @@
                         </h5>
                     </header>
                     <ul id="backlogList" ui-sortable="sortableOptions" ng-model="backlogTasks" class="panel-body tasklist list-unstyled">
-                        <li ng-repeat="task in backlogTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
+                        <li ng-repeat="task in backlogTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2,
+                        'task-yellow': task.categories.indexOf(general_config.TASK_YELLOW_NAME) !== -1, 'task-blue': task.categories.indexOf(general_config.TASK_BLUE_NAME) !== -1, 'task-red': task.categories.indexOf(general_config.TASK_RED_NAME) !== -1,
+                        'task-orange': task.categories.indexOf(general_config.TASK_ORANGE_NAME) !== -1, 'task-purple': task.categories.indexOf(general_config.TASK_PURPLE_NAME) !== -1, 'task-green': task.categories.indexOf(general_config.TASK_GREEN_NAME) !== -1 }"
+                        ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
@@ -91,7 +94,10 @@
                         </h5>
                     </header>
                     <ul id="nextList" ui-sortable="sortableOptions" ng-model="nextTasks" class="panel-body tasklist list-unstyled">
-                        <li ng-repeat="task in nextTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
+                        <li ng-repeat="task in nextTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2,
+                        'task-yellow': task.categories.indexOf(general_config.TASK_YELLOW_NAME) !== -1, 'task-blue': task.categories.indexOf(general_config.TASK_BLUE_NAME) !== -1, 'task-red': task.categories.indexOf(general_config.TASK_RED_NAME) !== -1,
+                        'task-orange': task.categories.indexOf(general_config.TASK_ORANGE_NAME) !== -1, 'task-purple': task.categories.indexOf(general_config.TASK_PURPLE_NAME) !== -1, 'task-green': task.categories.indexOf(general_config.TASK_GREEN_NAME) !== -1 }"
+                        ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
@@ -123,7 +129,10 @@
                         </h5>
                     </header>
                     <ul id="inprogressList" ui-sortable="sortableOptions" ng-model="inprogressTasks" class="panel-body tasklist list-unstyled">
-                        <li ng-repeat="task in inprogressTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
+                        <li ng-repeat="task in inprogressTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2,
+                        'task-yellow': task.categories.indexOf(general_config.TASK_YELLOW_NAME) !== -1, 'task-blue': task.categories.indexOf(general_config.TASK_BLUE_NAME) !== -1, 'task-red': task.categories.indexOf(general_config.TASK_RED_NAME) !== -1,
+                        'task-orange': task.categories.indexOf(general_config.TASK_ORANGE_NAME) !== -1, 'task-purple': task.categories.indexOf(general_config.TASK_PURPLE_NAME) !== -1, 'task-green': task.categories.indexOf(general_config.TASK_GREEN_NAME) !== -1 }"
+                        ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
@@ -157,7 +166,10 @@
                         </h5>
                     </header>
                     <ul id="focusList" ui-sortable="sortableOptions" ng-model="focusTasks" class="panel-body tasklist list-unstyled">
-                        <li ng-repeat="task in focusTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
+                        <li ng-repeat="task in focusTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2,
+                        'task-yellow': task.categories.indexOf(general_config.TASK_YELLOW_NAME) !== -1, 'task-blue': task.categories.indexOf(general_config.TASK_BLUE_NAME) !== -1, 'task-red': task.categories.indexOf(general_config.TASK_RED_NAME) !== -1,
+                        'task-orange': task.categories.indexOf(general_config.TASK_ORANGE_NAME) !== -1, 'task-purple': task.categories.indexOf(general_config.TASK_PURPLE_NAME) !== -1, 'task-green': task.categories.indexOf(general_config.TASK_GREEN_NAME) !== -1 }"
+                        ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
@@ -189,7 +201,10 @@
                         </h5>
                     </header>
                     <ul id="waitingList" ui-sortable="sortableOptions" ng-model="waitingTasks" class="panel-body tasklist list-unstyled">
-                        <li ng-repeat="task in waitingTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2 }" ng-dblclick="editTask(task)">
+                        <li ng-repeat="task in waitingTasks | filter:search" class="task panel" ng-class=" { 'task-low' : task.priority === 0, 'task-medium' : task.priority === 1, 'task-high' : task.priority === 2, 'task-private': task.sensitivity === 2,
+                        'task-yellow': task.categories.indexOf(general_config.TASK_YELLOW_NAME) !== -1, 'task-blue': task.categories.indexOf(general_config.TASK_BLUE_NAME) !== -1, 'task-red': task.categories.indexOf(general_config.TASK_RED_NAME) !== -1,
+                        'task-orange': task.categories.indexOf(general_config.TASK_ORANGE_NAME) !== -1, 'task-purple': task.categories.indexOf(general_config.TASK_PURPLE_NAME) !== -1, 'task-green': task.categories.indexOf(general_config.TASK_GREEN_NAME) !== -1 }"
+                        ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>

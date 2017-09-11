@@ -24,8 +24,15 @@ var config_data = {
     'TASKNOTE_EXCERPT':		200,
 
     // Default task template
-    'TASK_TEMPLATE':        '\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### ISSUES:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n'
+    'TASK_TEMPLATE':        '\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### ISSUES:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n',
 
+    // Task categories
+    'TASK_YELLOW_NAME':     'Gelbe Kategorie',
+    'TASK_BLUE_NAME':       'Blaue Kategorie',
+    'TASK_RED_NAME':        'Rote Kategorie',
+    'TASK_ORANGE_NAME':     'Orangefarbene Kategorie',
+    'TASK_PURPLE_NAME':     'Lila Kategorie',
+    'TASK_GREEN_NAME':      'Grüne Kategorie'
   }
 };
 
