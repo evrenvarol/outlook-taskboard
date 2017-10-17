@@ -379,7 +379,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         // then apply the current filters for search and sensitivity
         $scope.applyFilters();
 
-        // cleran up Completed Tasks
+        // clean up Completed Tasks
         if ($scope.config.COMPLETED.ACTION == 'ARCHIVE' || $scope.config.COMPLETED.ACTION == 'DELETE') {
             var i;
             var tasks = $scope.completedTasks;
@@ -397,7 +397,30 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             };
         };
 
-    };
+        // move tasks with start date today to the Next folder
+        if ($scope.config.AUTO_START_TASKS) {
+            var i;
+            var movedTask = false;
+            var tasks = $scope.backlogTasks;
+            var count = tasks.length;
+            for (i = 0; i < count; i++) {
+                if (tasks[i].startdate.getFullYear() != 4501) {
+                    var seconds = Date.secondsBetween(tasks[i].startdate, new Date());
+                    if (seconds >= 0) {
+                        var taskitem = outlookNS.GetItemFromID(tasks[i].entryID);
+                        taskitem.Move(getOutlookFolder($scope.config.NEXT_FOLDER.NAME));
+                        movedTask = true;
+                    }
+                };
+            };
+            if (movedTask) {
+                $scope.backlogTasks = getTasksFromOutlook($scope.config.BACKLOG_FOLDER.NAME, $scope.config.BACKLOG_FOLDER.RESTRICT, $scope.config.BACKLOG_FOLDER.SORT, $scope.config.STATUS.NOT_STARTED.VALUE);
+                $scope.nextTasks = getTasksFromOutlook($scope.config.NEXT_FOLDER.NAME, $scope.config.NEXT_FOLDER.RESTRICT, $scope.config.NEXT_FOLDER.SORT, $scope.config.STATUS.NOT_STARTED.VALUE);
+                $scope.filteredBacklogTasks = $scope.backlogTasks;
+                $scope.filteredNextTasks = $scope.nextTasks;
+            }
+        };
+    }
 
     $scope.applyFilters = function () {
         if ($scope.search.length > 0) {
@@ -874,6 +897,21 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         return difference_ms / one_day;
     }
 
+    Date.secondsBetween = function (date1, date2) {
+        //Get 1 second in milliseconds
+        var one_second = 1000;
+
+        // Convert both dates to milliseconds
+        var date1_ms = date1.getTime();
+        var date2_ms = date2.getTime();
+
+        // Calculate the difference in milliseconds
+        var difference_ms = date2_ms - date1_ms;
+
+        // Convert back to seconds and return
+        return difference_ms / one_second;
+    }
+
     $scope.editConfig = function () {
         var folder = outlookNS.GetDefaultFolder(11);
         var configItems = folder.Items.Restrict('[Subject] = "KanbanConfig"');
@@ -899,7 +937,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 },
                 "FILTER_ON_START_DATE": true,
                 "REPORT": {
-                    "DISPLAY" : true
+                    "DISPLAY": true
                 }
             },
             "NEXT_FOLDER": {
@@ -993,7 +1031,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 "AFTER_X_DAYS": 7,
                 "ACTION": "ARCHIVE"
             },
-            "AUTO_UPDATE": true
+            "AUTO_UPDATE": true,
+            "AUTO_START_TASKS": false
 
         };
         $scope.saveConfig();
