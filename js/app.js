@@ -97,6 +97,8 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
 
                 }
         };
+        
+        $scope.categoryColors = getCategoryColors();
     };
 
     var getOutlookFolder = function (folderpath, owner) {
@@ -184,6 +186,19 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
             var sortedTasks = array.sort(fieldSorter(sortKeys));
 
             return sortedTasks;
+    };
+    
+    var getCategoryColors = function() {
+        var olCategories = outlookNS.Categories();
+        var catDict = {};
+        
+        for (var i = 0; i < olCategories.Count(); i++) {
+            var color = olCategories.Item(i+1).Color();
+            var name = olCategories.Item(i+1).Name();
+            catDict[name] = color;
+        }
+        
+        return catDict;
     };
 
     // this is only a proof-of-concept single page report in a draft email for weekly report
@@ -450,7 +465,101 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
         }
         return false;
     }
-
-
+    
+    $scope.footerClass = function(categories) {  
+        var taskCategories = categories.split("; ");        
+        // var olCategories = outlookNS.Categories();
+        var catColors = [];
+        
+        for (var i = 0; i < taskCategories.length; i++) {
+            // ...
+            catColors[i] = $scope.categoryColors[taskCategories[i]];
+        }
+        
+        if (catColors.length > 1) {
+            var taskClass = 'task-multi';
+        }
+        else {
+            switch (catColors[0]){
+                case 1:
+                    taskClass = 'task-red';
+                    break;
+                case 2:
+                    taskClass = 'task-orange';
+                    break;
+                case 3:
+                    taskClass = 'task-peach';
+                    break;
+                case 4:
+                    taskClass = 'task-yellow';
+                    break;
+                case 5:
+                    taskClass = 'task-green';
+                    break;
+                case 6:
+                    taskClass = 'task-teal';
+                    break;
+                case 7:
+                    taskClass = 'task-olive';
+                    break;
+                case 8:
+                    taskClass = 'task-blue';
+                    break;
+                case 9:
+                    taskClass = 'task-purple';
+                    break;
+                case 10:
+                    taskClass = 'task-maroon';
+                    break;
+                case 11:
+                    taskClass = 'task-steel';
+                    break;
+                case 12:
+                    taskClass = 'task-darksteel';
+                    break;
+                case 13:
+                    taskClass = 'task-grey';
+                    break;
+                case 14:
+                    taskClass = 'task-darkgrey';
+                    break;
+                case 15:
+                    taskClass = 'task-black';
+                    break;
+                case 16:
+                    taskClass = 'task-darkred';
+                    break;
+                case 17:
+                    taskClass = 'task-darkorange';
+                    break;
+                case 18:
+                    taskClass = 'task-darkpeach';
+                    break;
+                case 19:
+                    taskClass = 'task-darkyellow';
+                    break;
+                case 20:
+                    taskClass = 'task-darkgreen';
+                    break;
+                case 21:
+                    taskClass = 'task-darkteal';
+                    break;
+                case 22:
+                    taskClass = 'task-darkolive';
+                    break;
+                case 23:
+                    taskClass = 'task-darkblue';
+                    break;
+                case 24:
+                    taskClass = 'task-darkpurple';
+                    break;
+                case 25:
+                    taskClass = 'task-darkmaroon';
+                    break;
+            }
+        }        
+        
+        return taskClass;
+    }
 });
 

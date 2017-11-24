@@ -94,6 +94,10 @@ footer.task-orange{
     background-color: #F9BA89;
 }
 
+footer.task-peach{
+    background-color: #F7DD8F;
+}
+
 footer.task-yellow{
     background-color: #FCFA90;
 }
@@ -102,12 +106,89 @@ footer.task-green{
     background-color: #78D168;
 }
 
+footer.task-teal{
+    background-color: #9FDCC9;
+}
+
+footer.task-olive{
+    background-color: #C6D2B0;
+}
+
 footer.task-blue{
     background-color: #9DB7E8;
 }
 
 footer.task-purple{
     background-color: #B5A1E2;
+}
+
+footer.task-maroon{
+    background-color: #DAAEC2;
+}
+
+footer.task-steel{
+    background-color: #DAD9DC;
+}
+
+footer.task-darksteel{
+    background-color: #6B7994;
+}
+
+footer.task-grey{
+    background-color: #BFBFBF;
+}
+
+footer.task-darkgrey{
+    background-color: #6F6F6F;
+}
+
+footer.task-black{
+    background-color: #4F4F4F;
+}
+
+footer.task-darkred{
+    background-color: #C11A25;
+}
+
+footer.task-darkorange{
+    background-color: #E2620D;
+}
+
+footer.task-darkpeach{
+    background-color: #C79930;
+}
+
+footer.task-darkyellow{
+    background-color: #B9B300;
+}
+
+footer.task-darkgreen{
+    background-color: #368F2B;
+}
+
+footer.task-darkteal{
+    background-color: #329B7A;
+}
+
+footer.task-darkolive{
+    background-color: #778B45;
+}
+
+footer.task-darkblue{
+    background-color: #2858A5;
+}
+
+footer.task-darkpurple{
+    background-color: #5C3FA3;
+}
+
+footer.task-darkmaroon{
+    background-color: #93446B;
+}
+
+/* Make multi-category tasks grey */
+footer.task-multi{
+    background-color: #AFAFAF;
 }
 
 /* blue

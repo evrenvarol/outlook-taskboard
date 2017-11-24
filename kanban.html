@@ -65,8 +65,7 @@
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
-                            <footer class="text-right" ng-class=" { 'task-yellow': task.categories.indexOf(general_config.TASK_YELLOW_NAME) !== -1, 'task-blue': task.categories.indexOf(general_config.TASK_BLUE_NAME) !== -1, 'task-red': task.categories.indexOf(general_config.TASK_RED_NAME) !== -1,
-                            'task-orange': task.categories.indexOf(general_config.TASK_ORANGE_NAME) !== -1, 'task-purple': task.categories.indexOf(general_config.TASK_PURPLE_NAME) !== -1, 'task-green': task.categories.indexOf(general_config.TASK_GREEN_NAME) !== -1 }">
+                            <footer class="text-right" ng-class="footerClass(task.categories)">
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
@@ -98,8 +97,7 @@
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
-                            <footer class="text-right" ng-class=" { 'task-yellow': task.categories.indexOf(general_config.TASK_YELLOW_NAME) !== -1, 'task-blue': task.categories.indexOf(general_config.TASK_BLUE_NAME) !== -1, 'task-red': task.categories.indexOf(general_config.TASK_RED_NAME) !== -1,
-                            'task-orange': task.categories.indexOf(general_config.TASK_ORANGE_NAME) !== -1, 'task-purple': task.categories.indexOf(general_config.TASK_PURPLE_NAME) !== -1, 'task-green': task.categories.indexOf(general_config.TASK_GREEN_NAME) !== -1 }">
+                            <footer class="text-right" ng-class="footerClass(task.categories)">
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
@@ -131,8 +129,7 @@
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
-                            <footer class="text-right" ng-class=" { 'task-yellow': task.categories.indexOf(general_config.TASK_YELLOW_NAME) !== -1, 'task-blue': task.categories.indexOf(general_config.TASK_BLUE_NAME) !== -1, 'task-red': task.categories.indexOf(general_config.TASK_RED_NAME) !== -1,
-                            'task-orange': task.categories.indexOf(general_config.TASK_ORANGE_NAME) !== -1, 'task-purple': task.categories.indexOf(general_config.TASK_PURPLE_NAME) !== -1, 'task-green': task.categories.indexOf(general_config.TASK_GREEN_NAME) !== -1 }">
+                            <footer class="text-right" ng-class="footerClass(task.categories)">
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
@@ -166,8 +163,7 @@
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
-                            <footer class="text-right" ng-class=" { 'task-yellow': task.categories.indexOf(general_config.TASK_YELLOW_NAME) !== -1, 'task-blue': task.categories.indexOf(general_config.TASK_BLUE_NAME) !== -1, 'task-red': task.categories.indexOf(general_config.TASK_RED_NAME) !== -1,
-                            'task-orange': task.categories.indexOf(general_config.TASK_ORANGE_NAME) !== -1, 'task-purple': task.categories.indexOf(general_config.TASK_PURPLE_NAME) !== -1, 'task-green': task.categories.indexOf(general_config.TASK_GREEN_NAME) !== -1 }">
+                            <footer class="text-right" ng-class="footerClass(task.categories)">
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
@@ -199,8 +195,7 @@
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:'dd/MM/yy' }}) </span>
                             </header>
                             <div class="panel-body"> {{ task.notes }} </div>
-                            <footer class="text-right" ng-class=" { 'task-yellow': task.categories.indexOf(general_config.TASK_YELLOW_NAME) !== -1, 'task-blue': task.categories.indexOf(general_config.TASK_BLUE_NAME) !== -1, 'task-red': task.categories.indexOf(general_config.TASK_RED_NAME) !== -1,
-                            'task-orange': task.categories.indexOf(general_config.TASK_ORANGE_NAME) !== -1, 'task-purple': task.categories.indexOf(general_config.TASK_PURPLE_NAME) !== -1, 'task-green': task.categories.indexOf(general_config.TASK_GREEN_NAME) !== -1 }">
+                            <footer class="text-right" ng-class="footerClass(task.categories)">
                                 <div ng-if="(task.categories != '')" class="pull-left small"><span class="glyphicon glyphicon-tag"></span> {{ task.categories }}</div>
                                 <span class="btn-group btn-group-xs">
                                     <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>

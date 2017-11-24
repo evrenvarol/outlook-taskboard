@@ -25,14 +25,6 @@ var config_data = {
 
     // Default task template
     'TASK_TEMPLATE':        '\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### ISSUES:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n',
-
-    // Task categories
-    'TASK_YELLOW_NAME':     'Yellow Category',
-    'TASK_BLUE_NAME':       'Blue Category',
-    'TASK_RED_NAME':        'Red Category',
-    'TASK_ORANGE_NAME':     'Orange Category',
-    'TASK_PURPLE_NAME':     'Purple Category',
-    'TASK_GREEN_NAME':      'Green Category'
   }
 };
 
