@@ -538,6 +538,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         }
         if (!configFound) {
             $scope.config = $scope.makeDefaultConfig();
+            $scope.saveConfig();
         }
     }
 
@@ -923,7 +924,6 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
 
     $scope.makeDefaultConfig = function () {
         return {
-
             "BACKLOG_FOLDER": {
                 "ACTIVE": true,
                 "NAME": "",
@@ -1035,7 +1035,6 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             "AUTO_START_TASKS": false
 
         };
-        $scope.saveConfig();
     }
 });
 
