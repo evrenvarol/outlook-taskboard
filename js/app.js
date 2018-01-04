@@ -236,6 +236,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                     completeddate: new Date(task.DateCompleted),
                     percent: task.PercentComplete,
                     owner: task.Owner,
+                    totalwork: task.TotalWork,
                 });
             }
         };
@@ -644,6 +645,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 mailBody += "<li>"
                 if (tasks(i).Categories !== "") { mailBody += "[" + tasks(i).Categories + "] "; }
                 mailBody += "<strong>" + tasks(i).Subject + "</strong>" + " - <i>" + taskStatus(tasks(i).Status) + "</i>";
+                if ($scope.config.COMPLETED_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks(i).TotalWork + " mn "; }
                 if (tasks(i).Importance == 2) { mailBody += "<font color=red> [H]</font>"; }
                 if (tasks(i).Importance == 0) { mailBody += "<font color=gray> [L]</font>"; }
                 var dueDate = new Date(tasks(i).DueDate);
@@ -665,6 +667,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 mailBody += "<li>"
                 if (tasks(i).Categories !== "") { mailBody += "[" + tasks(i).Categories + "] "; }
                 mailBody += "<strong>" + tasks(i).Subject + "</strong>" + " - <i>" + taskStatus(tasks(i).Status) + "</i>";
+                if ($scope.config.INPROGRESS_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks(i).TotalWork + " mn "; }
                 if (tasks(i).Importance == 2) { mailBody += "<font color=red> [H]</font>"; }
                 if (tasks(i).Importance == 0) { mailBody += "<font color=gray> [L]</font>"; }
                 var dueDate = new Date(tasks(i).DueDate);
@@ -686,6 +689,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 mailBody += "<li>"
                 if (tasks(i).Categories !== "") { mailBody += "[" + tasks(i).Categories + "] "; }
                 mailBody += "<strong>" + tasks(i).Subject + "</strong>" + " - <i>" + taskStatus(tasks(i).Status) + "</i>";
+                if ($scope.config.NEXT_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks(i).TotalWork + " mn "; }
                 if (tasks(i).Importance == 2) { mailBody += "<font color=red> [H]</font>"; }
                 if (tasks(i).Importance == 0) { mailBody += "<font color=gray> [L]</font>"; }
                 var dueDate = new Date(tasks(i).DueDate);
@@ -707,6 +711,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 mailBody += "<li>"
                 if (tasks(i).Categories !== "") { mailBody += "[" + tasks(i).Categories + "] "; }
                 mailBody += "<strong>" + tasks(i).Subject + "</strong>" + " - <i>" + taskStatus(tasks(i).Status) + "</i>";
+                if ($scope.config.WAITING_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks(i).TotalWork + " mn "; }
                 if (tasks(i).Importance == 2) { mailBody += "<font color=red> [H]</font>"; }
                 if (tasks(i).Importance == 0) { mailBody += "<font color=gray> [L]</font>"; }
                 var dueDate = new Date(tasks(i).DueDate);
@@ -728,6 +733,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 mailBody += "<li>"
                 if (tasks(i).Categories !== "") { mailBody += "[" + tasks(i).Categories + "] "; }
                 mailBody += "<strong>" + tasks(i).Subject + "</strong>" + " - <i>" + taskStatus(tasks(i).Status) + "</i>";
+                if ($scope.config.BACKLOG_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks(i).TotalWork + " mn "; }
                 if (tasks(i).Importance == 2) { mailBody += "<font color=red> [H]</font>"; }
                 if (tasks(i).Importance == 0) { mailBody += "<font color=gray> [L]</font>"; }
                 var dueDate = new Date(tasks(i).DueDate);
@@ -933,7 +939,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 "RESTRICT": "",
                 "DISPLAY_PROPERTIES": {
                     "OWNER": false,
-                    "PERCENT": false
+                    "PERCENT": false,
+                    "TOTALWORK": false
                 },
                 "FILTER_ON_START_DATE": true,
                 "REPORT": {
@@ -949,7 +956,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 "RESTRICT": "",
                 "DISPLAY_PROPERTIES": {
                     "OWNER": false,
-                    "PERCENT": false
+                    "PERCENT": false,
+                    "TOTALWORK": false
                 },
                 "REPORT": {
                     "DISPLAY": true
@@ -964,7 +972,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 "RESTRICT": "",
                 "DISPLAY_PROPERTIES": {
                     "OWNER": false,
-                    "PERCENT": false
+                    "PERCENT": false,
+                    "TOTALWORK": false
                 },
                 "REPORT": {
                     "DISPLAY": true
@@ -979,7 +988,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 "RESTRICT": "",
                 "DISPLAY_PROPERTIES": {
                     "OWNER": false,
-                    "PERCENT": false
+                    "PERCENT": false,
+                    "TOTALWORK": false
                 },
                 "REPORT": {
                     "DISPLAY": true
@@ -994,7 +1004,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 "RESTRICT": "",
                 "DISPLAY_PROPERTIES": {
                     "OWNER": false,
-                    "PERCENT": false
+                    "PERCENT": false,
+                    "TOTALWORK": false
                 },
                 "REPORT": {
                     "DISPLAY": true
