@@ -34,6 +34,7 @@ My changes:
 22. Added configuration screen (journal item)
 23. Tested with recurring tasks. Works perfectly :-)
 24. Added new config option: AUTO_TASK_START. When true, then tasks that have start date today or earlier will be moved to the NEXT lane automatically.
+25. Added new config option: Display Total Work hours for task item
 
 TODO:
 - Add tooltips to the buttons
