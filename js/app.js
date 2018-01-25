@@ -224,6 +224,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                     duedate: new Date(task.DueDate),
                     sensitivity: task.Sensitivity,
                     categories: getCategoriesArray(task.Categories),
+                    categoryNames: task.Categories,
                     notes: taskExcerpt(task.Body, $scope.config.TASKNOTE_EXCERPT),
                     status: taskStatus(task.Status),
                     oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
