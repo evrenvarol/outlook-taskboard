@@ -1,6 +1,65 @@
 # Outlook Taskboard
 Outlook Taskboard is a kanban board style view for Outlook Tasks.
 
+I found the original Kanban board implemented by Evren Varol. I looked at the forks and liked the 
+changes by BillyMcSkintos, using the task status instead of folders. But he lost the drag&drop
+feature.
+
+So I decided to take my own fork and added a bunch of features, and added some options to the
+configuration file.
+
+My changes:
+
+1. Added colours to task categories
+2. Tasks folder is now the Backlog folder
+3. Use new folder 'Kanban' for all the current work: Next, InProgress, Waiting and Done
+4. Removed Add button at InProgress and Waiting lanes. Tasks can only be added to Backlog and Next
+5. Drag and drop now sets the new status
+6. Introduced date format in config file
+7. Drag & Drop now also works properly when filter is active
+8. Use another icon for archiving of completed icons, for better difference from the edit icon 
+9. Removed editing option for completed tasks
+10. Display Completion Date for completed tasks instead of Due Date
+11. Implemented filter on private / non-private tasks (button top right)
+12. If one of the task folders in the config does not exist, then it is created
+13. Optional saving of filter state via CONFIG file
+14. Optional use of privacy filter via CONFIG file
+15. Added configuration for what to do with completed tasks (Nothing, Archive, Hide, Delete)
+16. Added "Filter on start date" configuration option to Backlog folder/column to hide tasks with start date in the future
+17. Added configuration options to show/hide 'Owner' and '% complete' per column
+18. Added configuration option to enable/disable auto refresh of the taskboard
+19. Added configuration option to show/hide sections in the report
+20. Added configuration option to make task lanes active or inactive
+21. Added help screen
+22. Added configuration screen (journal item)
+23. Tested with recurring tasks. Works perfectly :-)
+24. Added new config option: AUTO_TASK_START. When true, then tasks that have start date today or earlier will be moved to the NEXT lane automatically.
+25. Added new config option: Display Total Work hours for task item
+
+TODO:
+- Add tooltips to the buttons
+- Look into performance issues, because currently it re-reads the tasks from Outlook quite often
+- Implement error logging by sending a mail to myself
+- More configuration and customization options
+- And finally a rewrite using React. 
+  Why? Firstly, because I want to get experience with it, and secondly, it is said to be faster
+
+----- End -----
+
+BillyMcSkintos' additions to the original Readme file:
+
+----- 05/15/17 ------
+Credit for this fork goes entirely to @evrenvarol. I have made a few simple changes to suit my needs:
+1. Removed Focus Column
+2. Added CSS to color columns
+3. Added Owner
+4. Added Task %
+5. Columns are no-longer drag and drop. Tasks move from column to column with the Outlook task status. 
+5.a. Must add and use a category of !Next to move a task to the appropriate column.
+----- End -----
+
+The original Readme file of Evren Varol with all instructions:
+
 It uses the main "Tasks" folder as *Back Log* and utilizes 5 individual subfolders (InProgress, Next, Focus, Waiting and Completed) as each task lane for personal kanban workflow.
 
 There are 2 ways to use the taskboard.
