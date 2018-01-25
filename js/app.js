@@ -883,6 +883,21 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         var today = new Date().setHours(0, 0, 0, 0);
         return { 'task-overdue': dateobj < today, 'task-today': dateobj == today };
     };
+    
+    $scope.getFooterStyle = function (categories) {
+        if (categories !== '') {
+            // Copy category style
+            if (categories.length == 1) {
+                return categories[0].style;
+            }
+            // Make multi-category tasks light gray
+            else {
+                var lightGray = '#dfdfdf';
+                return { "background-color": lightGray, color: getContrastYIQ(lightGray) };
+            }           
+        }
+        return;
+    };
 
     Date.daysBetween = function (date1, date2) {
         //Get 1 day in milliseconds
