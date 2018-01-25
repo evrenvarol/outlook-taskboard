@@ -101,7 +101,7 @@
             <!-- next lane -->
             <div ng-if="( config.NEXT_FOLDER.ACTIVE )" class="tasklane col-md-3 col-sm-4 col-xs-6" ng-class=" { 'col-lg-100' : numfolders === 1, 'col-lg-50' : numfolders === 2, 'col-lg-33' : numfolders === 3, 'col-lg-25': numfolders === 4, 'col-lg-20': numfolders === 5 }">
                 <div class="panel panel-default">
-                    <header class="panel-heading-next">
+                    <header class="panel-heading-todo">
                         <h5>{{ config.NEXT_FOLDER.TITLE }}
                             <span class="pull-right">
                                 <button ng-if="( config.NEXT_FOLDER.LIMIT == 0 || nextTasks.length < config.NEXT_FOLDER.LIMIT )" class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('next');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
@@ -140,7 +140,7 @@
             <!-- inprogress lane -->
             <div ng-if="( config.INPROGRESS_FOLDER.ACTIVE )" class="tasklane col-md-3 col-sm-4 col-xs-6" ng-class=" { 'col-lg-100' : numfolders === 1, 'col-lg-50' : numfolders === 2, 'col-lg-33' : numfolders === 3, 'col-lg-25': numfolders === 4, 'col-lg-20': numfolders === 5 }">
                 <div class="panel panel-default">
-                    <header class="panel-heading-progress">
+                    <header class="panel-heading-todo">
                         <h5>{{ config.INPROGRESS_FOLDER.TITLE }}
                             <span class="pull-right">
                                 <span class="label label-info">{{ inprogressTasks.length }}</span>                            <span ng-if="( config.INPROGRESS_FOLDER.LIMIT > 0 )" class="label label-primary">{{ config.INPROGRESS_FOLDER.LIMIT }}</span>
@@ -180,7 +180,7 @@
             <!-- waiting lane -->
             <div ng-if="( config.WAITING_FOLDER.ACTIVE )" class="tasklane col-md-3 col-sm-4 col-xs-6" ng-class=" { 'col-lg-100' : numfolders === 1, 'col-lg-50' : numfolders === 2, 'col-lg-33' : numfolders === 3, 'col-lg-25': numfolders === 4, 'col-lg-20': numfolders === 5 }">
                 <div class="panel panel-default">
-                    <header class="panel-heading-waiting">
+                    <header class="panel-heading-todo">
                         <h5>{{ config.WAITING_FOLDER.TITLE }}
                             <span class="pull-right">
                                 <span class="label label-info">{{ waitingTasks.length }}</span>
@@ -219,7 +219,7 @@
             <!-- completed lane -->
             <div ng-if="( config.COMPLETED_FOLDER.ACTIVE )" class="tasklane col-md-3 col-sm-4 col-xs-6" ng-class=" { 'col-lg-100' : numfolders === 1, 'col-lg-50' : numfolders === 2, 'col-lg-33' : numfolders === 3, 'col-lg-25': numfolders === 4, 'col-lg-20': numfolders === 5 }">
                 <div class="panel panel-default">
-                    <header class="panel-heading-completed">
+                    <header class="panel-heading-todo">
                         <h5>{{ config.COMPLETED_FOLDER.TITLE }}
                             <span class="pull-right">
                                 <span class="label label-info">{{ completedTasks.length }}</span>
