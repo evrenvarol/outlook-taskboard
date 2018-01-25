@@ -313,37 +313,21 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         return nfalse;
     }
 
+    var colorArray = [ 
+        '#E7A1A2', '#F9BA89', '#F7DD8F', '#FCFA90', '#78D168', '#9FDCC9', '#C6D2B0', '#9DB7E8', '#B5A1E2', 
+        '#daaec2', '#dad9dc', '#6b7994', '#bfbfbf', '#6f6f6f', '#4f4f4f', '#c11a25', '#e2620d', '#c79930', 
+        '#b9b300', '#368f2b', '#329b7a', '#778b45', '#2858a5', '#5c3fa3', '#93446b'
+    ];
 
     var getColor = function (category) {
-        // this has to be optimized by using an arry
         var c = $scope.outlookCategories.names.indexOf(category);
-        var i = $scope.outlookCategories.colors[c];
-        if (i == -1) return '#4f4f4f';
-        if (i == 1) return '#E7A1A2';
-        if (i == 2) return '#F9BA89';
-        if (i == 3) return '#F7DD8F';
-        if (i == 4) return '#FCFA90';
-        if (i == 5) return '#78D168';
-        if (i == 6) return '#9FDCC9';
-        if (i == 7) return '#C6D2B0';
-        if (i == 8) return '#9DB7E8';
-        if (i == 9) return '#B5A1E2';
-        if (i == 10) return '#daaec2';
-        if (i == 11) return '#dad9dc';
-        if (i == 12) return '#6b7994';
-        if (i == 13) return '#bfbfbf';
-        if (i == 14) return '#6f6f6f';
-        if (i == 15) return '#4f4f4f';
-        if (i == 16) return '#c11a25';
-        if (i == 17) return '#e2620d';
-        if (i == 18) return '#c79930';
-        if (i == 19) return '#b9b300';
-        if (i == 20) return '#368f2b';
-        if (i == 21) return '#329b7a';
-        if (i == 22) return '#778b45';
-        if (i == 23) return '#2858a5';
-        if (i == 24) return '#5c3fa3';
-        if (i == 25) return '#93446b';
+        var i = $scope.outlookCategories.colors[c];        
+        if (i == -1) {
+            return '#4f4f4f';
+        }
+        else {
+            return colorArray[i-1];
+        }
     }
 
     function getContrastYIQ(hexcolor) {
