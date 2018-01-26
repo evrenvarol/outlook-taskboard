@@ -65,6 +65,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
 
         $scope.usePrivate = $scope.config.PRIVACY_FILTER;
         $scope.useCategoryColors = $scope.config.USE_CATEGORY_COLORS;
+        $scope.useCategoryColorFooters = $scope.config.USE_CATEGORY_COLOR_FOOTERS;
         $scope.outlookCategories = getCategories();
         $scope.getState();
         $scope.initTasks();
@@ -587,6 +588,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         mailBody += "<tr><td>TASK_TEMPLATE</td><td>Template to use for new tasks</td></tr>";
         mailBody += "<tr><td>DATE_FORMAT</td><td>Date format (must a valid JS date format)</td></tr>";
         mailBody += "<tr><td>USE_CATEGORY_COLORS</td><td>if true, then the Outlook category colors will be used</td></tr>";
+        mailBody += "<tr><td>USE_CATEGORY_COLOR_FOOTERS</td><td>if true, then the Outlook category colors will be used for the entire footer line</td></tr>";
         mailBody += "<tr><td>SAVE_STATE</td><td>if true, then the filters will be save dand re-used when the app is restarted</td></tr>";
         mailBody += "<tr><td>PRIVACY_FILTER</td><td>if true, then you can use separate boards for private and publis tasks</td></tr>";
         mailBody += "<tr><td>STATUS</td><td>Tha value and descriptions for the task statuses. The text can be changed for the status report</td></tr>";
@@ -869,16 +871,18 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
     };
     
     $scope.getFooterStyle = function (categories) {
-        if ((categories !== '') && $scope.useCategoryColors) {
-            // Copy category style
-            if (categories.length == 1) {
-                return categories[0].style;
+        if ($scope.useCategoryColorFooters) {
+            if ((categories !== '') && $scope.useCategoryColors) {
+                // Copy category style
+                if (categories.length == 1) {
+                    return categories[0].style;
+                }
+                // Make multi-category tasks light gray
+                else {
+                    var lightGray = '#dfdfdf';
+                    return { "background-color": lightGray, color: getContrastYIQ(lightGray) };
+                }           
             }
-            // Make multi-category tasks light gray
-            else {
-                var lightGray = '#dfdfdf';
-                return { "background-color": lightGray, color: getContrastYIQ(lightGray) };
-            }           
         }
         return;
     };
@@ -1012,6 +1016,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             "TASK_TEMPLATE": "\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### ISSUES:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n",
             "DATE_FORMAT": "dd-MMM",
             "USE_CATEGORY_COLORS": true,
+            "USE_CATEGORY_COLOR_FOOTERS": false,
             "SAVE_STATE": true,
             "PRIVACY_FILTER": true,
             "STATUS": {
