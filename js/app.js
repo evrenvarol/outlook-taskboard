@@ -869,7 +869,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
     };
     
     $scope.getFooterStyle = function (categories) {
-        if (categories !== '') {
+        if ((categories !== '') && $scope.useCategoryColors) {
             // Copy category style
             if (categories.length == 1) {
                 return categories[0].style;
