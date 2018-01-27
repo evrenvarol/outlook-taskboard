@@ -1007,7 +1007,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 },
                 "REPORT": {
                     "DISPLAY": true
-                }
+                },
+                "EDITABLE": true
             },
             "ARCHIVE_FOLDER": {
                 "NAME": "Completed"
