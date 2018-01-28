@@ -1,4 +1,4 @@
-# Outlook Taskboard
+# Outlook Taskboard aka JanBan
 Outlook Taskboard is a kanban board style view for Outlook Tasks.
 
 I found the original Kanban board implemented by Evren Varol. I looked at the forks and liked the 
@@ -7,6 +7,8 @@ feature.
 
 So I decided to take my own fork and added a bunch of features, and added some options to the
 configuration file.
+
+In the meantime I (and others) have done so many changes that I decided to rename the project to JanBan.
 
 My changes:
 
