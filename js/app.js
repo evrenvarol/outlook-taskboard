@@ -89,9 +89,9 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 // locate the target folder in outlook
                 // ui.item.sortable.droptarget[0].id represents the id of the target list
                 if (ui.item.sortable.droptarget) { // check if it is dropped on a valid target
-                    if (($scope.config.INPROGRESS_FOLDER.LIMIT !== 0 && e.target.id !== 'inprogressList' && ui.item.sortable.droptarget.attr('id') === 'inprogressList' && $scope.inprogressTasks.length >= $scope.config.INPROGRESS_FOLDER.LIMIT) ||
-                    ($scope.config.NEXT_FOLDER.LIMIT !== 0 && e.target.id !== 'nextList' && ui.item.sortable.droptarget.attr('id') === 'nextList' && $scope.nextTasks.length >= $scope.config.NEXT_FOLDER.LIMIT) ||
-                    ($scope.config.WAITING_FOLDER.LIMIT !== 0 && e.target.id !== 'waitingList' && ui.item.sortable.droptarget.attr('id') === 'waitingList' && $scope.waitingTasks.length >= $scope.config.WAITING_FOLDER.LIMIT)) {
+                    if (($scope.config.INPROGRESS_FOLDER.LIMIT !== 0 && e.target.id !== 'inprogressList' && ui.item.sortable.droptarget.attr('id') === 'inprogressList' && $scope.inprogressTasks.length > $scope.config.INPROGRESS_FOLDER.LIMIT) ||
+                    ($scope.config.NEXT_FOLDER.LIMIT !== 0 && e.target.id !== 'nextList' && ui.item.sortable.droptarget.attr('id') === 'nextList' && $scope.nextTasks.length > $scope.config.NEXT_FOLDER.LIMIT) ||
+                    ($scope.config.WAITING_FOLDER.LIMIT !== 0 && e.target.id !== 'waitingList' && ui.item.sortable.droptarget.attr('id') === 'waitingList' && $scope.waitingTasks.length > $scope.config.WAITING_FOLDER.LIMIT)) {
                         $scope.initTasks();
                         ui.item.sortable.cancel();
                 } else {
