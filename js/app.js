@@ -65,6 +65,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
 
         $scope.usePrivate = $scope.config.PRIVACY_FILTER;
         $scope.useCategoryColors = $scope.config.USE_CATEGORY_COLORS;
+        $scope.useCategoryColorFooters = $scope.config.USE_CATEGORY_COLOR_FOOTERS;
         $scope.outlookCategories = getCategories();
         $scope.getState();
         $scope.initTasks();
@@ -88,9 +89,9 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 // locate the target folder in outlook
                 // ui.item.sortable.droptarget[0].id represents the id of the target list
                 if (ui.item.sortable.droptarget) { // check if it is dropped on a valid target
-                    if (($scope.config.INPROGRESS_FOLDER.LIMIT !== 0 && e.target.id !== 'inprogressList' && ui.item.sortable.droptarget.attr('id') === 'inprogressList' && $scope.inprogressTasks.length >= $scope.config.INPROGRESS_FOLDER.LIMIT) ||
-                    ($scope.config.NEXT_FOLDER.LIMIT !== 0 && e.target.id !== 'nextList' && ui.item.sortable.droptarget.attr('id') === 'nextList' && $scope.nextTasks.length >= $scope.config.NEXT_FOLDER.LIMIT) ||
-                    ($scope.config.WAITING_FOLDER.LIMIT !== 0 && e.target.id !== 'waitingList' && ui.item.sortable.droptarget.attr('id') === 'waitingList' && $scope.waitingTasks.length >= $scope.config.WAITING_FOLDER.LIMIT)) {
+                    if (($scope.config.INPROGRESS_FOLDER.LIMIT !== 0 && e.target.id !== 'inprogressList' && ui.item.sortable.droptarget.attr('id') === 'inprogressList' && $scope.inprogressTasks.length > $scope.config.INPROGRESS_FOLDER.LIMIT) ||
+                    ($scope.config.NEXT_FOLDER.LIMIT !== 0 && e.target.id !== 'nextList' && ui.item.sortable.droptarget.attr('id') === 'nextList' && $scope.nextTasks.length > $scope.config.NEXT_FOLDER.LIMIT) ||
+                    ($scope.config.WAITING_FOLDER.LIMIT !== 0 && e.target.id !== 'waitingList' && ui.item.sortable.droptarget.attr('id') === 'waitingList' && $scope.waitingTasks.length > $scope.config.WAITING_FOLDER.LIMIT)) {
                         $scope.initTasks();
                         ui.item.sortable.cancel();
                 } else {
@@ -588,6 +589,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         mailBody += "<tr><td>TASK_TEMPLATE</td><td>Template to use for new tasks</td></tr>";
         mailBody += "<tr><td>DATE_FORMAT</td><td>Date format (must a valid JS date format)</td></tr>";
         mailBody += "<tr><td>USE_CATEGORY_COLORS</td><td>if true, then the Outlook category colors will be used</td></tr>";
+        mailBody += "<tr><td>USE_CATEGORY_COLOR_FOOTERS</td><td>if true, then the Outlook category colors will be used for the entire footer line</td></tr>";
         mailBody += "<tr><td>SAVE_STATE</td><td>if true, then the filters will be save dand re-used when the app is restarted</td></tr>";
         mailBody += "<tr><td>PRIVACY_FILTER</td><td>if true, then you can use separate boards for private and publis tasks</td></tr>";
         mailBody += "<tr><td>STATUS</td><td>Tha value and descriptions for the task statuses. The text can be changed for the status report</td></tr>";
@@ -870,16 +872,18 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
     };
     
     $scope.getFooterStyle = function (categories) {
-        if (categories !== '') {
-            // Copy category style
-            if (categories.length == 1) {
-                return categories[0].style;
+        if ($scope.useCategoryColorFooters) {
+            if ((categories !== '') && $scope.useCategoryColors) {
+                // Copy category style
+                if (categories.length == 1) {
+                    return categories[0].style;
+                }
+                // Make multi-category tasks light gray
+                else {
+                    var lightGray = '#dfdfdf';
+                    return { "background-color": lightGray, color: getContrastYIQ(lightGray) };
+                }           
             }
-            // Make multi-category tasks light gray
-            else {
-                var lightGray = '#dfdfdf';
-                return { "background-color": lightGray, color: getContrastYIQ(lightGray) };
-            }           
         }
         return;
     };
@@ -1004,7 +1008,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 },
                 "REPORT": {
                     "DISPLAY": true
-                }
+                },
+                "EDITABLE": true
             },
             "ARCHIVE_FOLDER": {
                 "NAME": "Completed"
@@ -1013,6 +1018,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             "TASK_TEMPLATE": "\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### ISSUES:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n",
             "DATE_FORMAT": "dd-MMM",
             "USE_CATEGORY_COLORS": true,
+            "USE_CATEGORY_COLOR_FOOTERS": true,
             "SAVE_STATE": true,
             "PRIVACY_FILTER": true,
             "STATUS": {
