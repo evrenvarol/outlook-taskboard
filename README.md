@@ -2,11 +2,10 @@
 
 Outlook Taskboard is a kanban board style view for Outlook Tasks.
 
-The original Readme file of Evren Varol with all instructions:
+*The following README is based on the __original version__ from evrenvarol, so some 
+modifications have been made to adapt it to the current version of the taskboard.*
 
-It uses the main "Tasks" folder as *Back Log* and utilizes 5 individual subfolders (InProgress, Next, Focus, Waiting and Completed) as each task lane for personal kanban workflow.
-
-There are 2 ways to use the taskboard.
+There are 2 ways to use the taskboard:
 
   1. Outlook Folder Home Page (recommended)
   2. Directly from Internet Explorer
@@ -30,13 +29,21 @@ The taskboard can also be opened in Internet Explorer. Due to limitations with A
 
 1. Download the latest release zip file and extract it to a folder in your local hard drive.
 
-2. In Outlook, create following folder structure under your Tasks folder (it is easier to use the *Folders* view to create these folders):
+2. ~~In Outlook, create following folder structure under your Tasks folder (it is easier to use the *Folders* view to create these folders):~~
 
     ![Tasks Folders](http://evrenvarol.github.io/outlook-taskboard/img/task-folders.png)
+    
+    *This is __not necessary__ for the updated version of the taskboard any more. It will automatically create the folder 'Kanban' in your Tasks
+    folder and place all tasks it manages into it. It is still possible to create a custom folder structure for allocation to the task lanes, though.*
 
 3. For Outlook Home page:
 
-  * Create another folder (of any type) and name it something like "Taskboard" or "Kanban", etc. (Alternatively you can use the main account folder as a home page as well)
+  * ~~Create another folder (of any type) and name it something like "Taskboard" or "Kanban", etc. (Alternatively you can use the main account folder as a home page as well)~~
+   
+    *The feature to define home pages on any folder, which the next steps are based on, was conveniently __removed from Outlook__ in a recent update. This is 
+     still possible for the top level folder of the Outlook data file, though. It should be named like the email account (e.g. your email address) and
+     is visible in Outlook's __Email view__ or __Folder view__ (not in the Tasks view). Continue with the following
+     steps on this folder, or use the Internet Explorer approach described below.*
 
   * Right-click the folder, and then click **Properties**. Select the *Home Page* tab in the <folder name> Properties dialog box.
 
@@ -48,19 +55,28 @@ The taskboard can also be opened in Internet Explorer. Due to limitations with A
 
       <sub>*If you receive above warning, simply click X icon to close both warning prompt and the Properties window.*</sub>
 
+  * Now the taskboard should open in the main window when **clicking on the folder**.
+
 4. For Internet Explorer:
 
   * Open Internet Explorer and go to *Tools > Internet Options > Security tab*. Select the **Local Intranet Zone** and click on the **Custom Level** button. Ensure the "Initialize and script ActiveX controls not marked as safe for scripting" option is set to **Enabled**
 
   ![IE Local Intranet Zone Setting](http://evrenvarol.github.io/outlook-taskboard/img/ie-localintranet-activexscript-enable.png)
 
-  * Double-click on the **kanban-ie.html** file to open the page in Internet Explorer.
+  * Open the page **kanban.html** in Internet Explorer.
 
     <sub>*On Win10, you will need to right click on the file, select Open With -> Internet Explorer to open the page in IE11. Otherwise it tries to open in Edge which is not supported.*</sub>
 
 ## Advanced Setup
 
-The configuration file (config.js) under the *js* folder can be edited to customise task lane limits, titles and some other settings.
+~~The configuration file (config.js) under the *js* folder can be edited to customise task lane limits, titles and some other settings.~~
+
+*The __configuration file__ is now accessible through the taskboard itself: Open it by clicking on the settings symbol in the top right next to the text box.*
+
+*__Known issue:__ The configuration file is saved in an Outlook journal entry. When configuring the taskboard for the same account on several Outlook instances, a modification conflict can occur on this entry,
+even if no changes were made. This might lead to the taskboard loading a wrong configuration or not working at all. 
+If this happens, open the Outlook Journal through the folder view, navigate to the __KanbanState__ and __KanbanConfig__ entries, and resolve any modification conflicts by clicking on them.
+Then, the taskboard should work again.*
 
 ### Task Lane Folder Names and Titles
 
