@@ -3,7 +3,9 @@
 Outlook Taskboard is a kanban board style view for Outlook Tasks.
 
 *The following README is based on the __original version__ from evrenvarol, so some 
-modifications have been made to adapt it to the current version of the taskboard.*
+modifications have been made to adapt it to the current version of the taskboard. There might still be some changes that went unnoticed.*
+
+*The __Fork__ sections at the end of this README list the changes made by the respective forks.*
 
 There are 2 ways to use the taskboard:
 
@@ -191,3 +193,8 @@ My changes:
 23. Tested with recurring tasks. Works perfectly :-)
 24. Added new config option: AUTO_TASK_START. When true, then tasks that have start date today or earlier will be moved to the NEXT lane automatically.
 25. Added new config option: Display Total Work hours for task item
+
+# Fork #3: maltehi
+
+1. Removed lane coloring.
+2. Activated category-based footer coloring by default.
