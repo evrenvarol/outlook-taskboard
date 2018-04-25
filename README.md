@@ -197,4 +197,6 @@ My changes:
 # Fork #3: maltehi
 
 1. Removed lane coloring.
-2. Activated category-based footer coloring by default.
+2. Activated category-based footer coloring by default (see image below).
+
+![Category footer coloring](https://user-images.githubusercontent.com/9609820/30276617-b5c02bb0-9705-11e7-8981-66021ad66f53.png)
