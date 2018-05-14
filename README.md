@@ -147,7 +147,7 @@ The `TASKNOTE_EXCERPT` value can be updated to change the number of characters s
 
 Note: If the default task template used to create the task, only the first part of the task notes are visible. (until first the '###'' section).
 
-# Fork #1: BillyMcSkintos
+# Fork 1: [BillyMcSkintos](https://github.com/BillyMcSkintos/outlook-taskboard)
 
 Credit for this fork goes entirely to @evrenvarol. I have made a few simple changes to suit my needs:
 1. Removed Focus Column
@@ -157,7 +157,7 @@ Credit for this fork goes entirely to @evrenvarol. I have made a few simple chan
 5. Columns are no-longer drag and drop. Tasks move from column to column with the Outlook task status. 
 5.a. Must add and use a category of !Next to move a task to the appropriate column.
 
-# Fork #2: janvv - Outlook Taskboard aka **JanBan**
+# Fork 2: [janvv - Outlook Taskboard aka **JanBan**](https://github.com/janvv/janban)
 
 I found the original Kanban board implemented by Evren Varol. I looked at the forks and liked the 
 changes by BillyMcSkintos, using the task status instead of folders. But he lost the drag&drop
@@ -194,7 +194,7 @@ My changes:
 24. Added new config option: AUTO_TASK_START. When true, then tasks that have start date today or earlier will be moved to the NEXT lane automatically.
 25. Added new config option: Display Total Work hours for task item
 
-# Fork #3: maltehi
+# Fork 3: [maltehi](https://github.com/maltehi/outlook-taskboard)
 
 1. Removed lane coloring.
 2. Activated category-based footer coloring by default (see image below).
