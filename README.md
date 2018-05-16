@@ -1,6 +1,6 @@
 # Outlook Taskboard
 
-Outlook Taskboard is a kanban board style view for Outlook Tasks.
+Outlook Taskboard is a Kanban board style view for Outlook Tasks.
 
 *The following README is based on the __original version__ from evrenvarol, so some 
 modifications have been made to adapt it to the current version of the taskboard. There might still be some changes that went unnoticed.*
@@ -75,10 +75,14 @@ The taskboard can also be opened in Internet Explorer. Due to limitations with A
 
 *The __configuration file__ is now accessible through the taskboard itself: Open it by clicking on the settings symbol in the top right next to the text box.*
 
-*__Known issue:__ The configuration file is saved in an Outlook journal entry. When configuring the taskboard for the same account on several Outlook instances, a modification conflict can occur on this entry,
-even if no changes were made. This might lead to the taskboard loading a wrong configuration or not working at all. 
-If this happens, open the Outlook Journal through the folder view, navigate to the __KanbanState__ and __KanbanConfig__ entries, and resolve any modification conflicts by clicking on them.
-Then, the taskboard should work again.*
+*__Known issue:__ The taskboard configuration is saved in Outlook's Journal folder.
+When configuring the taskboard on several Outlook instances synchronized over an Exchange server,
+modification conflicts can occur - even if no changes were made to the configuration.
+These will lead to the taskboard not working and just displaying a blank screen.
+If this happens, open the Journal folder in Outlook (through the folder view),
+navigate to the __KanbanState__ and __KanbanConfig__ entries (easiest with the list view),
+and resolve any modification conflicts by double-clicking on them and answering the dialog
+that is opened. Then the taskboard should work again.*
 
 ### Task Lane Folder Names and Titles
 
