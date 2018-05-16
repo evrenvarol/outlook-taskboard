@@ -227,6 +227,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                     categories: getCategoriesArray(task.Categories),
                     categoryNames: task.Categories,
                     notes: taskExcerpt(task.Body, $scope.config.TASKNOTE_EXCERPT),
+                    body: task.Body,
                     status: taskStatus(task.Status),
                     oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
                     oneNoteURL: getUserProp(tasks(i), "OneNoteURL"),
@@ -288,8 +289,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         return catStyles;
     }
 
-    // grabs values of user defined fields from outlook item object 
-    // currently used for getting onenote url info 
+    // grabs values of user defined fields from outlook item object
+    // currently used for getting onenote url info
     var getUserProp = function (item, prop) {
         var userprop = item.UserProperties(prop);
         var value = '';
@@ -299,31 +300,31 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         return value;
     };
 
-    // opens up onenote app and locates the page by using onenote uri 
+    // opens up onenote app and locates the page by using onenote uri
     $scope.openOneNoteURL = function (url) {
         window.event.returnValue = false;
-        // try to open the link using msLaunchUri which does not create unsafe-link security warning 
-        // unfortunately this method is only available Win8+ 
+        // try to open the link using msLaunchUri which does not create unsafe-link security warning
+        // unfortunately this method is only available Win8+
         if (navigator.msLaunchUri) {
             navigator.msLaunchUri(url);
         } else {
-            // old window.open method, this creates unsafe-link warning if the link clicked via outlook app 
-            // there is a registry key to disable these warnings, but not recommended as it disables 
-            // the unsafe-link protection in entire outlook app 
+            // old window.open method, this creates unsafe-link warning if the link clicked via outlook app
+            // there is a registry key to disable these warnings, but not recommended as it disables
+            // the unsafe-link protection in entire outlook app
             window.open(url, "_blank").close();
         }
         return nfalse;
     }
 
-    var colorArray = [ 
-        '#E7A1A2', '#F9BA89', '#F7DD8F', '#FCFA90', '#78D168', '#9FDCC9', '#C6D2B0', '#9DB7E8', '#B5A1E2', 
-        '#daaec2', '#dad9dc', '#6b7994', '#bfbfbf', '#6f6f6f', '#4f4f4f', '#c11a25', '#e2620d', '#c79930', 
+    var colorArray = [
+        '#E7A1A2', '#F9BA89', '#F7DD8F', '#FCFA90', '#78D168', '#9FDCC9', '#C6D2B0', '#9DB7E8', '#B5A1E2',
+        '#daaec2', '#dad9dc', '#6b7994', '#bfbfbf', '#6f6f6f', '#4f4f4f', '#c11a25', '#e2620d', '#c79930',
         '#b9b300', '#368f2b', '#329b7a', '#778b45', '#2858a5', '#5c3fa3', '#93446b'
     ];
 
     var getColor = function (category) {
         var c = $scope.outlookCategories.names.indexOf(category);
-        var i = $scope.outlookCategories.colors[c];        
+        var i = $scope.outlookCategories.colors[c];
         if (i == -1) {
             return '#4f4f4f';
         }
@@ -351,7 +352,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         $scope.waitingTasks = getTasksFromOutlook($scope.config.WAITING_FOLDER.NAME, $scope.config.WAITING_FOLDER.RESTRICT, $scope.config.WAITING_FOLDER.SORT, $scope.config.STATUS.WAITING.VALUE);
         $scope.completedTasks = getTasksFromOutlook($scope.config.COMPLETED_FOLDER.NAME, $scope.config.COMPLETED_FOLDER.RESTRICT, $scope.config.COMPLETED_FOLDER.SORT, $scope.config.STATUS.COMPLETED.VALUE);
 
-        // copy the lists as the initial filter    
+        // copy the lists as the initial filter
         $scope.filteredBacklogTasks = $scope.backlogTasks;
         $scope.filteredInprogressTasks = $scope.inprogressTasks;
         $scope.filteredNextTasks = $scope.nextTasks;
@@ -590,7 +591,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         mailBody += "<tr><td>DATE_FORMAT</td><td>Date format (must a valid JS date format)</td></tr>";
         mailBody += "<tr><td>USE_CATEGORY_COLORS</td><td>if true, then the Outlook category colors will be used</td></tr>";
         mailBody += "<tr><td>USE_CATEGORY_COLOR_FOOTERS</td><td>if true, then the Outlook category colors will be used for the entire footer line</td></tr>";
-        mailBody += "<tr><td>SAVE_STATE</td><td>if true, then the filters will be save dand re-used when the app is restarted</td></tr>";
+        mailBody += "<tr><td>SAVE_STATE</td><td>if true, then the filters will be saved and re-used when the app is restarted</td></tr>";
+        mailBody += "<tr><td>FILTER_REPORTS</td><td>if true, then the filters will be applied on status reports, too</td></tr>";
         mailBody += "<tr><td>PRIVACY_FILTER</td><td>if true, then you can use separate boards for private and publis tasks</td></tr>";
         mailBody += "<tr><td>STATUS</td><td>Tha value and descriptions for the task statuses. The text can be changed for the status report</td></tr>";
         mailBody += "<tr><td>COMPLETED</td><td>Define what to do with completed tasks after x days: NONE, HIDE, ARCHIVE or DELETE</td></tr>";
@@ -618,21 +620,24 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
 
         // COMPLETED ITEMS
         if ($scope.config.COMPLETED_FOLDER.REPORT.DISPLAY) {
-            var tasks = getOutlookFolder($scope.config.COMPLETED_FOLDER.NAME).Items.Restrict("[Complete] = true And Not ([Sensitivity] = 2)");
-            tasks.Sort("[Importance][Status]", true);
+            if ($scope.config.FILTER_REPORTS) {
+                var tasks = $scope.filteredCompletedTasks;
+            }
+            else {
+                var tasks = $scope.completedTasks;
+            }
             mailBody += "<h3>" + $scope.config.COMPLETED_FOLDER.TITLE + "</h3>";
             mailBody += "<ul>";
-            var count = tasks.Count;
-            for (i = 1; i <= count; i++) {
+            var count = tasks.length;
+            for (i = 0; i < count; i++) {
                 mailBody += "<li>"
-                if (tasks(i).Categories !== "") { mailBody += "[" + tasks(i).Categories + "] "; }
-                mailBody += "<strong>" + tasks(i).Subject + "</strong>" + " - <i>" + taskStatus(tasks(i).Status) + "</i>";
-                if ($scope.config.COMPLETED_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks(i).TotalWork + " mn "; }
-                if (tasks(i).Importance == 2) { mailBody += "<font color=red> [H]</font>"; }
-                if (tasks(i).Importance == 0) { mailBody += "<font color=gray> [L]</font>"; }
-                var dueDate = new Date(tasks(i).DueDate);
-                if (moment(dueDate).isValid && moment(dueDate).year() != 4501) { mailBody += " [Due: " + moment(dueDate).format("DD-MMM") + "]"; }
-                if (taskExcerpt(tasks(i).Body, 10000)) { mailBody += "<br>" + "<font color=gray>" + taskExcerpt(tasks(i).Body, 10000) + "</font>"; }
+                if (tasks[i].categoryNames !== "") { mailBody += "[" + tasks[i].categoryNames + "] "; }
+                mailBody += "<strong>" + tasks[i].subject + "</strong>" + " - <i>" + tasks[i].status + "</i>";
+                if ($scope.config.COMPLETED_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks[i].totalwork + " mn "; }
+                if (tasks[i].priority == 2) { mailBody += "<font color=red> [H]</font>"; }
+                if (tasks[i].priority == 0) { mailBody += "<font color=gray> [L]</font>"; }
+                if (moment(tasks[i].duedate).isValid && moment(tasks[i].duedate).year() != 4501) { mailBody += " [Due: " + moment(tasks[i].duedate).format("DD-MMM") + "]"; }
+                if (taskExcerpt(tasks[i].body, 10000)) { mailBody += "<br>" + "<font color=gray>" + taskExcerpt(tasks[i].body, 10000) + "</font>"; }
                 mailBody += "</li>";
             }
             mailBody += "</ul>";
@@ -640,21 +645,24 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
 
         // INPROGRESS ITEMS
         if ($scope.config.INPROGRESS_FOLDER.REPORT.DISPLAY) {
-            var tasks = getOutlookFolder($scope.config.INPROGRESS_FOLDER.NAME).Items.Restrict("[Status] = 1 And Not ([Sensitivity] = 2)");
-            tasks.Sort("[Importance][Status]", true);
+            if ($scope.config.FILTER_REPORTS) {
+                var tasks = $scope.filteredInprogressTasks;
+            }
+            else {
+                var tasks = $scope.inprogressTasks;
+            }
             mailBody += "<h3>" + $scope.config.INPROGRESS_FOLDER.TITLE + "</h3>";
             mailBody += "<ul>";
-            var count = tasks.Count;
-            for (i = 1; i <= count; i++) {
+            var count = tasks.length;
+            for (i = 0; i < count; i++) {
                 mailBody += "<li>"
-                if (tasks(i).Categories !== "") { mailBody += "[" + tasks(i).Categories + "] "; }
-                mailBody += "<strong>" + tasks(i).Subject + "</strong>" + " - <i>" + taskStatus(tasks(i).Status) + "</i>";
-                if ($scope.config.INPROGRESS_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks(i).TotalWork + " mn "; }
-                if (tasks(i).Importance == 2) { mailBody += "<font color=red> [H]</font>"; }
-                if (tasks(i).Importance == 0) { mailBody += "<font color=gray> [L]</font>"; }
-                var dueDate = new Date(tasks(i).DueDate);
-                if (moment(dueDate).isValid && moment(dueDate).year() != 4501) { mailBody += " [Due: " + moment(dueDate).format("DD-MMM") + "]"; }
-                if (taskExcerpt(tasks(i).Body, 10000)) { mailBody += "<br>" + "<font color=gray>" + taskExcerpt(tasks(i).Body, 10000) + "</font>"; }
+                if (tasks[i].categoryNames !== "") { mailBody += "[" + tasks[i].categoryNames + "] "; }
+                mailBody += "<strong>" + tasks[i].subject + "</strong>" + " - <i>" + tasks[i].status + "</i>";
+                if ($scope.config.INPROGRESS_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks[i].totalwork + " mn "; }
+                if (tasks[i].priority == 2) { mailBody += "<font color=red> [H]</font>"; }
+                if (tasks[i].priority == 0) { mailBody += "<font color=gray> [L]</font>"; }
+                if (moment(tasks[i].duedate).isValid && moment(tasks[i].duedate).year() != 4501) { mailBody += " [Due: " + moment(tasks[i].duedate).format("DD-MMM") + "]"; }
+                if (taskExcerpt(tasks[i].body, 10000)) { mailBody += "<br>" + "<font color=gray>" + taskExcerpt(tasks[i].body, 10000) + "</font>"; }
                 mailBody += "</li>";
             }
             mailBody += "</ul>";
@@ -662,21 +670,24 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
 
         // NEXT ITEMS
         if ($scope.config.NEXT_FOLDER.REPORT.DISPLAY) {
-            var tasks = getOutlookFolder($scope.config.NEXT_FOLDER.NAME).Items.Restrict("[Status] = 0 And Not ([Sensitivity] = 2)");
-            tasks.Sort("[Importance][Status]", true);
+            if ($scope.config.FILTER_REPORTS) {
+                var tasks = $scope.filteredNextTasks;
+            }
+            else {
+                var tasks = $scope.nextTasks;
+            }
             mailBody += "<h3>" + $scope.config.NEXT_FOLDER.TITLE + "</h3>";
             mailBody += "<ul>";
-            var count = tasks.Count;
-            for (i = 1; i <= count; i++) {
+            var count = tasks.length;
+            for (i = 0; i < count; i++) {
                 mailBody += "<li>"
-                if (tasks(i).Categories !== "") { mailBody += "[" + tasks(i).Categories + "] "; }
-                mailBody += "<strong>" + tasks(i).Subject + "</strong>" + " - <i>" + taskStatus(tasks(i).Status) + "</i>";
-                if ($scope.config.NEXT_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks(i).TotalWork + " mn "; }
-                if (tasks(i).Importance == 2) { mailBody += "<font color=red> [H]</font>"; }
-                if (tasks(i).Importance == 0) { mailBody += "<font color=gray> [L]</font>"; }
-                var dueDate = new Date(tasks(i).DueDate);
-                if (moment(dueDate).isValid && moment(dueDate).year() != 4501) { mailBody += " [Due: " + moment(dueDate).format("DD-MMM") + "]"; }
-                if (taskExcerpt(tasks(i).Body, 10000)) { mailBody += "<br>" + "<font color=gray>" + taskExcerpt(tasks(i).Body, 10000) + "</font>"; }
+                if (tasks[i].categoryNames !== "") { mailBody += "[" + tasks[i].categoryNames + "] "; }
+                mailBody += "<strong>" + tasks[i].subject + "</strong>" + " - <i>" + tasks[i].status + "</i>";
+                if ($scope.config.NEXT_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks[i].totalwork + " mn "; }
+                if (tasks[i].priority == 2) { mailBody += "<font color=red> [H]</font>"; }
+                if (tasks[i].priority == 0) { mailBody += "<font color=gray> [L]</font>"; }
+                if (moment(tasks[i].duedate).isValid && moment(tasks[i].duedate).year() != 4501) { mailBody += " [Due: " + moment(tasks[i].duedate).format("DD-MMM") + "]"; }
+                if (taskExcerpt(tasks[i].body, 10000)) { mailBody += "<br>" + "<font color=gray>" + taskExcerpt(tasks[i].body, 10000) + "</font>"; }
                 mailBody += "</li>";
             }
             mailBody += "</ul>";
@@ -684,21 +695,24 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
 
         // WAITING ITEMS
         if ($scope.config.WAITING_FOLDER.REPORT.DISPLAY) {
-            var tasks = getOutlookFolder($scope.config.WAITING_FOLDER.NAME).Items.Restrict("[Status] = 3 And Not ([Sensitivity] = 2)");
-            tasks.Sort("[Importance][Status]", true);
+            if ($scope.config.FILTER_REPORTS) {
+                var tasks = $scope.filteredWaitingTasks;
+            }
+            else {
+                var tasks = $scope.waitingTasks;
+            }
             mailBody += "<h3>" + $scope.config.WAITING_FOLDER.TITLE + "</h3>";
             mailBody += "<ul>";
-            var count = tasks.Count;
-            for (i = 1; i <= count; i++) {
+            var count = tasks.length;
+            for (i = 0; i < count; i++) {
                 mailBody += "<li>"
-                if (tasks(i).Categories !== "") { mailBody += "[" + tasks(i).Categories + "] "; }
-                mailBody += "<strong>" + tasks(i).Subject + "</strong>" + " - <i>" + taskStatus(tasks(i).Status) + "</i>";
-                if ($scope.config.WAITING_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks(i).TotalWork + " mn "; }
-                if (tasks(i).Importance == 2) { mailBody += "<font color=red> [H]</font>"; }
-                if (tasks(i).Importance == 0) { mailBody += "<font color=gray> [L]</font>"; }
-                var dueDate = new Date(tasks(i).DueDate);
-                if (moment(dueDate).isValid && moment(dueDate).year() != 4501) { mailBody += " [Due: " + moment(dueDate).format("DD-MMM") + "]"; }
-                if (taskExcerpt(tasks(i).Body, 10000)) { mailBody += "<br>" + "<font color=gray>" + taskExcerpt(tasks(i).Body, 10000) + "</font>"; }
+                if (tasks[i].categoryNames !== "") { mailBody += "[" + tasks[i].categoryNames + "] "; }
+                mailBody += "<strong>" + tasks[i].subject + "</strong>" + " - <i>" + tasks[i].status + "</i>";
+                if ($scope.config.WAITING_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks[i].totalwork + " mn "; }
+                if (tasks[i].priority == 2) { mailBody += "<font color=red> [H]</font>"; }
+                if (tasks[i].priority == 0) { mailBody += "<font color=gray> [L]</font>"; }
+                if (moment(tasks[i].duedate).isValid && moment(tasks[i].duedate).year() != 4501) { mailBody += " [Due: " + moment(tasks[i].duedate).format("DD-MMM") + "]"; }
+                if (taskExcerpt(tasks[i].body, 10000)) { mailBody += "<br>" + "<font color=gray>" + taskExcerpt(tasks[i].body, 10000) + "</font>"; }
                 mailBody += "</li>";
             }
             mailBody += "</ul>";
@@ -706,21 +720,24 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
 
         // BACKLOG ITEMS
         if ($scope.config.BACKLOG_FOLDER.REPORT.DISPLAY) {
-            var tasks = getOutlookFolder($scope.config.BACKLOG_FOLDER.NAME).Items.Restrict("[Status] = 0 And Not ([Sensitivity] = 2)");
-            tasks.Sort("[Importance][Status]", true);
+            if ($scope.config.FILTER_REPORTS) {
+                var tasks = $scope.filteredBacklogTasks;
+            }
+            else {
+                var tasks = $scope.backlogTasks;
+            }
             mailBody += "<h3>" + $scope.config.BACKLOG_FOLDER.TITLE + "</h3>";
             mailBody += "<ul>";
-            var count = tasks.Count;
-            for (i = 1; i <= count; i++) {
+            var count = tasks.length;
+            for (i = 0; i < count; i++) {
                 mailBody += "<li>"
-                if (tasks(i).Categories !== "") { mailBody += "[" + tasks(i).Categories + "] "; }
-                mailBody += "<strong>" + tasks(i).Subject + "</strong>" + " - <i>" + taskStatus(tasks(i).Status) + "</i>";
-                if ($scope.config.BACKLOG_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks(i).TotalWork + " mn "; }
-                if (tasks(i).Importance == 2) { mailBody += "<font color=red> [H]</font>"; }
-                if (tasks(i).Importance == 0) { mailBody += "<font color=gray> [L]</font>"; }
-                var dueDate = new Date(tasks(i).DueDate);
-                if (moment(dueDate).isValid && moment(dueDate).year() != 4501) { mailBody += " [Due: " + moment(dueDate).format("DD-MMM") + "]"; }
-                if (taskExcerpt(tasks(i).Body, 10000)) { mailBody += "<br>" + "<font color=gray>" + taskExcerpt(tasks(i).Body, 10000) + "</font>"; }
+                if (tasks[i].categoryNames !== "") { mailBody += "[" + tasks[i].categoryNames + "] "; }
+                mailBody += "<strong>" + tasks[i].subject + "</strong>" + " - <i>" + tasks[i].status + "</i>";
+                if ($scope.config.BACKLOG_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks[i].totalwork + " mn "; }
+                if (tasks[i].priority == 2) { mailBody += "<font color=red> [H]</font>"; }
+                if (tasks[i].priority == 0) { mailBody += "<font color=gray> [L]</font>"; }
+                if (moment(tasks[i].duedate).isValid && moment(tasks[i].duedate).year() != 4501) { mailBody += " [Due: " + moment(tasks[i].duedate).format("DD-MMM") + "]"; }
+                if (taskExcerpt(tasks[i].body, 10000)) { mailBody += "<br>" + "<font color=gray>" + taskExcerpt(tasks[i].body, 10000) + "</font>"; }
                 mailBody += "</li>";
             }
             mailBody += "</ul>";
@@ -804,7 +821,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
 
         // for anyone wondering about this weird double colon syntax:
         // Office is using IE11 to launch custom apps.
-        // This syntax is used in IE to bind events. 
+        // This syntax is used in IE to bind events.
         //(https://msdn.microsoft.com/en-us/library/ms974564.aspx?f=255&MSPPError=-2147217396)
         //
         // by using eval we can avoid any error message until it is actually executed by Microsofts scripting engine
@@ -870,7 +887,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         var today = new Date().setHours(0, 0, 0, 0);
         return { 'task-overdue': dateobj < today, 'task-today': dateobj == today };
     };
-    
+
     $scope.getFooterStyle = function (categories) {
         if ($scope.useCategoryColorFooters) {
             if ((categories !== '') && $scope.useCategoryColors) {
@@ -882,7 +899,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 else {
                     var lightGray = '#dfdfdf';
                     return { "background-color": lightGray, color: getContrastYIQ(lightGray) };
-                }           
+                }
             }
         }
         return;
@@ -1020,6 +1037,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             "USE_CATEGORY_COLORS": true,
             "USE_CATEGORY_COLOR_FOOTERS": true,
             "SAVE_STATE": true,
+            "FILTER_REPORTS": true,
             "PRIVACY_FILTER": true,
             "STATUS": {
                 "NOT_STARTED": {
