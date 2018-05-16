@@ -464,8 +464,16 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             else {
                 stateItem = stateItems(1);
             }
-            stateItem.Body = JSON.stringify(state);
-            stateItem.Save();
+            try {
+                stateItem.Body = JSON.stringify(state);
+                stateItem.Save();
+            }
+            catch(err) {
+                alert("The state could not be saved. There seems to be a modification " + 
+                      "conflict with the state object in Outlook. Look for an entry called " + 
+                      "\'KanbanState\' in Outlook's Journal folder and resolve the conflict, then try again.")
+                throw(err)
+            }
         }
     }
 
@@ -479,8 +487,16 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         else {
             configItem = configItems(1);
         }
-        configItem.Body = JSON.stringify($scope.config, null, 2);
-        configItem.Save();
+        try {
+            configItem.Body = JSON.stringify($scope.config, null, 2);
+            configItem.Save();
+        }
+        catch(err) {
+            alert("The configuration could not be saved. There seems to be a modification " + 
+                  "conflict with the configuration object in Outlook. Look for an entry called " + 
+                  "\'KanbanConfig\' in Outlook's Journal folder and resolve the conflict, then try again.")
+            throw(err)
+        }
     }
 
     $scope.getState = function () {
@@ -492,8 +508,20 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             var stateItems = folder.Items.Restrict('[Subject] = "KanbanState"');
             if (stateItems.Count > 0) {
                 var stateItem = stateItems(1);
-                if (stateItem.Body) {
-                    state = JSON.parse(stateItem.Body);
+                try {
+                    var stateText = stateItem.Body;
+                }
+                catch(err) {
+                    alert("The state could not be opened. There seems to be a modification " + 
+                          "conflict with the state object in Outlook. Look for an entry called " + 
+                          "\'KanbanState\' in Outlook's Journal folder and resolve the conflict, then try again.")
+                    throw(err)
+                }            
+                if (stateText) {
+                    try {
+                        state = JSON.parse(stateText);
+                    }
+                    catch(e) {}
                 }
             }
         }
@@ -506,14 +534,23 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         var folder = outlookNS.GetDefaultFolder(11);
         var configItems = folder.Items.Restrict('[Subject] = "KanbanConfig"');
         var configFound = false;
-        if (configItems.Count > 0) {
+        if (configItems.Count > 0) {            
             var configItem = configItems(1);
-            if (configItem.Body) {
+            try {
+                var configText = configItem.Body;
+            }
+            catch(err) {
+                alert("The configuration could not be opened. There seems to be a modification " + 
+                      "conflict with the configuration object in Outlook. Look for an entry called " + 
+                      "\'KanbanConfig\' in Outlook's Journal folder and resolve the conflict, then try again.")
+                throw(err)
+            }            
+            if (configText) {
                 try {
-                    $scope.config = JSON.parse(JSON.minify(configItem.Body));
+                    $scope.config = JSON.parse(JSON.minify(configText));
                 }
                 catch (e) {
-                    alert("I am afraid there is something wrong with the json structure of your configuration data. Please correct it.");
+                    alert("Parsing the JSON structure failed. Please check for syntax errors.");
                     $scope.editConfig();
                 }
                 configFound = true;
