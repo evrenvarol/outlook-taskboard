@@ -477,9 +477,9 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 stateItem.Save();
             }
             catch(err) {
-                alert("The state could not be saved. There seems to be a modification " +
+                alert("The filter settings could not be saved. There seems to be a modification " +
                       "conflict with the state object in Outlook. Look for an entry called " +
-                      "\'KanbanState\' in Outlook's Journal folder and resolve the conflict, then try again.")
+                      "\'KanbanState\' in Outlook's Journal folder and resolve the conflict.")
             }
             // Sync Outlook namespace to (hopefully) avoid modification conflict
             $scope.syncOutlookNS()
@@ -523,16 +523,17 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                     var stateText = stateItem.Body;
                 }
                 catch(err) {
-                    alert("The state could not be opened. There seems to be a modification " +
+                    alert("The saved filter settings could not be loaded. There seems to be a modification " +
                           "conflict with the state object in Outlook. Look for an entry called " +
-                          "\'KanbanState\' in Outlook's Journal folder and resolve the conflict, then try again.")
+                          "\'KanbanState\' in Outlook's Journal folder and resolve the conflict.")
                     var stateText = "";
                 }
                 if (stateText) {
                     try {
                         state = JSON.parse(stateText);
                     }
-                    catch(e) {}
+                    // Don't care about errors, just reset
+                    catch(err) {}
                 }
             }
         }
@@ -551,7 +552,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 var configText = configItem.Body;
             }
             catch(err) {
-                alert("The configuration could not be opened. There seems to be a modification " +
+                alert("The configuration could not be loaded. There seems to be a modification " +
                       "conflict with the configuration object in Outlook. Look for an entry called " +
                       "\'KanbanConfig\' in Outlook's Journal folder and resolve the conflict, then try again.")
                 throw(err)
@@ -560,8 +561,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 try {
                     $scope.config = JSON.parse(JSON.minify(configText));
                 }
-                catch (e) {
-                    alert("Parsing the JSON structure failed. Please check for syntax errors.");
+                catch(err) {
+                    alert("Parsing of the JSON structure failed. Please check for syntax errors.");
                     $scope.editConfig();
                 }
                 configFound = true;
