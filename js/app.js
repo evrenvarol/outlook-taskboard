@@ -450,6 +450,14 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             });
         }
     }
+    
+    $scope.syncOutlookNS = function () {
+        var syncObjs = outlookNS.syncObjects;
+        
+        for (var i = 1; i <= syncObjs.Count; i++) {
+            syncObjs(i).Start();
+        }
+    }
 
     $scope.saveState = function () {
         if ($scope.config.SAVE_STATE) {
@@ -474,6 +482,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                       "\'KanbanState\' in Outlook's Journal folder and resolve the conflict, then try again.")
                 throw(err)
             }
+            // Sync Outlook namespace to (hopefully) avoid modification conflict
+            $scope.syncOutlookNS()
         }
     }
 
@@ -497,6 +507,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                   "\'KanbanConfig\' in Outlook's Journal folder and resolve the conflict, then try again.")
             throw(err)
         }
+        // Sync Outlook namespace to (hopefully) avoid modification conflict
+        $scope.syncOutlookNS()
     }
 
     $scope.getState = function () {
