@@ -49,6 +49,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
     // });
 
     $scope.init = function () {
+        $scope.syncOutlookNS();
 
         $scope.getConfig();
 
@@ -60,7 +61,6 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                     DeepDiff.applyChange($scope.config, defaultConfig, change);
                 }
             });
-            $scope.saveConfig();
         }
 
         $scope.usePrivate = $scope.config.PRIVACY_FILTER;
@@ -450,10 +450,10 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             });
         }
     }
-    
+
     $scope.syncOutlookNS = function () {
         var syncObjs = outlookNS.syncObjects;
-        
+
         for (var i = 1; i <= syncObjs.Count; i++) {
             syncObjs(i).Start();
         }
@@ -477,10 +477,9 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 stateItem.Save();
             }
             catch(err) {
-                alert("The state could not be saved. There seems to be a modification " + 
-                      "conflict with the state object in Outlook. Look for an entry called " + 
+                alert("The state could not be saved. There seems to be a modification " +
+                      "conflict with the state object in Outlook. Look for an entry called " +
                       "\'KanbanState\' in Outlook's Journal folder and resolve the conflict, then try again.")
-                throw(err)
             }
             // Sync Outlook namespace to (hopefully) avoid modification conflict
             $scope.syncOutlookNS()
@@ -502,8 +501,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             configItem.Save();
         }
         catch(err) {
-            alert("The configuration could not be saved. There seems to be a modification " + 
-                  "conflict with the configuration object in Outlook. Look for an entry called " + 
+            alert("The configuration could not be saved. There seems to be a modification " +
+                  "conflict with the configuration object in Outlook. Look for an entry called " +
                   "\'KanbanConfig\' in Outlook's Journal folder and resolve the conflict, then try again.")
             throw(err)
         }
@@ -524,11 +523,11 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                     var stateText = stateItem.Body;
                 }
                 catch(err) {
-                    alert("The state could not be opened. There seems to be a modification " + 
-                          "conflict with the state object in Outlook. Look for an entry called " + 
+                    alert("The state could not be opened. There seems to be a modification " +
+                          "conflict with the state object in Outlook. Look for an entry called " +
                           "\'KanbanState\' in Outlook's Journal folder and resolve the conflict, then try again.")
-                    throw(err)
-                }            
+                    var stateText = "";
+                }
                 if (stateText) {
                     try {
                         state = JSON.parse(stateText);
@@ -546,17 +545,17 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         var folder = outlookNS.GetDefaultFolder(11);
         var configItems = folder.Items.Restrict('[Subject] = "KanbanConfig"');
         var configFound = false;
-        if (configItems.Count > 0) {            
+        if (configItems.Count > 0) {
             var configItem = configItems(1);
             try {
                 var configText = configItem.Body;
             }
             catch(err) {
-                alert("The configuration could not be opened. There seems to be a modification " + 
-                      "conflict with the configuration object in Outlook. Look for an entry called " + 
+                alert("The configuration could not be opened. There seems to be a modification " +
+                      "conflict with the configuration object in Outlook. Look for an entry called " +
                       "\'KanbanConfig\' in Outlook's Journal folder and resolve the conflict, then try again.")
                 throw(err)
-            }            
+            }
             if (configText) {
                 try {
                     $scope.config = JSON.parse(JSON.minify(configText));
@@ -867,8 +866,6 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         taskitem.Display();
 
         if ($scope.config.AUTO_UPDATE) {
-            $scope.saveState();
-
             // bind to taskitem write event on outlook and reload the page after the task is saved
             eval("function taskitem::Write (bStat) {window.location.reload();  return true;}");
         }
@@ -887,7 +884,6 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         var taskitem = outlookNS.GetItemFromID(item.entryID);
         taskitem.Display();
         if ($scope.config.AUTO_UPDATE) {
-            $scope.saveState();
             // bind to taskitem write event on outlook and reload the page after the task is saved
             eval("function taskitem::Write (bStat) {window.location.reload(); return true;}");
             // bind to taskitem beforedelete event on outlook and reload the page after the task is deleted
