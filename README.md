@@ -35,8 +35,10 @@ The taskboard can also be opened in Internet Explorer. Due to limitations with A
 
     ![Tasks Folders](http://evrenvarol.github.io/outlook-taskboard/img/task-folders.png)
     
-    *This is __not necessary__ for the updated version of the taskboard any more. It will automatically create the folder 'Kanban' in your Tasks
-    folder and place all tasks it manages into it. It is still possible to create a custom folder structure for allocation to the task lanes, though.*
+    *This is __not necessary__ for the updated version of the taskboard any more.
+    It will automatically sort all tasks in your Tasks folder into lanes depending on their status
+    ('Not Started', 'In Progress', etc.). It is still possible to create a custom folder structure
+    for allocation to the task lanes, though.*
 
 3. For Outlook Home page:
 
@@ -203,5 +205,6 @@ My changes:
 1. Removed lane coloring.
 2. Activated category-based footer coloring by default (see image below).
 3. Added option to apply filters on status reports, too.
+4. Changed behaviour: All tasks in Tasks folder are sorted into lanes by their status. Only Archive folder is separate.
 
 ![Category footer coloring](https://user-images.githubusercontent.com/9609820/30276617-b5c02bb0-9705-11e7-8981-66021ad66f53.png)

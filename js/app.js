@@ -96,7 +96,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                     switch (ui.item.sortable.droptarget[0].id) {
                         case 'backlogList':
                             var tasksfolder = getOutlookFolder($scope.config.BACKLOG_FOLDER.NAME);
-                            var newstatus = $scope.config.STATUS.NOT_STARTED.VALUE;
+                            var newstatus = $scope.config.STATUS.DEFERRED.VALUE;
                             break;
                         case 'nextList':
                             var tasksfolder = getOutlookFolder($scope.config.NEXT_FOLDER.NAME);
@@ -112,7 +112,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                             break;
                         case 'completedList':
                             var tasksfolder = getOutlookFolder($scope.config.COMPLETED_FOLDER.NAME);
-                            var newstatus = $scope.config.STATUS.COMPLETED.VALUE;
+                            var newstatus = $scope.config.STATUS.COMPLETE.VALUE;
                             break;
                     };
 
@@ -344,11 +344,11 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
 
     $scope.initTasks = function () {
         // get tasks from each outlook folder and populate model data
-        $scope.backlogTasks = getTasksFromOutlook($scope.config.BACKLOG_FOLDER.NAME, $scope.config.BACKLOG_FOLDER.RESTRICT, $scope.config.BACKLOG_FOLDER.SORT, $scope.config.STATUS.NOT_STARTED.VALUE);
+        $scope.backlogTasks = getTasksFromOutlook($scope.config.BACKLOG_FOLDER.NAME, $scope.config.BACKLOG_FOLDER.RESTRICT, $scope.config.BACKLOG_FOLDER.SORT, $scope.config.STATUS.DEFERRED.VALUE);
         $scope.inprogressTasks = getTasksFromOutlook($scope.config.INPROGRESS_FOLDER.NAME, $scope.config.INPROGRESS_FOLDER.RESTRICT, $scope.config.INPROGRESS_FOLDER.SORT, $scope.config.STATUS.IN_PROGRESS.VALUE);
         $scope.nextTasks = getTasksFromOutlook($scope.config.NEXT_FOLDER.NAME, $scope.config.NEXT_FOLDER.RESTRICT, $scope.config.NEXT_FOLDER.SORT, $scope.config.STATUS.NOT_STARTED.VALUE);
         $scope.waitingTasks = getTasksFromOutlook($scope.config.WAITING_FOLDER.NAME, $scope.config.WAITING_FOLDER.RESTRICT, $scope.config.WAITING_FOLDER.SORT, $scope.config.STATUS.WAITING.VALUE);
-        $scope.completedTasks = getTasksFromOutlook($scope.config.COMPLETED_FOLDER.NAME, $scope.config.COMPLETED_FOLDER.RESTRICT, $scope.config.COMPLETED_FOLDER.SORT, $scope.config.STATUS.COMPLETED.VALUE);
+        $scope.completedTasks = getTasksFromOutlook($scope.config.COMPLETED_FOLDER.NAME, $scope.config.COMPLETED_FOLDER.RESTRICT, $scope.config.COMPLETED_FOLDER.SORT, $scope.config.STATUS.COMPLETE.VALUE);
 
         // copy the lists as the initial filter
         $scope.filteredBacklogTasks = $scope.backlogTasks;
@@ -395,7 +395,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 };
             };
             if (movedTask) {
-                $scope.backlogTasks = getTasksFromOutlook($scope.config.BACKLOG_FOLDER.NAME, $scope.config.BACKLOG_FOLDER.RESTRICT, $scope.config.BACKLOG_FOLDER.SORT, $scope.config.STATUS.NOT_STARTED.VALUE);
+                $scope.backlogTasks = getTasksFromOutlook($scope.config.BACKLOG_FOLDER.NAME, $scope.config.BACKLOG_FOLDER.RESTRICT, $scope.config.BACKLOG_FOLDER.SORT, $scope.config.STATUS.DEFERRED.VALUE);
                 $scope.nextTasks = getTasksFromOutlook($scope.config.NEXT_FOLDER.NAME, $scope.config.NEXT_FOLDER.RESTRICT, $scope.config.NEXT_FOLDER.SORT, $scope.config.STATUS.NOT_STARTED.VALUE);
                 $scope.filteredBacklogTasks = $scope.backlogTasks;
                 $scope.filteredNextTasks = $scope.nextTasks;
@@ -677,7 +677,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         mailBody += "<tr><td>SAVE_STATE</td><td>if true, then the filters will be saved and re-used when the app is restarted</td></tr>";
         mailBody += "<tr><td>FILTER_REPORTS</td><td>if true, then the filters will be applied on status reports, too</td></tr>";
         mailBody += "<tr><td>PRIVACY_FILTER</td><td>if true, then you can use separate boards for private and publis tasks</td></tr>";
-        mailBody += "<tr><td>STATUS</td><td>Tha value and descriptions for the task statuses. The text can be changed for the status report</td></tr>";
+        mailBody += "<tr><td>STATUS</td><td>The values and descriptions for the task statuses. The text can be changed for the status report</td></tr>";
         mailBody += "<tr><td>COMPLETED</td><td>Define what to do with completed tasks after x days: NONE, HIDE, ARCHIVE or DELETE</td></tr>";
         mailBody += "<tr><td>AUTO_UPDATE</td><td>if true, then the board is updated immediately after adding or deleting tasks</td></tr>";
         mailBody += "</table>";
@@ -863,7 +863,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         if (status == $scope.config.STATUS.NOT_STARTED.VALUE) { str = $scope.config.STATUS.NOT_STARTED.TEXT; }
         if (status == $scope.config.STATUS.IN_PROGRESS.VALUE) { str = $scope.config.STATUS.IN_PROGRESS.TEXT; }
         if (status == $scope.config.STATUS.WAITING.VALUE) { str = $scope.config.STATUS.WAITING.TEXT; }
-        if (status == $scope.config.STATUS.COMPLETED.VALUE) { str = $scope.config.STATUS.COMPLETED.TEXT; }
+        if (status == $scope.config.STATUS.COMPLETE.VALUE) { str = $scope.config.STATUS.COMPLETE.TEXT; }
+        if (status == $scope.config.STATUS.DEFERRED.VALUE) { str = $scope.config.STATUS.DEFERRED.TEXT; }
         return str;
     };
 
@@ -1050,7 +1051,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             },
             "NEXT_FOLDER": {
                 "ACTIVE": true,
-                "NAME": "Kanban",
+                "NAME": "",
                 "TITLE": "NEXT",
                 "LIMIT": 20,
                 "SORT": "duedate,-priority",
@@ -1066,7 +1067,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             },
             "INPROGRESS_FOLDER": {
                 "ACTIVE": true,
-                "NAME": "Kanban",
+                "NAME": "",
                 "TITLE": "IN PROGRESS",
                 "LIMIT": 5,
                 "SORT": "-priority",
@@ -1082,7 +1083,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             },
             "WAITING_FOLDER": {
                 "ACTIVE": true,
-                "NAME": "Kanban",
+                "NAME": "",
                 "TITLE": "WAITING",
                 "LIMIT": 0,
                 "SORT": "-priority",
@@ -1098,7 +1099,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             },
             "COMPLETED_FOLDER": {
                 "ACTIVE": true,
-                "NAME": "Kanban",
+                "NAME": "",
                 "TITLE": "COMPLETED",
                 "LIMIT": 0,
                 "SORT": "-completeddate,-priority,subject",
@@ -1114,7 +1115,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 "EDITABLE": true
             },
             "ARCHIVE_FOLDER": {
-                "NAME": "Completed"
+                "NAME": "Archive"
             },
             "TASKNOTE_EXCERPT": 100,
             "TASK_TEMPLATE": "\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### ISSUES:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n",
@@ -1133,13 +1134,17 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                     "VALUE": 1,
                     "TEXT": "In Progress"
                 },
+                "COMPLETE": {
+                    "VALUE": 2,
+                    "TEXT": "Complete"
+                },
                 "WAITING": {
                     "VALUE": 3,
-                    "TEXT": "Waiting For Someone Else"
+                    "TEXT": "Waiting On Someone Else"
                 },
-                "COMPLETED": {
-                    "VALUE": 2,
-                    "TEXT": "Completed"
+                "DEFERRED": {
+                    "VALUE": 4,
+                    "TEXT": "Deferred"
                 }
             },
             "COMPLETED": {
