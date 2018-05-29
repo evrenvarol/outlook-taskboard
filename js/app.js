@@ -691,13 +691,16 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
     $scope.createReport = function () {
         var i, array = [];
         var mailItem, mailBody;
+        var today = new Date();
+        
         mailItem = outlookApp.CreateItem(0);
-        mailItem.Subject = "Status Report";
+        mailItem.Subject = "Status Report ";
         if ($scope.config.FILTER_REPORTS && ($scope.search !== "")) {
-            mailItem.Subject += " \"";
-            mailItem.Subject += $scope.search;
             mailItem.Subject += "\"";
+            mailItem.Subject += $scope.search;
+            mailItem.Subject += "\" ";
         }
+        mailItem.Subject += today.toISOString().substr(0,10);
         mailItem.BodyFormat = 2;
 
         mailBody = "<style>";
