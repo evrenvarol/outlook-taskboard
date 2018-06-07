@@ -158,7 +158,14 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
     var getOutlookFolder = function (folderpath) {
         if (folderpath === undefined || folderpath === '') {
             // if folder path is not defined, return main Tasks folder
-            var folder = outlookNS.GetDefaultFolder(13);
+            if (!$scope.config.INCLUDE_TODOS) {
+                // Tasks folder
+                var folder = outlookNS.GetDefaultFolder(13);
+            }
+            else {
+                // To Do folder
+                var folder = outlookNS.GetDefaultFolder(28);                
+            }
         } else {
             // if folder path is defined then find it, create it if it doesn't exist yet
             try {
@@ -203,7 +210,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
     };
 
     var getTasksFromOutlook = function (path, restrict, sort, folderStatus) {
-        var i, array = [];
+        var i, taskArray = []; 
         if (restrict === undefined || restrict == '') {
             var tasks = getOutlookFolder(path).Items;
         }
@@ -214,26 +221,63 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         var count = tasks.Count;
         for (i = 1; i <= count; i++) {
             var task = tasks(i);
-            if (task.Status == folderStatus) {
-                array.push({
-                    entryID: task.EntryID,
-                    subject: task.Subject,
-                    priority: task.Importance,
-                    startdate: new Date(task.StartDate),
-                    duedate: new Date(task.DueDate),
-                    sensitivity: task.Sensitivity,
-                    categories: getCategoriesArray(task.Categories),
-                    categoryNames: task.Categories,
-                    notes: taskExcerpt(task.Body, $scope.config.TASKNOTE_EXCERPT),
-                    body: task.Body,
-                    status: taskStatus(task.Status),
-                    oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
-                    oneNoteURL: getUserProp(tasks(i), "OneNoteURL"),
-                    completeddate: new Date(task.DateCompleted),
-                    percent: task.PercentComplete,
-                    owner: task.Owner,
-                    totalwork: task.TotalWork,
-                });
+
+            switch(task.Class) {
+                // Task object
+                case 48:                    
+                    if (task.Status == folderStatus) {
+                        taskArray.push({
+                            entryID: task.EntryID,
+                            subject: task.Subject,
+                            priority: task.Importance,
+                            startdate: new Date(task.StartDate),
+                            duedate: new Date(task.DueDate),
+                            completeddate: new Date(task.DateCompleted),
+                            sensitivity: task.Sensitivity,
+                            categories: getCategoriesArray(task.Categories),
+                            categoryNames: task.Categories,
+                            notes: taskExcerpt(task.Body, $scope.config.TASKNOTE_EXCERPT),
+                            body: task.Body,
+                            status: taskStatus(task.Status),
+                            oneNoteTaskID: getUserProp(task, "OneNoteTaskID"),
+                            oneNoteURL: getUserProp(task, "OneNoteURL"),
+                            percent: task.PercentComplete,
+                            owner: task.Owner,
+                            totalwork: task.TotalWork,
+                        });
+                    }
+                    break;
+
+                // Mail object (flagged mail)
+                case 43:            
+                    var flaggedMailStatus = $scope.config.INCLUDE_TODOS_STATUS; // TO DO: make this configurable
+                    if (folderStatus == flaggedMailStatus) {
+                        taskArray.push({
+                            entryID: task.EntryID,
+                            subject: task.TaskSubject,
+                            priority: task.Importance,
+                            startdate: new Date(task.TaskStartDate),
+                            duedate: new Date(task.TaskDueDate),
+                            completeddate: new Date(task.TaskCompletedDate),
+                            sensitivity: task.Sensitivity,
+                            categories: "",
+                            categoryNames: "",
+                            notes: taskExcerpt(task.Body, $scope.config.TASKNOTE_EXCERPT),
+                            body: task.Body,
+                            status: taskStatus(flaggedMailStatus),
+                            oneNoteTaskID: getUserProp(task, "OneNoteTaskID"),
+                            oneNoteURL: getUserProp(task, "OneNoteURL"),
+                            percent: 0,
+                            owner: "",
+                            totalwork: 0,
+                        });
+                    }
+                    break;
+
+                // Unknown object
+                default:
+                    continue;
+                    break;
             }
         };
 
@@ -242,7 +286,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         if (sort === undefined) { sortKeys = ["-priority"]; }
         else { sortKeys = sort.split(","); }
 
-        var sortedTasks = array.sort(fieldSorter(sortKeys));
+        var sortedTasks = taskArray.sort(fieldSorter(sortKeys));
 
         return sortedTasks;
     };
@@ -268,7 +312,6 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         var i;
         var catStyles = [];
         var categories = csvCategories.split(/[;,]+/);
-        catStyles.length = categories.length;
         for (i = 0; i < categories.length; i++) {
             categories[i] = categories[i].trim();
             if (categories[i].length > 0) {
@@ -364,8 +407,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         if ($scope.config.COMPLETED.ACTION == 'ARCHIVE' || $scope.config.COMPLETED.ACTION == 'DELETE') {
             var i;
             var tasks = $scope.completedTasks;
-            var count = tasks.length;
-            for (i = 0; i < count; i++) {
+            for (i = 0; i < tasks.length; i++) {
                 var days = Date.daysBetween(tasks[i].completeddate, new Date());
                 if (days > $scope.config.COMPLETED.AFTER_X_DAYS) {
                     if ($scope.config.COMPLETED.ACTION == 'ARCHIVE') {
@@ -383,8 +425,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             var i;
             var movedTask = false;
             var tasks = $scope.backlogTasks;
-            var count = tasks.length;
-            for (i = 0; i < count; i++) {
+            for (i = 0; i < tasks.length; i++) {
                 if (tasks[i].startdate.getFullYear() != 4501) {
                     var seconds = Date.secondsBetween(tasks[i].startdate, new Date());
                     if (seconds >= 0) {
@@ -677,6 +718,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         mailBody += "<tr><td>SAVE_STATE</td><td>if true, then the filters will be saved and re-used when the app is restarted</td></tr>";
         mailBody += "<tr><td>FILTER_REPORTS</td><td>if true, then the filters will be applied on status reports, too</td></tr>";
         mailBody += "<tr><td>PRIVACY_FILTER</td><td>if true, then you can use separate boards for private and publis tasks</td></tr>";
+        mailBody += "<tr><td>INCLUDE_TODOS</td><td>Search the To Do folder instead of the Tasks folder. This includes flagged mails. Note that flagged mails cannot be moved across lanes as they do not have statuses.</td></tr>";
+        mailBody += "<tr><td>INCLUDE_TODOS_STATUS</td><td>Choose which status ID should be assigned to tasks from flagged mails. These cannot be moved across lanes.</td></tr>";        
         mailBody += "<tr><td>STATUS</td><td>The values and descriptions for the task statuses. The text can be changed for the status report</td></tr>";
         mailBody += "<tr><td>COMPLETED</td><td>Define what to do with completed tasks after x days: NONE, HIDE, ARCHIVE or DELETE</td></tr>";
         mailBody += "<tr><td>AUTO_UPDATE</td><td>if true, then the board is updated immediately after adding or deleting tasks</td></tr>";
@@ -1128,6 +1171,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             "SAVE_STATE": true,
             "FILTER_REPORTS": true,
             "PRIVACY_FILTER": true,
+            "INCLUDE_TODOS": false,
+            "INCLUDE_TODOS_STATUS": 0,
             "STATUS": {
                 "NOT_STARTED": {
                     "VALUE": 0,
