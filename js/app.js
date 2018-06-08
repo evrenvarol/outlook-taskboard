@@ -267,8 +267,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                             duedate: new Date(task.TaskDueDate),
                             completeddate: new Date(task.TaskCompletedDate),
                             sensitivity: task.Sensitivity,
-                            categories: "",
-                            categoryNames: "",
+                            categories: getCategoriesArray(task.Categories),
+                            categoryNames: task.Categories,
                             notes: taskExcerpt(task.Body, $scope.config.TASKNOTE_EXCERPT),
                             body: task.Body,
                             status: taskStatus(flaggedMailStatus),
@@ -321,16 +321,9 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         var categories = csvCategories.split(/[;,]+/);
         for (i = 0; i < categories.length; i++) {
             categories[i] = categories[i].trim();
-            if (categories[i].length > 0) {
-                if ($scope.useCategoryColors) {
-                    catStyles[i] = {
-                        label: categories[i], style: { "background-color": getColor(categories[i]), color: getContrastYIQ(getColor(categories[i])) }
-                    }
-                }
-                else {
-                    catStyles[i] = {
-                        label: categories[i], style: { color: "black" }
-                    };
+            if ($scope.useCategoryColors && categories[i].length > 0) {
+                catStyles[i] = {
+                    label: categories[i], style: { "background-color": getColor(categories[i]), color: getContrastYIQ(getColor(categories[i])) }
                 }
             }
         }
@@ -373,8 +366,8 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
     var getColor = function (category) {
         var c = $scope.outlookCategories.names.indexOf(category);
         var i = $scope.outlookCategories.colors[c];
-        if (i == -1) {
-            return '#4f4f4f';
+        if (i == -1 || i == undefined) {
+            return $scope.config.DEFAULT_FOOTER_COLOR;
         }
         else {
             return colorArray[i-1];
@@ -722,6 +715,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         mailBody += "<tr><td>DATE_FORMAT</td><td>Date format (must a valid JS date format)</td></tr>";
         mailBody += "<tr><td>USE_CATEGORY_COLORS</td><td>if true, then the Outlook category colors will be used</td></tr>";
         mailBody += "<tr><td>USE_CATEGORY_COLOR_FOOTERS</td><td>if true, then the Outlook category colors will be used for the entire footer line</td></tr>";
+        mailBody += "<tr><td>DEFAULT_FOOTER_COLOR</td><td>Color to be used for the footer background when no category or multiple categories are defined.</td></tr>";
         mailBody += "<tr><td>SAVE_STATE</td><td>if true, then the filters will be saved and re-used when the app is restarted</td></tr>";
         mailBody += "<tr><td>FILTER_REPORTS</td><td>if true, then the filters will be applied on status reports, too</td></tr>";
         mailBody += "<tr><td>PRIVACY_FILTER</td><td>if true, then you can use separate boards for private and publis tasks</td></tr>";
@@ -1036,8 +1030,9 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 }
                 // Make multi-category tasks light gray
                 else {
-                    var lightGray = '#dfdfdf';
-                    return { "background-color": lightGray, color: getContrastYIQ(lightGray) };
+                    var footerColor = $scope.config.DEFAULT_FOOTER_COLOR;
+                    return { "background-color": footerColor,
+                             color: getContrastYIQ(footerColor) };
                 }
             }
         }
@@ -1175,6 +1170,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
             "DATE_FORMAT": "dd-MMM",
             "USE_CATEGORY_COLORS": true,
             "USE_CATEGORY_COLOR_FOOTERS": true,
+            "DEFAULT_FOOTER_COLOR": "#dfdfdf",
             "SAVE_STATE": true,
             "FILTER_REPORTS": true,
             "PRIVACY_FILTER": true,
