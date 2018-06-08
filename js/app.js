@@ -87,9 +87,18 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                 // locate the target folder in outlook
                 // ui.item.sortable.droptarget[0].id represents the id of the target list
                 if (ui.item.sortable.droptarget) { // check if it is dropped on a valid target
-                    if (($scope.config.INPROGRESS_FOLDER.LIMIT !== 0 && e.target.id !== 'inprogressList' && ui.item.sortable.droptarget.attr('id') === 'inprogressList' && $scope.inprogressTasks.length > $scope.config.INPROGRESS_FOLDER.LIMIT) ||
-                    ($scope.config.NEXT_FOLDER.LIMIT !== 0 && e.target.id !== 'nextList' && ui.item.sortable.droptarget.attr('id') === 'nextList' && $scope.nextTasks.length > $scope.config.NEXT_FOLDER.LIMIT) ||
-                    ($scope.config.WAITING_FOLDER.LIMIT !== 0 && e.target.id !== 'waitingList' && ui.item.sortable.droptarget.attr('id') === 'waitingList' && $scope.waitingTasks.length > $scope.config.WAITING_FOLDER.LIMIT)) {
+                    if (   ($scope.config.INPROGRESS_FOLDER.LIMIT !== 0
+                            && e.target.id !== 'inprogressList'
+                            && ui.item.sortable.droptarget.attr('id') === 'inprogressList'
+                            && $scope.inprogressTasks.length > $scope.config.INPROGRESS_FOLDER.LIMIT)
+                        || ($scope.config.NEXT_FOLDER.LIMIT !== 0
+                            && e.target.id !== 'nextList'
+                            && ui.item.sortable.droptarget.attr('id') === 'nextList'
+                            && $scope.nextTasks.length > $scope.config.NEXT_FOLDER.LIMIT)
+                        || ($scope.config.WAITING_FOLDER.LIMIT !== 0
+                            && e.target.id !== 'waitingList'
+                            && ui.item.sortable.droptarget.attr('id') === 'waitingList'
+                            && $scope.waitingTasks.length > $scope.config.WAITING_FOLDER.LIMIT)) {
                         $scope.initTasks();
                         ui.item.sortable.cancel();
                 } else {
@@ -156,25 +165,23 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
     };
 
     var getOutlookFolder = function (folderpath) {
-        if (folderpath === undefined || folderpath === '') {
-            // if folder path is not defined, return main Tasks folder
-            if (!$scope.config.INCLUDE_TODOS) {
-                // Tasks folder
+        if (!$scope.config.INCLUDE_TODOS) {
+            if (folderpath === undefined || folderpath === '') {
+                // if folder path is not defined, return main Tasks folder
                 var folder = outlookNS.GetDefaultFolder(13);
-            }
-            else {
-                // To Do folder
-                var folder = outlookNS.GetDefaultFolder(28);                
+            } else {
+                // if folder path is defined then find it, create it if it doesn't exist yet
+                try {
+                    var folder = outlookNS.GetDefaultFolder(13).Folders(folderpath);
+                }
+                catch (e) {
+                    outlookNS.GetDefaultFolder(13).Folders.Add(folderpath);
+                    var folder = outlookNS.GetDefaultFolder(13).Folders(folderpath);
+                }
             }
         } else {
-            // if folder path is defined then find it, create it if it doesn't exist yet
-            try {
-                var folder = outlookNS.GetDefaultFolder(13).Folders(folderpath);
-            }
-            catch (e) {
-                outlookNS.GetDefaultFolder(13).Folders.Add(folderpath);
-                var folder = outlookNS.GetDefaultFolder(13).Folders(folderpath);
-            }
+            // Tasks folder
+            var folder = outlookNS.GetDefaultFolder(28);
         }
         return folder;
     }
@@ -210,7 +217,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
     };
 
     var getTasksFromOutlook = function (path, restrict, sort, folderStatus) {
-        var i, taskArray = []; 
+        var i, taskArray = [];
         if (restrict === undefined || restrict == '') {
             var tasks = getOutlookFolder(path).Items;
         }
@@ -224,7 +231,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
 
             switch(task.Class) {
                 // Task object
-                case 48:                    
+                case 48:
                     if (task.Status == folderStatus) {
                         taskArray.push({
                             entryID: task.EntryID,
@@ -249,7 +256,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
                     break;
 
                 // Mail object (flagged mail)
-                case 43:            
+                case 43:
                     var flaggedMailStatus = $scope.config.INCLUDE_TODOS_STATUS; // TO DO: make this configurable
                     if (folderStatus == flaggedMailStatus) {
                         taskArray.push({
@@ -719,7 +726,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         mailBody += "<tr><td>FILTER_REPORTS</td><td>if true, then the filters will be applied on status reports, too</td></tr>";
         mailBody += "<tr><td>PRIVACY_FILTER</td><td>if true, then you can use separate boards for private and publis tasks</td></tr>";
         mailBody += "<tr><td>INCLUDE_TODOS</td><td>Search the To Do folder instead of the Tasks folder. This includes flagged mails. Note that flagged mails cannot be moved across lanes as they do not have statuses.</td></tr>";
-        mailBody += "<tr><td>INCLUDE_TODOS_STATUS</td><td>Choose which status ID should be assigned to tasks from flagged mails. These cannot be moved across lanes.</td></tr>";        
+        mailBody += "<tr><td>INCLUDE_TODOS_STATUS</td><td>Choose which status ID should be assigned to tasks generated from flagged mails. These cannot be moved across lanes.</td></tr>";
         mailBody += "<tr><td>STATUS</td><td>The values and descriptions for the task statuses. The text can be changed for the status report</td></tr>";
         mailBody += "<tr><td>COMPLETED</td><td>Define what to do with completed tasks after x days: NONE, HIDE, ARCHIVE or DELETE</td></tr>";
         mailBody += "<tr><td>AUTO_UPDATE</td><td>if true, then the board is updated immediately after adding or deleting tasks</td></tr>";
@@ -735,7 +742,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         var i, array = [];
         var mailItem, mailBody;
         var today = new Date();
-        
+
         mailItem = outlookApp.CreateItem(0);
         mailItem.Subject = "Status Report ";
         if ($scope.config.FILTER_REPORTS && ($scope.search !== "")) {
