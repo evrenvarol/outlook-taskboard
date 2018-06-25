@@ -893,14 +893,14 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
     // tries not to split words and adds ... at the end to give excerpt effect
     var taskExcerpt = function (str, limit) {
         if (str.indexOf('\r\n### ') > 0) {
-            str = str.substring(0, str.indexOf('\r\n###'));
+            str = str.substring(0, str.indexOf('\r\n### '));
         }
         // remove empty lines
         str = str.replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm, '');
         if (str.length > limit) {
             str = str.substring(0, str.lastIndexOf(' ', limit));
             str = str.replace('\r\n', '<br>');
-            //if (limit != 0) { str = str + "..." }
+            if (limit != 0) { str = str + " [...]" }
         };
         return str;
     };
