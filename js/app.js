@@ -50,7 +50,9 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
 
     $scope.init = function () {
         $scope.getConfig();
-        $scope.trust = $sce.trustAsHtml;
+        if ($scope.config.EXCERPT_LINEBREAKS) {
+            $scope.trust = $sce.trustAsHtml;
+        }
 
         var defaultConfig = $scope.makeDefaultConfig();
         var delta = DeepDiff.diff($scope.config, defaultConfig);
@@ -722,6 +724,7 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
         mailBody += "<tr><td>PRIVACY_FILTER</td><td>if true, then you can use separate boards for private and publis tasks</td></tr>";
         mailBody += "<tr><td>INCLUDE_TODOS</td><td>Search the To Do folder instead of the Tasks folder. This includes flagged mails. Note that flagged mails cannot be moved across lanes as they do not have statuses.</td></tr>";
         mailBody += "<tr><td>INCLUDE_TODOS_STATUS</td><td>Choose which status ID should be assigned to tasks generated from flagged mails. These cannot be moved across lanes.</td></tr>";
+        mailBody += "<tr><td>EXCERPT_LINEBREAKS</td><td>If true, display line breaks from task bodies in task excerpts. This introduces a <b>potential vulnerability</b> to XSS attacks! However, this is probably not that relevant with personal Outlook tasks.</td></tr>";
         mailBody += "<tr><td>STATUS</td><td>The values and descriptions for the task statuses. The text can be changed for the status report</td></tr>";
         mailBody += "<tr><td>COMPLETED</td><td>Define what to do with completed tasks after x days: NONE, HIDE, ARCHIVE or DELETE</td></tr>";
         mailBody += "<tr><td>AUTO_UPDATE</td><td>if true, then the board is updated immediately after adding or deleting tasks</td></tr>";
@@ -900,7 +903,9 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
         // str = str.replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm, '');
         if (str.length > limit) {
             str = str.substring(0, str.lastIndexOf(' ', limit));
-            str = str.replace(/\r\n/g, '<br>');
+            if ($scope.config.EXCERPT_LINEBREAKS) {
+                str = str.replace(/\r\n/g, '<br>');
+            }
             if (limit != 0) { str = str + " [...]" }
         };
         return str;
@@ -1177,6 +1182,7 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
             "PRIVACY_FILTER": true,
             "INCLUDE_TODOS": false,
             "INCLUDE_TODOS_STATUS": 0,
+            "EXCERPT_LINEBREAKS": false,
             "STATUS": {
                 "NOT_STARTED": {
                     "VALUE": 0,
