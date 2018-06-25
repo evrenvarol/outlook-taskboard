@@ -42,7 +42,7 @@ function serializer(replacer, cycleReplacer) {
     }
 }
 
-tbApp.controller('taskboardController', function ($scope, $filter) {
+tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
 
     // DeepDiff.observableDiff(def, curr, function(d) {
 
@@ -50,6 +50,7 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
 
     $scope.init = function () {
         $scope.getConfig();
+        $scope.trust = $sce.trustAsHtml;
 
         var defaultConfig = $scope.makeDefaultConfig();
         var delta = DeepDiff.diff($scope.config, defaultConfig);
@@ -895,11 +896,11 @@ tbApp.controller('taskboardController', function ($scope, $filter) {
         if (str.indexOf('\r\n### ') > 0) {
             str = str.substring(0, str.indexOf('\r\n### '));
         }
-        // remove empty lines
-        str = str.replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm, '');
+        // // remove empty lines
+        // str = str.replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm, '');
         if (str.length > limit) {
             str = str.substring(0, str.lastIndexOf(' ', limit));
-            str = str.replace('\r\n', '<br>');
+            str = str.replace(/\r\n/g, '<br>');
             if (limit != 0) { str = str + " [...]" }
         };
         return str;

@@ -77,7 +77,7 @@
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:config.DATE_FORMAT }}) </span>
                             </header>
-                            <div class="panel-body"> {{ task.notes }} </div>
+                            <div class="panel-body"><span ng-bind-html="trust(task.notes)"></span></div>
                             <footer class="text-right" ng-style="getFooterStyle(task.categories)">
                                 <div ng-if="( config.BACKLOG_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
                                 <div ng-if="( config.BACKLOG_FOLDER.DISPLAY_PROPERTIES.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
@@ -117,7 +117,7 @@
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:config.DATE_FORMAT }}) </span>
                             </header>
-                            <div class="panel-body"> {{ task.notes }} </div>
+                            <div class="panel-body"><span ng-bind-html="trust(task.notes)"></span></div>
                             <footer class="text-right" ng-style="getFooterStyle(task.categories)">
                                 <div ng-if="( config.NEXT_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
                                 <div ng-if="( config.NEXT_FOLDER.DISPLAY_PROPERTIES.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
@@ -154,7 +154,7 @@
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:config.DATE_FORMAT }}) </span>
                             </header>
-                            <div class="panel-body"> {{ task.notes }} </div>
+                            <div class="panel-body"><span ng-bind-html="trust(task.notes)"></span></div>
                             <footer class="text-right" ng-style="getFooterStyle(task.categories)">
                                 <div ng-if="( config.INPROGRESS_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
                                 <div ng-if="( config.INPROGRESS_FOLDER.DISPLAY_PROPERTIES.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
@@ -195,7 +195,7 @@
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:config.DATE_FORMAT }}) </span>
                             </header>
-                            <div class="panel-body"> {{ task.notes }} </div>
+                            <div class="panel-body"><span ng-bind-html="trust(task.notes)"></span></div>
                             <footer class="text-right" ng-style="getFooterStyle(task.categories)">
                                 <div ng-if="( config.WAITING_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
                                 <div ng-if="( config.WAITING_FOLDER.DISPLAY_PROPERTIES.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
@@ -232,7 +232,7 @@
                                 {{ task.subject }}
                                 <span class="pull-right">(Completed: {{ task.completeddate | date:config.DATE_FORMAT }}) </span>
                             </header>
-                            <div class="panel-body"> {{ task.notes }} </div>
+                            <div class="panel-body"><span ng-bind-html="trust(task.notes)"></span></div>
                             <footer class="text-right" ng-style="getFooterStyle(task.categories)">
                                 <div ng-if="( config.COMPLETED_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
                                 <div ng-if="( config.COMPLETED_FOLDER.DISPLAY_PROPERTIES.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
