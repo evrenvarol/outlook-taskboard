@@ -2,7 +2,7 @@
 
 Outlook Taskboard is a Kanban board style view for Outlook Tasks.
 
-*The following README is based on the __original version__ from evrenvarol, so some 
+*The following README is based on the __original version__ from evrenvarol, so some
 modifications have been made to adapt it to the current version of the taskboard. There might still be some changes that went unnoticed.*
 
 *The __Fork__ sections at the end of this README list the changes made by the respective forks.*
@@ -34,7 +34,7 @@ The taskboard can also be opened in Internet Explorer. Due to limitations with A
 2. ~~In Outlook, create following folder structure under your Tasks folder (it is easier to use the *Folders* view to create these folders):~~
 
     ![Tasks Folders](http://evrenvarol.github.io/outlook-taskboard/img/task-folders.png)
-    
+
     *This is __not necessary__ for the updated version of the taskboard any more.
     It will automatically sort all tasks in your Tasks folder into lanes depending on their status
     ('Not Started', 'In Progress', etc.). It is still possible to create a custom folder structure
@@ -43,11 +43,8 @@ The taskboard can also be opened in Internet Explorer. Due to limitations with A
 3. For Outlook Home page:
 
   * ~~Create another folder (of any type) and name it something like "Taskboard" or "Kanban", etc. (Alternatively you can use the main account folder as a home page as well)~~
-   
-    *The feature to define home pages on any folder, which the next steps are based on, was conveniently __removed from Outlook__ in a recent update. This is 
-     still possible for the top level folder of the Outlook data file, though. It should be named like the email account (e.g. your email address) and
-     is visible in Outlook's __Email view__ or __Folder view__ (not in the Tasks view). Continue with the following
-     steps on this folder, or use the Internet Explorer approach described below.*
+
+    *The feature to define home pages on any folder, which the next steps are based on, was conveniently __disabled__ in a recent Outlook update. Depending on your Outlook version, and potentially your Exchange Server and Group Policy settings, this might still be enabled for all folders, or only for the top level folder of the Outlook data file, though. The latter should be named like your email account (e.g. your email address) and be visible in Outlook's __Email view__ or __Folder view__ (not in the Tasks view). Continue with the following steps on this folder, or if nothing else works, use the Internet Explorer approach described in step 4.*
 
   * Right-click the folder, and then click **Properties**. Select the *Home Page* tab in the <folder name> Properties dialog box.
 
@@ -69,7 +66,7 @@ The taskboard can also be opened in Internet Explorer. Due to limitations with A
 
   * Open the page **kanban.html** in Internet Explorer.
 
-    <sub>*On Win10, you will need to right click on the file, select Open With -> Internet Explorer to open the page in IE11. Otherwise it tries to open in Edge which is not supported.*</sub>
+    <sub>*This is only supported in Internet Explorer. Edge on Windows 10, or any other browser, will not work. You might need to right click on the file and select Open With -> Internet Explorer to open the page.*</sub>
 
 ## Advanced Setup
 
@@ -160,12 +157,12 @@ Credit for this fork goes entirely to @evrenvarol. I have made a few simple chan
 2. Added CSS to color columns
 3. Added Owner
 4. Added Task %
-5. Columns are no-longer drag and drop. Tasks move from column to column with the Outlook task status. 
+5. Columns are no-longer drag and drop. Tasks move from column to column with the Outlook task status.
 5.a. Must add and use a category of !Next to move a task to the appropriate column.
 
 # Fork 2: [janvv - Outlook Taskboard aka **JanBan**](https://github.com/janvv/janban)
 
-I found the original Kanban board implemented by Evren Varol. I looked at the forks and liked the 
+I found the original Kanban board implemented by Evren Varol. I looked at the forks and liked the
 changes by BillyMcSkintos, using the task status instead of folders. But he lost the drag&drop
 feature.
 
@@ -181,7 +178,7 @@ My changes:
 5. Drag and drop now sets the new status
 6. Introduced date format in config file
 7. Drag & Drop now also works properly when filter is active
-8. Use another icon for archiving of completed icons, for better difference from the edit icon 
+8. Use another icon for archiving of completed icons, for better difference from the edit icon
 9. Removed editing option for completed tasks
 10. Display Completion Date for completed tasks instead of Due Date
 11. Implemented filter on private / non-private tasks (button top right)
@@ -204,7 +201,8 @@ My changes:
 
 1. Removed lane coloring.
 2. Activated category-based footer coloring by default (see image below).
-3. Added option to apply filters on status reports, too.
-4. Changed behaviour: All tasks in Tasks folder are sorted into lanes by their status. Only Archive folder is separate.
+3. Apply display filters on status reports, too (optional).
+4. Tasks are sorted into lanes by their status (as in BillyMcSkintos' fork). Drag & Drop between lanes is enabled and alters the task status.
+5. Having the tasks for all lanes in a common folder, e.g. the main Tasks folder, is possible (and recommended). Archive folder is still separate.
 
 ![Category footer coloring](https://user-images.githubusercontent.com/9609820/30276617-b5c02bb0-9705-11e7-8981-66021ad66f53.png)
