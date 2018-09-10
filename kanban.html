@@ -239,7 +239,7 @@
                         </h5>
                     </header>
                     <ul id="completedList" ui-sortable="sortableOptions" ng-model="completedTasks" class="panel-body tasklist list-unstyled">
-                        <li ng-repeat="task in filteredCompletedTasks | filter:search" class="task panel task-completed">
+                        <li ng-repeat="task in filteredCompletedTasks | filter:search" class="task panel task-completed" ng-dblclick="editTask(task)">
                             <header class="panel-heading">
                                 {{ task.subject }}
                                 <span class="pull-right">(Completed: {{ task.completeddate | date:config.DATE_FORMAT }}) </span>
