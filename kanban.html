@@ -76,6 +76,7 @@
                             <header class="panel-heading">
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:config.DATE_FORMAT }}) </span>
+                                <span ng-show="task.reminderSet" ng-class="isOverdue(task.duedate)" class="pull-right">(Reminder: {{ task.reminderTime | date:(config.DATE_FORMAT + " " + config.TIME_FORMAT) }}) </span>
                             </header>
                             <div class="panel-body">
                                 <span ng-if=" ( config.EXCERPT_LINEBREAKS ) " ng-bind-html="trust(task.notes)"></span>
@@ -119,6 +120,7 @@
                             <header class="panel-heading">
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:config.DATE_FORMAT }}) </span>
+                                <span ng-show="task.reminderSet" ng-class="isOverdue(task.duedate)" class="pull-right">(Reminder: {{ task.reminderTime | date:(config.DATE_FORMAT + " " + config.TIME_FORMAT) }}) </span>
                             </header>
                             <div class="panel-body">
                                 <span ng-if=" ( config.EXCERPT_LINEBREAKS ) " ng-bind-html="trust(task.notes)"></span>
@@ -159,6 +161,7 @@
                             <header class="panel-heading">
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:config.DATE_FORMAT }}) </span>
+                                <span ng-show="task.reminderSet" ng-class="isOverdue(task.duedate)" class="pull-right">(Reminder: {{ task.reminderTime | date:(config.DATE_FORMAT + " " + config.TIME_FORMAT) }}) </span>
                             </header>
                             <div class="panel-body">
                                 <span ng-if=" ( config.EXCERPT_LINEBREAKS ) " ng-bind-html="trust(task.notes)"></span>
@@ -203,6 +206,7 @@
                             <header class="panel-heading">
                                 {{ task.subject }}
                                 <span ng-show="(task.duedate | date:'yyyy' ) != '4501'" ng-class="isOverdue(task.duedate)" class="pull-right">(Due: {{ task.duedate | date:config.DATE_FORMAT }}) </span>
+                                <span ng-show="task.reminderSet" ng-class="isOverdue(task.duedate)" class="pull-right">(Reminder: {{ task.reminderTime | date:(config.DATE_FORMAT + " " + config.TIME_FORMAT) }}) </span>
                             </header>
                             <div class="panel-body">
                                 <span ng-if=" ( config.EXCERPT_LINEBREAKS ) " ng-bind-html="trust(task.notes)"></span>

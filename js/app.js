@@ -253,6 +253,8 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
                             oneNoteURL: getUserProp(task, "OneNoteURL"),
                             percent: task.PercentComplete,
                             owner: task.Owner,
+                            reminderSet: task.ReminderSet,
+                            reminderTime: new Date(task.ReminderTime),
                             totalwork: task.TotalWork,
                         });
                     }
@@ -279,6 +281,8 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
                             oneNoteURL: getUserProp(task, "OneNoteURL"),
                             percent: 0,
                             owner: "",
+                            reminderSet: task.ReminderSet,
+                            reminderTime: new Date(task.ReminderTime),
                             totalwork: 0,
                         });
                     }
@@ -716,6 +720,7 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
         mailBody += "<tr><td>TASKNOTE_EXCERPT</td><td>Number of characters that are displayed for the tasks details</td></tr>";
         mailBody += "<tr><td>TASK_TEMPLATE</td><td>Template to use for new tasks</td></tr>";
         mailBody += "<tr><td>DATE_FORMAT</td><td>Date format (must a valid JS date format)</td></tr>";
+        mailBody += "<tr><td>TIME_FORMAT</td><td>Time format (must a valid JS time format)</td></tr>";
         mailBody += "<tr><td>USE_CATEGORY_COLORS</td><td>if true, then the Outlook category colors will be used</td></tr>";
         mailBody += "<tr><td>USE_CATEGORY_COLOR_FOOTERS</td><td>if true, then the Outlook category colors will be used for the entire footer line</td></tr>";
         mailBody += "<tr><td>DEFAULT_FOOTER_COLOR</td><td>Color to be used for the footer background when no category or multiple categories are defined.</td></tr>";
@@ -1174,6 +1179,7 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
             "TASKNOTE_EXCERPT": 100,
             "TASK_TEMPLATE": "\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### ISSUES:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n",
             "DATE_FORMAT": "dd-MMM",
+            "TIME_FORMAT": "HH:mm",
             "USE_CATEGORY_COLORS": true,
             "USE_CATEGORY_COLOR_FOOTERS": true,
             "DEFAULT_FOOTER_COLOR": "#dfdfdf",
@@ -1215,4 +1221,3 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
         };
     }
 });
-
