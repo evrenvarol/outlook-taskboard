@@ -14,11 +14,20 @@ There are 2 ways to use the taskboard:
 
 ![Outlook Taskboard](http://evrenvarol.github.io/outlook-taskboard/img/outlook-taskboard.png)
 
-### Moving Tasks between task lanes
+### Move tasks between task lanes
 ![Moving Tasks](http://evrenvarol.github.io/outlook-taskboard/img/task-drag.gif)
 
-### Filtering Tasks
+### Filter tasks
 ![Filtering](http://evrenvarol.github.io/outlook-taskboard/img/task-filter.gif)
+
+### Show task categories
+![Category footer coloring](https://user-images.githubusercontent.com/9609820/30276617-b5c02bb0-9705-11e7-8981-66021ad66f53.png)
+
+### Display task information
+![Task information](https://user-images.githubusercontent.com/9609820/55242483-9d79d200-523d-11e9-90ab-a98713cbe9a6.PNG)
+
+### Print status reports
+![Status report](https://user-images.githubusercontent.com/9609820/55243657-f2b6e300-523f-11e9-969c-dbdebf350f57.png)
 
 ### Platforms supported
 Only tested with Outlook 2013 and 2016 running on Windows 8.1/10.
@@ -204,5 +213,3 @@ My changes:
 3. Apply display filters on status reports, too (optional).
 4. Tasks are sorted into lanes by their status (as in BillyMcSkintos' fork). Drag & Drop between lanes is enabled and alters the task status.
 5. Having the tasks for all lanes in a common folder, e.g. the main Tasks folder, is possible (and recommended). Archive folder is still separate.
-
-![Category footer coloring](https://user-images.githubusercontent.com/9609820/30276617-b5c02bb0-9705-11e7-8981-66021ad66f53.png)
