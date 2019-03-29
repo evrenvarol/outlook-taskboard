@@ -779,7 +779,8 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
                 mailBody += "<li>"
                 if (tasks[i].categoryNames !== "") { mailBody += "[" + tasks[i].categoryNames + "] "; }
                 mailBody += "<strong>" + tasks[i].subject + "</strong>" + " - <i>" + tasks[i].status + "</i>";
-                if ($scope.config.COMPLETED_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks[i].totalwork + " mn "; }
+                if (tasks[i].actualwork) { var actWork = tasks[i].actualwork + "/"; } else { var actWork = ""; }
+                if ($scope.config.COMPLETED_FOLDER.DISPLAY_PROPERTIES.TOTALWORK && tasks[i].totalwork) { mailBody += " - " + actWork + tasks[i].totalwork + " min "; }
                 if (tasks[i].priority == 2) { mailBody += "<font color=red> [H]</font>"; }
                 if (tasks[i].priority == 0) { mailBody += "<font color=gray> [L]</font>"; }
                 if (moment(tasks[i].duedate).isValid && moment(tasks[i].duedate).year() != 4501) { mailBody += " [Due: " + moment(tasks[i].duedate).format("DD-MMM") + "]"; }
@@ -804,7 +805,8 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
                 mailBody += "<li>"
                 if (tasks[i].categoryNames !== "") { mailBody += "[" + tasks[i].categoryNames + "] "; }
                 mailBody += "<strong>" + tasks[i].subject + "</strong>" + " - <i>" + tasks[i].status + "</i>";
-                if ($scope.config.INPROGRESS_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks[i].totalwork + " mn "; }
+                if (tasks[i].actualwork) { var actWork = tasks[i].actualwork + "/"; } else { var actWork = ""; }
+                if ($scope.config.INPROGRESS_FOLDER.DISPLAY_PROPERTIES.TOTALWORK && tasks[i].totalwork) { mailBody += " - " + actWork + tasks[i].totalwork + " min "; }
                 if (tasks[i].priority == 2) { mailBody += "<font color=red> [H]</font>"; }
                 if (tasks[i].priority == 0) { mailBody += "<font color=gray> [L]</font>"; }
                 if (moment(tasks[i].duedate).isValid && moment(tasks[i].duedate).year() != 4501) { mailBody += " [Due: " + moment(tasks[i].duedate).format("DD-MMM") + "]"; }
@@ -829,7 +831,8 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
                 mailBody += "<li>"
                 if (tasks[i].categoryNames !== "") { mailBody += "[" + tasks[i].categoryNames + "] "; }
                 mailBody += "<strong>" + tasks[i].subject + "</strong>" + " - <i>" + tasks[i].status + "</i>";
-                if ($scope.config.NEXT_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks[i].totalwork + " mn "; }
+                if (tasks[i].actualwork) { var actWork = tasks[i].actualwork + "/"; } else { var actWork = ""; }
+                if ($scope.config.NEXT_FOLDER.DISPLAY_PROPERTIES.TOTALWORK && tasks[i].totalwork) { mailBody += " - " + actWork + tasks[i].totalwork + " min "; }
                 if (tasks[i].priority == 2) { mailBody += "<font color=red> [H]</font>"; }
                 if (tasks[i].priority == 0) { mailBody += "<font color=gray> [L]</font>"; }
                 if (moment(tasks[i].duedate).isValid && moment(tasks[i].duedate).year() != 4501) { mailBody += " [Due: " + moment(tasks[i].duedate).format("DD-MMM") + "]"; }
@@ -854,7 +857,8 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
                 mailBody += "<li>"
                 if (tasks[i].categoryNames !== "") { mailBody += "[" + tasks[i].categoryNames + "] "; }
                 mailBody += "<strong>" + tasks[i].subject + "</strong>" + " - <i>" + tasks[i].status + "</i>";
-                if ($scope.config.WAITING_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks[i].totalwork + " mn "; }
+                if (tasks[i].actualwork) { var actWork = tasks[i].actualwork + "/"; } else { var actWork = ""; }
+                if ($scope.config.WAITING_FOLDER.DISPLAY_PROPERTIES.TOTALWORK && tasks[i].totalwork) { mailBody += " - " + actWork + tasks[i].totalwork + " min "; }
                 if (tasks[i].priority == 2) { mailBody += "<font color=red> [H]</font>"; }
                 if (tasks[i].priority == 0) { mailBody += "<font color=gray> [L]</font>"; }
                 if (moment(tasks[i].duedate).isValid && moment(tasks[i].duedate).year() != 4501) { mailBody += " [Due: " + moment(tasks[i].duedate).format("DD-MMM") + "]"; }
@@ -879,7 +883,8 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
                 mailBody += "<li>"
                 if (tasks[i].categoryNames !== "") { mailBody += "[" + tasks[i].categoryNames + "] "; }
                 mailBody += "<strong>" + tasks[i].subject + "</strong>" + " - <i>" + tasks[i].status + "</i>";
-                if ($scope.config.BACKLOG_FOLDER.DISPLAY_PROPERTIES.TOTALWORK) { mailBody += " - " + tasks[i].totalwork + " mn "; }
+                if (tasks[i].actualwork) { var actWork = tasks[i].actualwork + "/"; } else { var actWork = ""; }
+                if ($scope.config.BACKLOG_FOLDER.DISPLAY_PROPERTIES.TOTALWORK && tasks[i].totalwork) { mailBody += " - " + actWork + tasks[i].totalwork + " min "; }
                 if (tasks[i].priority == 2) { mailBody += "<font color=red> [H]</font>"; }
                 if (tasks[i].priority == 0) { mailBody += "<font color=gray> [L]</font>"; }
                 if (moment(tasks[i].duedate).isValid && moment(tasks[i].duedate).year() != 4501) { mailBody += " [Due: " + moment(tasks[i].duedate).format("DD-MMM") + "]"; }
