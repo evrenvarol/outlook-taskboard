@@ -83,17 +83,17 @@
                                 <span ng-if=" ( !config.EXCERPT_LINEBREAKS ) " ng-bind="task.notes"></span>
                             </div>
                             <footer class="text-right" ng-style="getFooterStyle(task.categories)">
-                                <div ng-if="( config.BACKLOG_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
-                                <div ng-if="( config.BACKLOG_FOLDER.DISPLAY_PROPERTIES.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
                                 <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span>
                                     <span ng-repeat="cat in task.categories"><strong ng-style="cat.style">{{ cat.label }}</strong>&nbsp;</span>
                                 </div>
                                 <div>
-                                    <span ng-if="( config.BACKLOG_FOLDER.DISPLAY_PROPERTIES.TOTALWORK && task.totalwork != 0)" ><span class="glyphicon glyphicon-time"></span> {{ task.totalwork / 60 }} h</span>
+                                    <span ng-if="( config.BACKLOG_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </span>
+                                    <span ng-if="( config.BACKLOG_FOLDER.DISPLAY_PROPERTIES.TOTALWORK && task.totalwork != 0 )" ><span class="glyphicon glyphicon-time"></span> <span ng-if="( task.actualwork != 0 )" >{{ task.actualwork / 60 }}/</span>{{ task.totalwork / 60 }}h </span>
+                                    <span ng-if="( config.BACKLOG_FOLDER.DISPLAY_PROPERTIES.PERCENT && task.percent != 0  )"><span class="glyphicon glyphicon-briefcase"></span> {{ task.percent }}% </span>
                                     <span class="btn-group btn-group-xs">
-                                        <button ng-if="(task.oneNoteURL != '')" class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button>
-                                        <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-                                        <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,backlogTasks,filteredBacklogTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                        <button ng-if="(task.oneNoteURL != '')" class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true" ng-style="getFooterStyle(task.categories)"></span></button>
+                                        <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true" ng-style="getFooterStyle(task.categories)"></span></button>
+                                        <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,backlogTasks,filteredBacklogTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true" ng-style="getFooterStyle(task.categories)"></span></button>
                                     </span>
                                 </div>
                             </footer>
@@ -130,17 +130,17 @@
                                 <span ng-if=" ( !config.EXCERPT_LINEBREAKS ) " ng-bind="task.notes"></span>
                             </div>
                             <footer class="text-right" ng-style="getFooterStyle(task.categories)">
-                                <div ng-if="( config.NEXT_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
-                                <div ng-if="( config.NEXT_FOLDER.DISPLAY_PROPERTIES.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
                                 <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span>
                                     <span ng-repeat="cat in task.categories"><strong ng-style="cat.style">{{ cat.label }}</strong>&nbsp;</span>
                                 </div>
                                 <div>
-                                    <span ng-if="( config.NEXT_FOLDER.DISPLAY_PROPERTIES.TOTALWORK && task.totalwork != 0)" ><span class="glyphicon glyphicon-time"></span> {{ task.totalwork / 60 }} h</span>
+                                    <span ng-if="( config.NEXT_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </span>
+                                    <span ng-if="( config.NEXT_FOLDER.DISPLAY_PROPERTIES.TOTALWORK && task.totalwork != 0 )" ><span class="glyphicon glyphicon-time"></span> <span ng-if="( task.actualwork != 0 )" >{{ task.actualwork / 60 }}/</span>{{ task.totalwork / 60 }}h </span>
+                                    <span ng-if="( config.NEXT_FOLDER.DISPLAY_PROPERTIES.PERCENT && task.percent != 0  )"><span class="glyphicon glyphicon-briefcase"></span> {{ task.percent }}% </span>
                                     <span class="btn-group btn-group-xs">
-                                        <button ng-if="(task.oneNoteURL != '')" class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button>
-                                        <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-                                        <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,nextTasks,filteredNextTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                        <button ng-if="(task.oneNoteURL != '')" class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true" ng-style="getFooterStyle(task.categories)"></span></button>
+                                        <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true" ng-style="getFooterStyle(task.categories)"></span></button>
+                                        <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,nextTasks,filteredNextTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true" ng-style="getFooterStyle(task.categories)"></span></button>
                                     </span>
                                 </div>
                             </footer>
@@ -174,17 +174,17 @@
                                 <span ng-if=" ( !config.EXCERPT_LINEBREAKS ) " ng-bind="task.notes"></span>
                             </div>
                             <footer class="text-right" ng-style="getFooterStyle(task.categories)">
-                                <div ng-if="( config.INPROGRESS_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
-                                <div ng-if="( config.INPROGRESS_FOLDER.DISPLAY_PROPERTIES.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
                                 <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span>
                                     <span ng-repeat="cat in task.categories"><strong ng-style="cat.style">{{ cat.label }}</strong>&nbsp;</span>
                                 </div>
                                 <div>
-                                    <span ng-if="( config.INPROGRESS_FOLDER.DISPLAY_PROPERTIES.TOTALWORK && task.totalwork != 0)" ><span class="glyphicon glyphicon-time"></span> {{ task.totalwork / 60 }} h</span>
+                                    <span ng-if="( config.INPROGRESS_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </span>
+                                    <span ng-if="( config.INPROGRESS_FOLDER.DISPLAY_PROPERTIES.TOTALWORK && task.totalwork != 0 )" ><span class="glyphicon glyphicon-time"></span> <span ng-if="( task.actualwork != 0 )" >{{ task.actualwork / 60 }}/</span>{{ task.totalwork / 60 }}h </span>
+                                    <span ng-if="( config.INPROGRESS_FOLDER.DISPLAY_PROPERTIES.PERCENT && task.percent != 0  )"><span class="glyphicon glyphicon-briefcase"></span> {{ task.percent }}% </span>
                                     <span class="btn-group btn-group-xs">
-                                        <button ng-if="(task.oneNoteURL != '')" class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button>
-                                        <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-                                        <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,inprogressTasks,filteredInprogressTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                        <button ng-if="(task.oneNoteURL != '')" class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true" ng-style="getFooterStyle(task.categories)"></span></button>
+                                        <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true" ng-style="getFooterStyle(task.categories)"></span></button>
+                                        <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,inprogressTasks,filteredInprogressTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true" ng-style="getFooterStyle(task.categories)"></span></button>
                                     </span>
                                 </div>
                             </footer>
@@ -221,17 +221,17 @@
                                 <span ng-if=" ( !config.EXCERPT_LINEBREAKS ) " ng-bind="task.notes"></span>
                             </div>
                             <footer class="text-right" ng-style="getFooterStyle(task.categories)">
-                                <div ng-if="( config.WAITING_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
-                                <div ng-if="( config.WAITING_FOLDER.DISPLAY_PROPERTIES.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
                                 <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span>
                                     <span ng-repeat="cat in task.categories"><strong ng-style="cat.style">{{ cat.label }}</strong>&nbsp;</span>
                                 </div>
                                 <div>
-                                    <span ng-if="( config.WAITING_FOLDER.DISPLAY_PROPERTIES.TOTALWORK && task.totalwork != 0)" ><span class="glyphicon glyphicon-time"></span> {{ task.totalwork / 60 }} h</span>
+                                    <span ng-if="( config.WAITING_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </span>
+                                    <span ng-if="( config.WAITING_FOLDER.DISPLAY_PROPERTIES.TOTALWORK && task.totalwork != 0 )" ><span class="glyphicon glyphicon-time"></span> <span ng-if="( task.actualwork != 0 )" >{{ task.actualwork / 60 }}/</span>{{ task.totalwork / 60 }}h </span>
+                                    <span ng-if="( config.WAITING_FOLDER.DISPLAY_PROPERTIES.PERCENT && task.percent != 0  )"><span class="glyphicon glyphicon-briefcase"></span> {{ task.percent }}% </span>
                                     <span class="btn-group btn-group-xs">
-                                        <button ng-if="(task.oneNoteURL != '')" class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button>
-                                        <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-                                        <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,waitingTasks,filteredWaitingTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                        <button ng-if="(task.oneNoteURL != '')" class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true" ng-style="getFooterStyle(task.categories)"></span></button>
+                                        <button class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true" ng-style="getFooterStyle(task.categories)"></span></button>
+                                        <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,waitingTasks,filteredWaitingTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true" ng-style="getFooterStyle(task.categories)"></span></button>
                                     </span>
                                 </div>
                             </footer>
@@ -263,22 +263,21 @@
                                 <span ng-if=" ( !config.EXCERPT_LINEBREAKS ) " ng-bind="task.notes"></span>
                             </div>
                             <footer class="text-right" ng-style="getFooterStyle(task.categories)">
-                                <div ng-if="( config.COMPLETED_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </div>
-                                <div ng-if="( config.COMPLETED_FOLDER.DISPLAY_PROPERTIES.PERCENT )" class="pull-right"> {{ task.percent }}%</div>
                                 <div ng-if="(task.categories != '')" class="pull-left"><span class="glyphicon glyphicon-tag"></span>
                                     <span ng-repeat="cat in task.categories"><strong ng-style="cat.style">{{ cat.label }}</strong>&nbsp;</span>
                                 </div>
                                 <div>
-                                    <span ng-if="( config.COMPLETED_FOLDER.DISPLAY_PROPERTIES.TOTALWORK && task.totalwork != 0)" ><span class="glyphicon glyphicon-time"></span> {{ task.totalwork / 60 }} h</span>
+                                    <span ng-if="( config.COMPLETED_FOLDER.DISPLAY_PROPERTIES.OWNER )"><span class="glyphicon glyphicon-user"></span> {{ task.owner }} </span>
+                                    <span ng-if="( config.COMPLETED_FOLDER.DISPLAY_PROPERTIES.TOTALWORK && task.totalwork != 0 )" ><span class="glyphicon glyphicon-time"></span> <span ng-if="( task.actualwork != 0 )" >{{ task.actualwork / 60 }}/</span>{{ task.totalwork / 60 }}h </span>
+                                    <span ng-if="( config.COMPLETED_FOLDER.DISPLAY_PROPERTIES.PERCENT && task.percent != 0  )"><span class="glyphicon glyphicon-briefcase"></span> {{ task.percent }}% </span>
                                     <span class="btn-group btn-group-xs">
-                                        <button ng-if="(task.oneNoteURL != '')" class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true"></span></button>
-                                        <button class="btn btn-default btn-xs" aria-label="Archive" type="button" ng-click="archiveTask(task,completedTasks,filteredCompletedTasks)"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
-                                        <button ng-if="( config.COMPLETED_FOLDER.EDITABLE )" class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-                                        <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,completedTasks,filteredCompletedTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                        <button ng-if="(task.oneNoteURL != '')" class="btn btn-default btn-xs" aria-label="OneNote" type="button" ng-click="openOneNoteURL(task.oneNoteURL)"><span class="glyphicon glyphicon-book" aria-hidden="true" ng-style="getFooterStyle(task.categories)"></span></button>
+                                        <button class="btn btn-default btn-xs" aria-label="Archive" type="button" ng-click="archiveTask(task,completedTasks,filteredCompletedTasks)"><span class="glyphicon glyphicon-ok" aria-hidden="true" ng-style="getFooterStyle(task.categories)"></span></button>
+                                        <button ng-if="( config.COMPLETED_FOLDER.EDITABLE )" class="btn btn-default btn-xs" aria-label="Edit" type="button" ng-click="editTask(task)"><span class="glyphicon glyphicon-edit" aria-hidden="true" ng-style="getFooterStyle(task.categories)"></span></button>
+                                        <button class="btn btn-default btn-xs" aria-label="Delete" type="button" ng-click="deleteTask(task,completedTasks,filteredCompletedTasks, true)"><span class="glyphicon glyphicon-trash" aria-hidden="true" ng-style="getFooterStyle(task.categories)"></span></button>
                                     </span>
                                 </div>
                             </footer>
-
                         </li>
                     </ul>
                 </div>

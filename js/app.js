@@ -255,6 +255,7 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
                             owner: task.Owner,
                             reminderSet: task.ReminderSet,
                             reminderTime: new Date(task.ReminderTime),
+                            actualwork: task.ActualWork,
                             totalwork: task.TotalWork,
                         });
                     }
@@ -283,6 +284,7 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
                             owner: "",
                             reminderSet: task.ReminderSet,
                             reminderTime: new Date(task.ReminderTime),
+                            actualwork: 0,
                             totalwork: 0,
                         });
                     }
