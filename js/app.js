@@ -1033,10 +1033,24 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
 
     // checks whether the task date is overdue or today
     // returns class based on the result
-    $scope.isOverdue = function (strdate) {
-        var dateobj = new Date(strdate).setHours(0, 0, 0, 0);
+    $scope.isOverdue = function (duedate, startdate) {
         var today = new Date().setHours(0, 0, 0, 0);
-        return { 'task-overdue': dateobj < today, 'task-today': dateobj == today };
+        if (typeof(duedate) !== 'undefined' && duedate.getYear() != 2601) {
+            var duedateobj = new Date(duedate).setHours(0, 0, 0, 0);
+        }
+        else
+        {
+            var duedateobj = today + 1;
+        }
+        if (typeof(startdate) !== 'undefined' && startdate.getYear() != 2601) {
+
+            var startdateobj = new Date(startdate).setHours(0, 0, 0, 0);
+        }
+        else
+        {
+            var startdateobj = today - 1;
+        }
+        return { 'task-overdue': duedateobj < today, 'task-today': duedateobj == today, 'task-notstarted': startdateobj > today };
     };
 
     $scope.getFooterStyle = function (categories) {

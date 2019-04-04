@@ -57,6 +57,7 @@ li.task footer {
     padding: 3px 7px;
 }
 
+.task-notstarted { color: #aaaaaa; }
 .task-overdue { color: #dd3333; }
 .task-today { color: #6f8eb3; }
 
