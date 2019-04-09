@@ -23,6 +23,9 @@ There are 2 ways to use the taskboard:
 ### Show task categories
 ![Category footer coloring](https://user-images.githubusercontent.com/9609820/30276617-b5c02bb0-9705-11e7-8981-66021ad66f53.png)
 
+### View task status
+![Task status](https://user-images.githubusercontent.com/9609820/55799992-f0237b80-5ad2-11e9-90a6-5ea9d9cf9c89.png)
+
 ### Display task information
 ![Task information](https://user-images.githubusercontent.com/9609820/55242483-9d79d200-523d-11e9-90ab-a98713cbe9a6.PNG)
 
