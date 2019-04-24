@@ -2,17 +2,19 @@
 
 Outlook Taskboard is a Kanban board style view for Outlook Tasks.
 
-*The following README is based on the __original version__ from evrenvarol, so some
+*The following README is adapted from the __original version__ from evrenvarol, so some
 modifications have been made to adapt it to the current version of the taskboard. There might still be some changes that went unnoticed.*
 
 *The __Fork__ sections at the end of this README list the changes made by the respective forks.*
 
 There are 2 ways to use the taskboard:
 
-  1. Outlook Folder Home Page (recommended)
+  1. As an Outlook folder Home Page
   2. Directly from Internet Explorer
-
+  
 ![Outlook Taskboard](http://evrenvarol.github.io/outlook-taskboard/img/outlook-taskboard.png)
+
+# Features
 
 ### Move tasks between task lanes
 ![Moving Tasks](http://evrenvarol.github.io/outlook-taskboard/img/task-drag.gif)
@@ -32,31 +34,24 @@ There are 2 ways to use the taskboard:
 ### Print status reports
 ![Status report](https://user-images.githubusercontent.com/9609820/55243657-f2b6e300-523f-11e9-969c-dbdebf350f57.png)
 
-### Platforms supported
+### Supported platforms 
 Only tested with Outlook 2013 and 2016 running on Windows 8.1/10.
 
-It may also work with earlier Outlook versions, and possibly work with Windows 7.
+It may also work with earlier Outlook versions, and possibly with Windows 7.
 
 The taskboard can also be opened in Internet Explorer. Due to limitations with ActiveX controls, only Internet Explorer 9/10 and 11 are supported.
 
 ## Basic Setup
 
-1. Download the latest release zip file and extract it to a folder in your local hard drive.
+First, download the latest release zip file and extract it to a folder in your local hard drive or clone this repository.
 
-2. ~~In Outlook, create following folder structure under your Tasks folder (it is easier to use the *Folders* view to create these folders):~~
+The further setup depends on how you want to use the taskboard. While the solution based on Outlook Folder Home Page is conveniently integrated with Outlook, new Outlook versions only support Home Pages for the root folder of each account, if at all. Additionally, performance and compatibility e.g. with high-resolution displays are suboptimal. The Internet Explorer solution handles these better. Both solutions can also be used in parallel.
 
-    ![Tasks Folders](http://evrenvarol.github.io/outlook-taskboard/img/task-folders.png)
+### For Outlook Home page:
 
-    *This is __not necessary__ for the updated version of the taskboard any more.
-    It will automatically sort all tasks in your Tasks folder into lanes depending on their status
-    ('Not Started', 'In Progress', etc.). It is still possible to create a custom folder structure
-    for allocation to the task lanes, though.*
+  * ~~Create another folder (of any type) and name it something like "Taskboard" or "Kanban", etc.~~ (Alternatively you can use the main account folder as a home page as well.)
 
-3. For Outlook Home page:
-
-  * ~~Create another folder (of any type) and name it something like "Taskboard" or "Kanban", etc. (Alternatively you can use the main account folder as a home page as well)~~
-
-    *The feature to define home pages on any folder, which the next steps are based on, was conveniently __disabled__ in a recent Outlook update. Depending on your Outlook version, and potentially your Exchange Server and Group Policy settings, this might still be enabled for all folders, or only for the top level folder of the Outlook data file, though. The latter should be named like your email account (e.g. your email address) and be visible in Outlook's __Email view__ or __Folder view__ (not in the Tasks view). Continue with the following steps on this folder, or if nothing else works, use the Internet Explorer approach described in step 4.*
+    *The feature to define home pages on any folder, which the next steps are based on, was __removed__ from Outlook at some point. Depending on your Outlook version, and potentially your Exchange Server and Group Policy settings, this might still be enabled for all folders, or only for the __main account folder__, though. The latter should be named like your email account (e.g. your email address) and be visible in Outlook's __Email view__ or __Folder view__ (not in the Tasks view). Continue with the following steps on this folder, or if nothing else works, use the Internet Explorer approach described below.*
 
   * Right-click the folder, and then click **Properties**. Select the *Home Page* tab in the <folder name> Properties dialog box.
 
@@ -66,73 +61,68 @@ The taskboard can also be opened in Internet Explorer. Due to limitations with A
 
       ![Folder Home Page Offline Warning](http://evrenvarol.github.io/outlook-taskboard/img/folder-home-page-offline-warning.png)
 
-      <sub>*If you receive above warning, simply click X icon to close both warning prompt and the Properties window.*</sub>
+      *If you receive above warning, simply close it and close the Properties window using the 'X' icon.*
 
   * Now the taskboard should open in the main window when **clicking on the folder**.
 
-4. For Internet Explorer:
+### For Internet Explorer:
 
   * Open Internet Explorer and go to *Tools > Internet Options > Security tab*. Select the **Local Intranet Zone** and click on the **Custom Level** button. Ensure the "Initialize and script ActiveX controls not marked as safe for scripting" option is set to **Enabled**
 
   ![IE Local Intranet Zone Setting](http://evrenvarol.github.io/outlook-taskboard/img/ie-localintranet-activexscript-enable.png)
 
   * Open the page **kanban.html** in Internet Explorer.
+  
+    *Pro tip: Set kanban.html as your Internet Explorer homepage. (What else are you going to use IE for anyway...)*
 
-    <sub>*This is only supported in Internet Explorer. Edge on Windows 10, or any other browser, will not work. You might need to right click on the file and select Open With -> Internet Explorer to open the page.*</sub>
+    Note that any other browsers than Internet Explorer are __not supported__ (not even Edge), as IE's ActiveX features are required for access to Outlook data.
 
 ## Advanced Setup
 
-~~The configuration file (config.js) under the *js* folder can be edited to customise task lane limits, titles and some other settings.~~
+To access the configuration file, open the taskboard and click on the settings symbol in the top right next to the text box.
 
-*The __configuration file__ is now accessible through the taskboard itself: Open it by clicking on the settings symbol in the top right next to the text box.*
+This is an example for the configuration of the "Next" lane:
 
-*__Known issue:__ The taskboard configuration is saved in Outlook's Journal folder.
-When configuring the taskboard on several Outlook instances synchronized over an Exchange server,
-modification conflicts can occur - even if no changes were made to the configuration.
-These will lead to the taskboard not working and just displaying a blank screen.
-If this happens, open the Journal folder in Outlook (through the folder view),
-navigate to the __KanbanState__ and __KanbanConfig__ entries (easiest with the list view),
-and resolve any modification conflicts by double-clicking on them and answering the dialog
-that is opened. Then the taskboard should work again.*
+```javascript
+...
+  "NEXT_FOLDER": {
+    "ACTIVE": true, 
+    "NAME": "",
+    "TITLE": "NEXT",
+    "LIMIT": 20,
+    "SORT": "-priority,duedate,startdate,categoryNames",
+    "RESTRICT": "",
+    "DISPLAY_PROPERTIES": {
+      "OWNER": false,
+      "PERCENT": true, 
+      "TOTALWORK": true
+    },
+...
+```
 
 ### Task Lane Folder Names and Titles
 
-```javascript
-    'FOCUS_FOLDER':     { Name: 'Objectives-2016', Title: 'OBJECTIVES', Limit: 0, Sort: "[Importance]", Restrict: "[Complete] = false", Owner: '' },
-```
+* Folder names for each lane can be customised by changing the `Name` value. This is the folder that the tasks for the respective lane are stored in. It is recommended to set the same folder for all lanes and let the taskboard sort the tasks by status. An empty string stands for the default Outlook task folder.
 
-* Task lane folders names can be customised by changing the `Name` value. (Do NOT change the folder identifier - i.e. FOCUS_FOLDER)
+  *(Do __not__ change the folder identifier - i.e. NEXT_FOLDER)*
 
-* The `Title' value represents the title showing on the task lane.
+* The `Title` value represents the title showing on the task lane.
 
 ### Task Lane Limits
 
 ![Task Lane Limits](http://evrenvarol.github.io/outlook-taskboard/img/tasklane-limits.png)
 
-```javascript
-    'INPROGRESS_FOLDER':   { Name: 'InProgress', Title: 'IN PROGRESS', Limit: 5, Sort: "[Importance]", Restrict: "[Complete] = false", Owner: ''},
-    'NEXT_FOLDER':       { Name: 'Next', Title: 'NEXT', Limit: 0, Sort: "[Importance]", Restrict: "[Complete] = false", Owner: ''},
-    'FOCUS_FOLDER':     { Name: 'Focus', Title: 'FOCUS', Limit: 0, Sort: "[Importance]", Restrict: "[Complete] = false", Owner: '' },
-    'WAITING_FOLDER':     { Name: 'Waiting', Title: 'WAITING', Limit: 0, Sort: "[Importance]", Restrict: "[Complete] = false", Owner: '' },
-```
+* The `Limit` value can be adapted to set limits for each task lane.
 
-* The `Limit` value can be amended to set limits in each task lane.
-
-* Only InProgress, Next, Focus and Waiting folders accept limit settings. BackLog and Completed lanes do not have limits apply.
+* Only InProgress, Next, and Waiting lanes accept limit settings. BackLog and Completed lanes do not support limits.
 
 * Setting the `Limit` to `0` removes the limit.
 
 ### Task Lane Sort Order
 
-By default, the tasks are sorted by *priority*.
+* The `Sort` value can be updated to change the sorting criteria and their order.
 
-```javascript
-    'NEXT_FOLDER':       { Name: 'Next', Title: 'NEXT', Limit: 0, Sort: "[DueDate]", Restrict: "[Complete] = false", Owner: ''},
-```
-
-* The `Sort` value can be updated to change the order.
-
-* It is also possible to add multiple order criteria like `Sort: "[DueDate][Importance]"`
+* It is also possible to add multiple order criteria such as: `"SORT": "-priority,duedate,startdate,categoryNames",`
 
 ### Task Template
 
@@ -142,7 +132,7 @@ When a task created using the **Add** button on task lanes, a new task created w
 
 ```javascript
     // Default task template
-    'TASK_TEMPLATE':        '\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### ISSUES:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n'
+    "TASK_TEMPLATE": '\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### ISSUES:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n'
 ```
 
 This template can be customised by changing the `TASK_TEMPLATE` setting.
@@ -152,17 +142,20 @@ This template can be customised by changing the `TASK_TEMPLATE` setting.
 If there are some notes entered in the task, only first 200 chars are visible by default configuration.
 
 ```javascript
-// Task Note Excerpt Size
-// number of chars for each task note
-// 0 = makes no notes appear on the each task card
-'TASKNOTE_EXCERPT':    200,
+"TASKNOTE_EXCERPT": 200,
 ```
 
 The `TASKNOTE_EXCERPT` value can be updated to change the number of characters shown in the task board view.
 
-Note: If the default task template used to create the task, only the first part of the task notes are visible. (until first the '###'' section).
+*Note: If the default task template used to create the task, only the first part of the task notes are visible. (until first the '###'' section).*
 
-# Fork 1: [BillyMcSkintos](https://github.com/BillyMcSkintos/outlook-taskboard)
+### More options
+
+Open the help text by clicking on the '?' button in the taskboard to get a description of available configuration parameters.
+
+# Version/fork history
+
+## Fork 1: [BillyMcSkintos](https://github.com/BillyMcSkintos/outlook-taskboard)
 
 Credit for this fork goes entirely to @evrenvarol. I have made a few simple changes to suit my needs:
 1. Removed Focus Column
@@ -172,7 +165,7 @@ Credit for this fork goes entirely to @evrenvarol. I have made a few simple chan
 5. Columns are no-longer drag and drop. Tasks move from column to column with the Outlook task status.
 5.a. Must add and use a category of !Next to move a task to the appropriate column.
 
-# Fork 2: [janvv - Outlook Taskboard aka **JanBan**](https://github.com/janvv/janban)
+## Fork 2: [janvv - Outlook Taskboard aka **JanBan**](https://github.com/janvv/janban)
 
 I found the original Kanban board implemented by Evren Varol. I looked at the forks and liked the
 changes by BillyMcSkintos, using the task status instead of folders. But he lost the drag&drop
@@ -209,7 +202,7 @@ My changes:
 24. Added new config option: AUTO_TASK_START. When true, then tasks that have start date today or earlier will be moved to the NEXT lane automatically.
 25. Added new config option: Display Total Work hours for task item
 
-# Fork 3: [maltehi](https://github.com/maltehi/outlook-taskboard)
+## Fork 3: [maltehi](https://github.com/maltehi/outlook-taskboard)
 
 1. Removed lane coloring.
 2. Activated category-based footer coloring by default (see image below).
