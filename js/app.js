@@ -939,19 +939,25 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
         switch (target) {
             case 'backlog':
                 var tasksfolder = getOutlookFolder($scope.config.BACKLOG_FOLDER.NAME);
+                var newstatus = $scope.config.STATUS.DEFERRED.VALUE;
                 break;
             case 'inprogress':
                 var tasksfolder = getOutlookFolder($scope.config.INPROGRESS_FOLDER.NAME);
+                var newstatus = $scope.config.STATUS.IN_PROGRESS.VALUE;
                 break;
             case 'next':
                 var tasksfolder = getOutlookFolder($scope.config.NEXT_FOLDER.NAME);
+                var newstatus = $scope.config.STATUS.NOT_STARTED.VALUE;
                 break;
             case 'waiting':
                 var tasksfolder = getOutlookFolder($scope.config.WAITING_FOLDER.NAME);
+                var newstatus = $scope.config.STATUS.WAITING.VALUE;
                 break;
         };
         // create a new task item object in outlook
         var taskitem = tasksfolder.Items.Add();
+        
+        taskitem.Status = newstatus;
 
         // add default task template to the task body
         taskitem.Body = $scope.config.TASK_TEMPLATE;
