@@ -1130,7 +1130,7 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
                     "PERCENT": false,
                     "TOTALWORK": false
                 },
-                "FILTER_ON_START_DATE": true,
+                "FILTER_ON_START_DATE": false,
                 "REPORT": {
                     "DISPLAY": true
                 }
