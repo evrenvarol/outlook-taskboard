@@ -35,7 +35,7 @@ There are 2 ways to use the taskboard:
 ![Status report](https://user-images.githubusercontent.com/9609820/55243657-f2b6e300-523f-11e9-969c-dbdebf350f57.png)
 
 ### Supported platforms 
-Only tested with Outlook 2013 and 2016 running on Windows 8.1/10.
+Tested with Outlook 2013 and 2016 running on Windows 7/8.1/10.
 
 It may also work with earlier Outlook versions, and possibly with Windows 7.
 
