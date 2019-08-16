@@ -48,7 +48,8 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
 
     // });
 
-    $scope.init = function () {
+    $scope.init = function (configStr) {
+        $scope.configName = "KanbanConfig" + configStr;
         $scope.getConfig();
         if ($scope.config.EXCERPT_LINEBREAKS) {
             $scope.trust = $sce.trustAsHtml;
@@ -538,10 +539,10 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
 
     $scope.saveConfig = function () {
         var folder = outlookNS.GetDefaultFolder(11); // use the Journal folder to save the state
-        var configItems = folder.Items.Restrict('[Subject] = "KanbanConfig"');
+        var configItems = folder.Items.Restrict('[Subject] = ' + $scope.configName);
         if (configItems.Count == 0) {
             var configItem = outlookApp.CreateItem(4);
-            configItem.Subject = "KanbanConfig";
+            configItem.Subject = $scope.configName;
         }
         else {
             configItem = configItems(1);
@@ -553,8 +554,8 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
         catch(err) {
             if (configItem.IsConflict) {
                 alert("The configuration could not be saved. There seems to be a modification " +
-                      "conflict with the configuration object in Outlook. Look for an entry called " +
-                      "\'KanbanConfig\' in Outlook's Journal folder and resolve the conflict, then try again.")
+                      "conflict with the configuration object in Outlook. Look for an entry called \'" +
+                      $scope.configName + "\' in Outlook's Journal folder and resolve the conflict, then try again.")
             }
             else {
                 alert(err.message)
@@ -619,7 +620,7 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
 
     $scope.getConfig = function () {
         var folder = outlookNS.GetDefaultFolder(11);
-        var configItems = folder.Items.Restrict('[Subject] = "KanbanConfig"');
+        var configItems = folder.Items.Restrict('[Subject] = ' + $scope.configName);
         var configFound = false;
         if (configItems.Count > 0) {
             var configItem = configItems(1);
@@ -631,8 +632,8 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
             catch(err) {
                 if (configItem.IsConflict) {
                     alert("The configuration could not be loaded. There seems to be a modification " +
-                          "conflict with the configuration object in Outlook. Look for an entry called " +
-                          "\'KanbanConfig\' in Outlook's Journal folder and resolve the conflict, then try again.")
+                          "conflict with the configuration object in Outlook. Look for an entry called \'" +
+                          + $scope.configName + "\' in Outlook's Journal folder and resolve the conflict, then try again.")
                 }
                 else {
                     alert(err.message)
@@ -1109,7 +1110,7 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
 
     $scope.editConfig = function () {
         var folder = outlookNS.GetDefaultFolder(11);
-        var configItems = folder.Items.Restrict('[Subject] = "KanbanConfig"');
+        var configItems = folder.Items.Restrict('[Subject] = ' + $scope.configName);
         var configItem = configItems(1);
         configItem.Display();
         // bind to taskitem write event on outlook and reload the page after the task is saved

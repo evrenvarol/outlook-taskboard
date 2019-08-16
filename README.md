@@ -37,8 +37,6 @@ There are 2 ways to use the taskboard:
 ### Supported platforms 
 Tested with Outlook 2013 and 2016 running on Windows 7/8.1/10.
 
-It may also work with earlier Outlook versions, and possibly with Windows 7.
-
 The taskboard can also be opened in Internet Explorer. Due to limitations with ActiveX controls, only Internet Explorer 9/10 and 11 are supported.
 
 ## Basic Setup
@@ -152,6 +150,16 @@ The `TASKNOTE_EXCERPT` value can be updated to change the number of characters s
 ### More options
 
 Open the help text by clicking on the '?' button in the taskboard to get a description of available configuration parameters.
+
+## Multi-project setup
+
+To work with several independent Kanban Board configurations, change the following line in ```kanban.html```:
+
+```<body ng-controller="taskboardController" ng-init="init('')">```
+
+Instead of an empty string, pass a unique identifier string to the init function (e.g. ```ng-init="init('Test')```). This will cause the Kanban Board to use a config name appended
+with the identifier string. In this way it is possible to create a set of several kanban.html files that each operate on independent configurations.
+Each of the configurations can contain different folder paths for storage of the task objects, so that different projects can be addressed.
 
 # Version/fork history
 
