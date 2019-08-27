@@ -1123,8 +1123,7 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
                 "ACTIVE": true,
                 "NAME": "",
                 "TITLE": "BACKLOG",
-                "LIMIT": 0,
-                "SORT": "duedate,-priority",
+                "SORT": "-priority,duedate,categoryNames,subject",
                 "RESTRICT": "",
                 "DISPLAY_PROPERTIES": {
                     "OWNER": false,
@@ -1141,7 +1140,7 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
                 "NAME": "",
                 "TITLE": "NEXT",
                 "LIMIT": 20,
-                "SORT": "duedate,-priority",
+                "SORT": "-priority,duedate,categoryNames,subject",
                 "RESTRICT": "",
                 "DISPLAY_PROPERTIES": {
                     "OWNER": false,
@@ -1157,7 +1156,7 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
                 "NAME": "",
                 "TITLE": "IN PROGRESS",
                 "LIMIT": 5,
-                "SORT": "-priority",
+                "SORT": "-priority,duedate,categoryNames,subject",
                 "RESTRICT": "",
                 "DISPLAY_PROPERTIES": {
                     "OWNER": false,
@@ -1173,7 +1172,7 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
                 "NAME": "",
                 "TITLE": "WAITING",
                 "LIMIT": 0,
-                "SORT": "-priority",
+                "SORT": "-priority,duedate,categoryNames,subject",
                 "RESTRICT": "",
                 "DISPLAY_PROPERTIES": {
                     "OWNER": false,
@@ -1188,7 +1187,6 @@ tbApp.controller('taskboardController', function ($scope, $filter, $sce) {
                 "ACTIVE": true,
                 "NAME": "",
                 "TITLE": "COMPLETED",
-                "LIMIT": 0,
                 "SORT": "-completeddate,-priority,subject",
                 "RESTRICT": "",
                 "DISPLAY_PROPERTIES": {

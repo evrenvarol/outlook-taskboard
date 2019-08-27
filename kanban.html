@@ -67,7 +67,7 @@
                         <h5>{{ config.BACKLOG_FOLDER.TITLE }}
                             <span class="pull-right">
                                 <button class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('backlog');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-                            <span class="label label-info">{{ backlogTasks.length }}</span>
+                                <span class="label label-info">{{ backlogTasks.length }}</span>
                             </span>
                         </h5>
                     </header>
@@ -113,8 +113,8 @@
                         <h5>{{ config.NEXT_FOLDER.TITLE }}
                             <span class="pull-right">
                                 <button ng-if="( config.NEXT_FOLDER.LIMIT == 0 || nextTasks.length < config.NEXT_FOLDER.LIMIT )" class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('next');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-                            <span class="label label-info">{{ nextTasks.length }}</span> <span ng-if="( config.NEXT_FOLDER.LIMIT > 0 )"
-                                class="label label-primary">{{ config.NEXT_FOLDER.LIMIT }}</span>
+                                <span class="label label-info">{{ nextTasks.length }}</span>
+                                <span ng-if="( config.NEXT_FOLDER.LIMIT > 0 )" class="label label-primary">{{ config.NEXT_FOLDER.LIMIT }}</span>
                             </span>
                         </h5>
                     </header>
@@ -158,7 +158,9 @@
                     <header class="panel-heading">
                         <h5>{{ config.INPROGRESS_FOLDER.TITLE }}
                             <span class="pull-right">
-                                <span class="label label-info">{{ inprogressTasks.length }}</span>                            <span ng-if="( config.INPROGRESS_FOLDER.LIMIT > 0 )" class="label label-primary">{{ config.INPROGRESS_FOLDER.LIMIT }}</span>
+                                <button ng-if="( config.INPROGRESS_FOLDER.LIMIT == 0 || inprogressTasks.length < config.INPROGRESS_FOLDER.LIMIT )" class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('inprogress');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                                <span class="label label-info">{{ inprogressTasks.length }}</span>
+                                <span ng-if="( config.INPROGRESS_FOLDER.LIMIT > 0 )" class="label label-primary">{{ config.INPROGRESS_FOLDER.LIMIT }}</span>
                             </span>
                         </h5>
                     </header>
@@ -206,8 +208,9 @@
                     <header class="panel-heading">
                         <h5>{{ config.WAITING_FOLDER.TITLE }}
                             <span class="pull-right">
+                                <button ng-if="( config.WAITING_FOLDER.LIMIT == 0 || waitingTasks.length < config.WAITING_FOLDER.LIMIT )" class="btn btn-default btn-xs" aria-label="Add" type="button" ng-click="addTask('waiting');"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                                 <span class="label label-info">{{ waitingTasks.length }}</span>
-                            <span ng-if="( config.WAITING_FOLDER.LIMIT > 0 )" class="label label-primary">{{ config.WAITING_FOLDER.LIMIT }}</span>
+                                <span ng-if="( config.WAITING_FOLDER.LIMIT > 0 )" class="label label-primary">{{ config.WAITING_FOLDER.LIMIT }}</span>
                             </span>
                         </h5>
                     </header>
