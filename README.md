@@ -45,7 +45,7 @@ The taskboard can also be opened in Internet Explorer. Due to limitations with A
 
       <sub>*If you receive above warning, simply click X icon to close both warning prompt and the Properties window.*</sub>
 
-  * Troubleshooting : *Home Page tab is not visible*
+  * **Troubleshooting : *Home Page tab is not visible***
 
     In newer versions of Outlook the *Home Page* tab is usually not visible in Outlook folder properties. This feature was disabled by default to limit security vulnerabilities. To re-enable this you need to add a new `DWORD value` in your windows registry settings.
 
