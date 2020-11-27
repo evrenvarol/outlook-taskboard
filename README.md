@@ -45,8 +45,9 @@ The taskboard can also be opened in Internet Explorer. Due to limitations with A
 
       <sub>*If you receive above warning, simply click X icon to close both warning prompt and the Properties window.*</sub>
 
-  * **Troubleshooting : "*Home Page* tab" is not visible**  
-    In newer version of Outlook the *Home Page* tab is usually not visible in Outlook folder properties. This feature was disabled by default to limit security vulnerabilities. To re-enable this you need to add a new `DWORD value` in your windows registry settings.
+  * Troubleshooting : *Home Page tab is not visible*
+
+    In newer versions of Outlook the *Home Page* tab is usually not visible in Outlook folder properties. This feature was disabled by default to limit security vulnerabilities. To re-enable this you need to add a new `DWORD value` in your windows registry settings.
 
     For this please open the `Registry Editor` by
      * pressing `Windows + R`,
@@ -54,13 +55,15 @@ The taskboard can also be opened in Internet Explorer. Due to limitations with A
      * clicking `OK`.
 
     Inside the Registry Editor
-     * open `Computer\HKEY_CURRENT_USER\Software\Microsoft\Office\<VERSION>\Outlook\Security` and
-     * right click to add a new `DWORD (32-bit) value` and
-     * set the name `EnableRoamingFolderHomepages` and 
+     * open `Computer\HKEY_CURRENT_USER\Software\Microsoft\Office\<VERSION>\Outlook\Security`,
+     * right click to add a new `DWORD (32-bit) value`,
+     * set the name `EnableRoamingFolderHomepages` and
      * the value `1`.
 
     ![Enable Home Tab](img/EnableHomePageTab.png)
-    After this please close the Registry Editor and also re-open Microsoft Outlook. The Home Page Tab should be available in the properties window of the folder:
+
+    After this please close the Registry Editor and also close and re-open Outlook. The Home Page Tab should be available in the properties window of the folder now:
+
     ![Enable Home Tab](img/HomePageTab.png)
 
     For more information please also have a look at : https://support.microsoft.com/en-us/office/outlook-home-page-feature-is-missing-in-folder-properties-d207edb7-aa02-46c5-b608-5d9dbed9bd04
