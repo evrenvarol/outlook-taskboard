@@ -45,6 +45,29 @@ The taskboard can also be opened in Internet Explorer. Due to limitations with A
 
       <sub>*If you receive above warning, simply click X icon to close both warning prompt and the Properties window.*</sub>
 
+  * **Troubleshooting : *Home Page tab is not visible***
+
+    In newer versions of Outlook the *Home Page* tab is usually not visible in Outlook folder properties. This feature was disabled by default to limit security vulnerabilities. To re-enable this you need to add a new `DWORD value` in your windows registry settings.
+
+    For this please open the `Registry Editor` by
+     * pressing `Windows + R`,
+     * typing `regedit` and
+     * clicking `OK`.
+
+    Inside the Registry Editor
+     * open `Computer\HKEY_CURRENT_USER\Software\Microsoft\Office\<VERSION>\Outlook\Security`,
+     * right click to add a new `DWORD (32-bit) value`,
+     * set the name `EnableRoamingFolderHomepages` and
+     * the value `1`.
+
+    ![Enable Home Tab](img/EnableHomePageTab.png)
+
+    After this please close the Registry Editor and also close and re-open Outlook. The Home Page Tab should be available in the properties window of the folder now:
+
+    ![Enable Home Tab](img/HomePageTab.png)
+
+    For more information please also have a look at : https://support.microsoft.com/en-us/office/outlook-home-page-feature-is-missing-in-folder-properties-d207edb7-aa02-46c5-b608-5d9dbed9bd04
+
 4. For Internet Explorer:
 
   * Open Internet Explorer and go to *Tools > Internet Options > Security tab*. Select the **Local Intranet Zone** and click on the **Custom Level** button. Ensure the "Initialize and script ActiveX controls not marked as safe for scripting" option is set to **Enabled**
@@ -125,4 +148,3 @@ If there are some notes entered in the task, only first 200 chars are visible by
 The `TASKNOTE_EXCERPT` value can be updated to change the number of characters shown in the task board view.
 
 Note: If the default task template used to create the task, only the first part of the task notes are visible. (until first the '###'' section).
-
