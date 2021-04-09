@@ -22,7 +22,11 @@ var config_data = {
     // number of chars for each task note
     // 0 = makes no notes appear on the each task card
     'TASKNOTE_EXCERPT':		200,
-
+	
+    // olFolderTasks 	13 	Tasks folder
+    // olFolderToDo 	28 	To Do folder
+    'TASK_DEFAULT':		28,
+	  
     // Default task template
     'TASK_TEMPLATE':        '\r\n\r\n### TODO:\r\n\r\n\r\n\r\n### STATUS:\r\n\r\n\r\n\r\n### ISSUES:\r\n\r\n\r\n\r\n### REFERENCE:\r\n\r\n\r\n\r\n'
 
