@@ -3,6 +3,8 @@ Outlook Taskboard is a kanban board style view for Outlook Tasks.
 
 It uses the main "Tasks" folder as *Back Log* and utilizes 5 individual subfolders (InProgress, Next, Focus, Waiting and Completed) as each task lane for personal kanban workflow.
 
+See the [API Documentation] (https://msdn.microsoft.com/en-us/library/microsoft.office.interop.outlook.taskitem_properties.aspx)
+
 There are 2 ways to use the taskboard.
 
   1. Outlook Folder Home Page (recommended)

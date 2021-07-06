@@ -15,12 +15,26 @@ body {
     padding-left: 5px;
 }
 
-.panel-heading, .panel-footer {
-    padding: 5px 10px;
+.panel-heading{
+    padding: 10px 10px 0px 10px;
 }
 
+.panel-footer{
+    padding: 5px 10px 10px 10px;
+}
+
+.lbl {
+	padding: 4px;
+}
+
+/*
+.panel-heading, .panel-footer {
+    padding: 10px
+}
+*/
+
 .panel-body {
-    padding: 10px;
+    padding: 5px 10px 0px 10px;
     word-wrap: break-word;
 }
 

@@ -1,5 +1,6 @@
 'use strict';
 
+// see api 
 var tbApp = angular.module('taskboardApp', ['taskboardApp.config', 'ui.sortable']);
 
 try {
@@ -99,6 +100,23 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
         };
     };
 
+	var getOutlookFolderByName = function(name) {
+		switch (name) {
+                case 'backlog':
+                    return getOutlookFolder($scope.general_config.BACKLOG_FOLDER.Name, $scope.general_config.BACKLOG_FOLDER.Owner);
+                case 'inprogress':
+					return getOutlookFolder($scope.general_config.INPROGRESS_FOLDER.Name, $scope.general_config.INPROGRESS_FOLDER.Owner);
+                case 'next':
+                    return getOutlookFolder($scope.general_config.NEXT_FOLDER.Name, $scope.general_config.NEXT_FOLDER.Owner);
+                case 'waiting':
+                    return getOutlookFolder($scope.general_config.WAITING_FOLDER.Name, $scope.general_config.WAITING_FOLDER.Owner);
+                case 'focus':
+                    return getOutlookFolder($scope.general_config.FOCUS_FOLDER.Name, $scope.general_config.FOCUS_FOLDER.Owner);
+                case 'completed':
+                    return getOutlookFolder($scope.general_config.COMPLETED_FOLDER.Name, $scope.general_config.COMPLETED_FOLDER.Owner);
+                };
+	}
+	
     var getOutlookFolder = function (folderpath, owner) {
         if ( folderpath === undefined || folderpath === '' ) {
             // if folder path is not defined, return main Tasks folder
@@ -165,14 +183,16 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
                     entryID: tasks(i).EntryID,
                     subject: tasks(i).Subject,
                     priority: tasks(i).Importance,
-                    startdate: tasks(i).StartDate,
+                    startdate: new Date(tasks(i).StartDate),
                     duedate: new Date(tasks(i).DueDate),
                     sensitivity: tasks(i).Sensitivity,
                     categories: tasks(i).Categories,
                     notes: taskExcerpt(tasks(i).Body, GENERAL_CONFIG.TASKNOTE_EXCERPT),
-                    status: taskStatus(tasks(i).Body),
+                    status: tasks(i).Complete,//taskStatus(tasks(i).Body),
                     oneNoteTaskID: getUserProp(tasks(i), "OneNoteTaskID"),
-                    oneNoteURL: getUserProp(tasks(i), "OneNoteURL")
+                    oneNoteURL: getUserProp(tasks(i), "OneNoteURL"),
+					completeddate: new Date(tasks(i).DateCompleted),
+					totalWork: tasks(i).TotalWork/60
                 });
             };
 
@@ -307,7 +327,18 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
             mailItem.Display();
 
     }
-
+	
+	$scope.totalTime = function(name) {
+		var tasks = getOutlookFolderByName(name);
+		var count = tasks.Items.Count;
+		var i;
+		var total=0;
+        for (i = 1; i <= count; i++) {
+			total = total + tasks.Items(i).TotalWork/60;
+		}
+		return total;
+	}
+	
     // grabs the summary part of the task until the first '###' text
     // shortens the string by number of chars
     // tries not to split words and adds ... at the end to give excerpt effect
@@ -325,6 +356,7 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
             return str;
     };
 
+	// not working
     var taskStatus = function (str) {
             //str = str.replace(/(?:\r\n|\r|\n)/g, '<br>');
             if ( str.match(/### STATUS:([\s\S]*?)###/) ) {
@@ -407,24 +439,37 @@ tbApp.controller('taskboardController', function ($scope, GENERAL_CONFIG) {
         };
     };
 
+	// move task to completed folder
+	$scope.archiveTask = function(item, sourceArray) {
+		var taskitem = outlookNS.GetItemFromID(item.entryID);
+		//var tasksfolder = outlookNS.GetDefaultFolder(13);
+		var tasksfolder = getOutlookFolder(GENERAL_CONFIG.ARCHIVE_FOLDER.Name, GENERAL_CONFIG.ARCHIVE_FOLDER.Owner);		
+		if (taskitem.Parent.Name != tasksfolder.Name ) {
+            taskitem = taskitem.Move (tasksfolder);
+		}
+		//getOutlookFolder(GENERAL_CONFIG.FOCUS_FOLDER.Name, GENERAL_CONFIG.FOCUS_FOLDER.Owner);
+		window.location.reload();
+	}
+	
     // moves the task item back to tasks folder and marks it as complete
     // also removes it from the model data
-    $scope.archiveTask = function(item, sourceArray){
+    $scope.completeTask = function(item, sourceArray){
         // locate the task in outlook namespace by using unique entry id
         var taskitem = outlookNS.GetItemFromID(item.entryID);
 
+		// don't move uex12841, later move to x folder
         // move the task to the main "tasks" folder first (if it is not already in)
-        var tasksfolder = outlookNS.GetDefaultFolder(13);
-        if (taskitem.Parent.Name != tasksfolder.Name ) {
-            taskitem = taskitem.Move (tasksfolder);
-        };
+        //var tasksfolder = outlookNS.GetDefaultFolder(13); 
+		//if (taskitem.Parent.Name != tasksfolder.Name ) {
+        //    taskitem = taskitem.Move (tasksfolder);
+        //};
 
         // mark it complete
         taskitem.MarkComplete();
-
+		window.location.reload();
         // locate and remove the item from the array
-        var index = sourceArray.indexOf(item);
-        sourceArray.splice(index, 1);
+        //var index = sourceArray.indexOf(item);
+        //sourceArray.splice(index, 1);
     };
 
     // checks whether the task date is overdue or today
